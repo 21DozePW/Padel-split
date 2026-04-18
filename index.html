@@ -5,6 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="theme-color" content="#1a1b3a" />
 <title>Padel Split — Court reimbursements made simple</title>
+
+<!-- Open Graph / WhatsApp preview -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Padel Split — Pay your share" />
+<meta property="og:description" content="Tap to pay your share of the padel court booking via Revolut. Fast, simple, CHF." />
+<meta property="og:image" content="https://padel-split.vercel.app/preview.png" />
+<meta property="og:url" content="https://padel-split.vercel.app" />
+<meta name="twitter:card" content="summary_large_image" />
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -18,6 +27,8 @@
     --mint-deep: #6fd4b8;
     --coral:     #ff8a6b;
     --coral-2:   #ffb088;
+    --whatsapp:  #25d366;
+    --whatsapp-2:#1ebe57;
     --ink:       #ffffff;
     --muted:     #9ea2c7;
     --muted-2:   #6b6e94;
@@ -72,6 +83,7 @@
     font-family: inherit; font-weight: 700; font-size: 16px;
     cursor: pointer; transition: transform 0.15s ease, box-shadow 0.15s ease;
     box-shadow: 0 8px 20px rgba(142,234,208,0.2);
+    text-decoration: none;
   }
   .btn-primary:hover:not(:disabled) {
     transform: translateY(-2px);
@@ -79,6 +91,18 @@
   }
   .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
   .btn-primary svg { width: 18px; height: 18px; }
+  .btn-whatsapp {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    width: 100%; padding: 16px 20px;
+    background: var(--whatsapp); color: #ffffff;
+    border: none; border-radius: 14px;
+    font-family: inherit; font-weight: 700; font-size: 15px;
+    cursor: pointer; text-decoration: none;
+    transition: transform 0.15s, background 0.15s;
+    margin-bottom: 10px;
+  }
+  .btn-whatsapp:hover { background: var(--whatsapp-2); transform: translateY(-2px); }
+  .btn-whatsapp svg { width: 18px; height: 18px; }
   .btn-ghost {
     background: transparent; color: var(--muted); border: none;
     font-family: inherit; font-size: 14px; font-weight: 500;
@@ -151,7 +175,7 @@
     transition: transform 0.15s ease, border-color 0.15s ease;
   }
   .request-card:hover { transform: translateY(-2px); border-color: rgba(142,234,208,0.3); }
-  .rc-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+  .rc-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 16px; }
   .rc-info { flex: 1; min-width: 0; }
   .rc-title {
     font-size: 16px; font-weight: 700; margin-bottom: 4px;
@@ -167,32 +191,31 @@
   }
   .icon-btn:hover { color: var(--danger); background: rgba(255,107,122,0.1); }
   .icon-btn svg { width: 16px; height: 16px; }
-  .share-row {
-    display: flex; gap: 8px; background: var(--bg-deep);
-    border-radius: 12px; padding: 10px 10px 10px 14px;
-    align-items: center; margin-bottom: 10px;
-  }
-  .share-url {
-    flex: 1; font-family: ui-monospace, monospace; font-size: 11px;
-    color: var(--muted); overflow: hidden;
-    text-overflow: ellipsis; white-space: nowrap;
-  }
+  .rc-actions { display: flex; flex-direction: column; gap: 8px; }
+  .rc-action-row { display: flex; gap: 8px; }
   .copy-btn {
-    display: flex; align-items: center; gap: 6px;
-    background: var(--mint); color: var(--bg);
-    border: none; border-radius: 8px; padding: 8px 12px;
-    font-family: inherit; font-size: 12px; font-weight: 700;
-    cursor: pointer; flex-shrink: 0; transition: background 0.15s;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    flex: 1;
+    background: var(--surface-2); color: var(--ink);
+    border: 1px solid rgba(255,255,255,0.08); border-radius: 10px;
+    padding: 10px 12px;
+    font-family: inherit; font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: background 0.15s;
   }
-  .copy-btn:hover { background: var(--mint-deep); }
-  .copy-btn.copied { background: var(--coral); color: var(--bg); }
-  .copy-btn svg { width: 13px; height: 13px; }
-  .preview-link {
-    display: inline-flex; align-items: center; gap: 6px;
-    font-size: 12px; font-weight: 600; color: var(--coral);
-    text-decoration: none; text-transform: uppercase; letter-spacing: 0.05em;
+  .copy-btn:hover { background: rgba(255,255,255,0.08); }
+  .copy-btn.copied { background: var(--mint); color: var(--bg); border-color: var(--mint); }
+  .copy-btn svg { width: 14px; height: 14px; }
+  .preview-btn {
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    background: transparent; color: var(--coral);
+    border: 1px solid rgba(255,138,107,0.3); border-radius: 10px;
+    padding: 10px 12px;
+    font-family: inherit; font-size: 13px; font-weight: 600;
+    text-decoration: none; flex: 1;
+    transition: background 0.15s;
   }
-  .preview-link:hover { color: var(--coral-2); }
+  .preview-btn:hover { background: rgba(255,138,107,0.1); }
+  .preview-btn svg { width: 14px; height: 14px; }
   .pay-wrap {
     display: flex; flex-direction: column;
     min-height: calc(100vh - 84px);
@@ -265,6 +288,21 @@
   .wrap > *:nth-child(2) { animation-delay: 0.05s; }
   .wrap > *:nth-child(3) { animation-delay: 0.1s; }
   .wrap > *:nth-child(4) { animation-delay: 0.15s; }
+
+  /* Success toast after create */
+  .just-created {
+    background: linear-gradient(135deg, rgba(142,234,208,0.15), rgba(255,138,107,0.1));
+    border: 1px solid rgba(142,234,208,0.3);
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    color: var(--mint);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .just-created svg { width: 18px; height: 18px; flex-shrink: 0; }
 </style>
 </head>
 <body>
@@ -297,6 +335,27 @@ function loadLocal() {
   catch { return []; }
 }
 function saveLocal(list) { localStorage.setItem(LS_KEY, JSON.stringify(list)); }
+
+// Build the WhatsApp message text
+function buildWhatsAppMessage(req, shareUrl) {
+  const lines = [
+    `🎾 *${req.title}*`,
+    ``,
+    `💰 Your share: *CHF ${formatCHF(req.amount)}*`,
+  ];
+  if (req.note) {
+    lines.push(``, `📝 ${req.note}`);
+  }
+  lines.push(``, `Tap to pay:`, shareUrl);
+  return lines.join('\n');
+}
+
+// Build the WhatsApp share URL
+function buildWhatsAppUrl(req, shareUrl) {
+  const text = buildWhatsAppMessage(req, shareUrl);
+  return `https://wa.me/?text=${encodeURIComponent(text)}`;
+}
+
 const icons = {
   racket: `<svg viewBox="0 0 24 24" fill="none" stroke="#1a1b3a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="15" cy="9" r="6"/><path d="M10.5 13.5l-6 6"/><path d="M5 20l-1 1"/></svg>`,
   plus: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`,
@@ -305,6 +364,8 @@ const icons = {
   trash: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>`,
   external: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`,
   arrow: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>`,
+  eye: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`,
+  whatsapp: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>`,
 };
 function getRoute() {
   const hash = window.location.hash || "";
@@ -316,6 +377,9 @@ function getRoute() {
   return { view: "dashboard" };
 }
 window.addEventListener("hashchange", render);
+
+let justCreatedId = null;
+
 function render() {
   const app = document.getElementById("app");
   const route = getRoute();
@@ -336,7 +400,7 @@ function renderDashboard(app) {
   app.innerHTML = `
     ${brandHtml()}
     <h1>Court bookings,<br/><span class="accent">sorted.</span></h1>
-    <p class="lede">Create a payment request, send the link to whoever owes you, they pay via your Revolut. All in CHF.</p>
+    <p class="lede">Create a payment request, send it straight to WhatsApp, they pay via your Revolut. All in CHF.</p>
     <div id="formSlot"></div>
     <button class="btn-primary" id="newBtn">
       ${icons.plus}<span>New payment request</span>
@@ -363,9 +427,16 @@ function renderList(requests) {
     <div class="request-list">
       ${requests.map(r => {
         const shareUrl = buildShareUrl(r);
-        const shortUrl = shareUrl.length > 50 ? shareUrl.slice(0, 47) + "…" : shareUrl;
+        const whatsappUrl = buildWhatsAppUrl(r, shareUrl);
+        const isJustCreated = r.id === justCreatedId;
         return `
           <div class="request-card" data-id="${r.id}">
+            ${isJustCreated ? `
+              <div class="just-created">
+                ${icons.check}
+                <span>Created! Tap "Send via WhatsApp" below.</span>
+              </div>
+            ` : ''}
             <div class="rc-top">
               <div class="rc-info">
                 <div class="rc-title">${escapeHtml(r.title)}</div>
@@ -373,30 +444,38 @@ function renderList(requests) {
               </div>
               <button class="icon-btn" data-act="delete" data-id="${r.id}" aria-label="Delete">${icons.trash}</button>
             </div>
-            <div class="share-row">
-              <div class="share-url">${escapeHtml(shortUrl)}</div>
-              <button class="copy-btn" data-act="copy" data-url="${escapeAttr(shareUrl)}">
-                ${icons.copy}<span>Copy</span>
-              </button>
+            <div class="rc-actions">
+              <a class="btn-whatsapp" href="${escapeAttr(whatsappUrl)}" target="_blank" rel="noopener noreferrer">
+                ${icons.whatsapp}<span>Send via WhatsApp</span>
+              </a>
+              <div class="rc-action-row">
+                <button class="copy-btn" data-act="copy" data-url="${escapeAttr(shareUrl)}">
+                  ${icons.copy}<span>Copy link</span>
+                </button>
+                <a class="preview-btn" href="#/pay/${encodeRequest(r)}" target="_blank" rel="noopener">
+                  ${icons.eye}<span>Preview</span>
+                </a>
+              </div>
             </div>
-            <a class="preview-link" href="#/pay/${encodeRequest(r)}" target="_blank" rel="noopener">
-              Preview payment page →
-            </a>
           </div>
         `;
       }).join("")}
     </div>
   `;
+  // Clear the "just created" highlight after first render
+  if (justCreatedId) {
+    setTimeout(() => { justCreatedId = null; }, 100);
+  }
   slot.querySelectorAll("[data-act='copy']").forEach(btn => {
     btn.addEventListener("click", async () => {
       const url = btn.dataset.url;
       try {
         await navigator.clipboard.writeText(url);
         btn.classList.add("copied");
-        btn.querySelector("span").textContent = "Copied";
+        btn.querySelector("span").textContent = "Copied!";
         setTimeout(() => {
           btn.classList.remove("copied");
-          btn.querySelector("span").textContent = "Copy";
+          btn.querySelector("span").textContent = "Copy link";
         }, 1500);
       } catch { window.prompt("Copy this link:", url); }
     });
@@ -463,8 +542,14 @@ function openForm() {
     const list = loadLocal();
     list.unshift(req);
     saveLocal(list);
+    justCreatedId = req.id;
     slot.innerHTML = "";
     renderList(loadLocal());
+    // Scroll to the new card
+    setTimeout(() => {
+      const card = document.querySelector(`[data-id="${req.id}"]`);
+      if (card) card.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 100);
   });
 }
 function buildShareUrl(req) {
