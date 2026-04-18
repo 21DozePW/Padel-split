@@ -26,7 +26,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <style>
   :root {
     --bg:#1a1b3a; --bg-deep:#14152f; --surface:#262849; --surface-2:#2f315a;
@@ -63,10 +62,7 @@
   }
   .wrap { max-width: 540px; margin: 0 auto; }
 
-  .top-bar {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 24px; padding-top: 8px; gap: 10px;
-  }
+  .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-top: 8px; gap: 10px; }
   .brand { display: flex; align-items: center; gap: 10px; }
   .brand-mark {
     width: 38px; height: 38px; border-radius: 11px;
@@ -84,7 +80,6 @@
     background: var(--surface); border: 1px solid var(--border);
     border-radius: 10px; display: grid; place-items: center;
     color: var(--muted); cursor: pointer;
-    transition: color 0.15s, background 0.15s;
   }
   .top-icon-btn:hover { color: var(--ink); background: var(--surface-2); }
   .top-icon-btn svg { width: 16px; height: 16px; }
@@ -93,8 +88,7 @@
     display: flex; align-items: center; gap: 8px;
     padding: 7px 12px; background: var(--surface);
     border-radius: 999px; font-size: 13px; color: var(--muted);
-    border: 1px solid var(--border);
-    cursor: pointer; transition: background 0.15s;
+    border: 1px solid var(--border); cursor: pointer;
   }
   .user-chip:hover { background: var(--surface-2); }
   .user-chip svg { width: 14px; height: 14px; }
@@ -110,32 +104,14 @@
   }
   .lede { font-size: 14px; line-height: 1.5; color: var(--muted); margin-bottom: 24px; max-width: 44ch; }
 
-  /* Summary stats */
-  .summary {
-    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;
-    margin-bottom: 24px;
-  }
-  .stat {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 14px; padding: 14px 12px;
-    text-align: center;
-  }
-  .stat-value {
-    font-size: 22px; font-weight: 800; letter-spacing: -0.02em;
-    color: var(--ink); line-height: 1.1;
-  }
+  .summary { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 24px; }
+  .stat { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px 12px; text-align: center; }
+  .stat-value { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; color: var(--ink); line-height: 1.1; }
   .stat-value.mint { color: var(--mint); }
   .stat-value.coral { color: var(--coral); }
-  .stat-label {
-    font-size: 10px; font-weight: 700; color: var(--muted);
-    text-transform: uppercase; letter-spacing: 0.08em;
-    margin-top: 4px;
-  }
+  .stat-label { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
 
-  /* Search/filter bar */
-  .toolbar {
-    display: flex; gap: 8px; margin-bottom: 14px;
-  }
+  .toolbar { display: flex; gap: 8px; margin-bottom: 14px; }
   .search-input {
     flex: 1; padding: 10px 14px;
     background: var(--surface); border: 1px solid var(--border);
@@ -151,10 +127,7 @@
     outline: none; cursor: pointer;
   }
 
-  .card {
-    background: var(--surface); border-radius: 22px; padding: 22px;
-    border: 1px solid var(--border);
-  }
+  .card { background: var(--surface); border-radius: 22px; padding: 22px; border: 1px solid var(--border); }
   .card + .card { margin-top: 14px; }
 
   .btn-primary {
@@ -167,10 +140,7 @@
     box-shadow: 0 8px 20px rgba(142,234,208,0.2);
     text-decoration: none;
   }
-  .btn-primary:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 28px rgba(142,234,208,0.3);
-  }
+  .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(142,234,208,0.3); }
   .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
   .btn-primary svg { width: 17px; height: 17px; }
 
@@ -181,7 +151,6 @@
     border: 1px solid var(--border); border-radius: 12px;
     font-family: inherit; font-weight: 600; font-size: 14px;
     cursor: pointer; text-decoration: none;
-    transition: background 0.15s;
   }
   .btn-secondary:hover { background: var(--bg-deep); }
   .btn-secondary svg { width: 16px; height: 16px; }
@@ -195,7 +164,6 @@
     border: none; border-radius: 12px;
     font-family: inherit; font-weight: 700; font-size: 14px;
     cursor: pointer; text-decoration: none;
-    transition: transform 0.15s, background 0.15s;
   }
   .btn-whatsapp:hover { background: var(--whatsapp-2); transform: translateY(-2px); }
   .btn-whatsapp svg { width: 16px; height: 16px; }
@@ -204,11 +172,9 @@
     background: transparent; color: var(--muted); border: none;
     font-family: inherit; font-size: 14px; font-weight: 500;
     cursor: pointer; padding: 8px 12px; border-radius: 10px;
-    transition: color 0.15s, background 0.15s;
   }
   .btn-ghost:hover { color: var(--ink); background: var(--surface-2); }
 
-  /* Form */
   .form-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
   .form-head h2 { font-size: 17px; font-weight: 700; letter-spacing: -0.01em; }
   .label {
@@ -217,14 +183,11 @@
     text-transform: uppercase; letter-spacing: 0.08em;
   }
   .label:first-of-type { margin-top: 0; }
-  .label-row { display: flex; justify-content: space-between; align-items: center; }
-  .label-mini { font-size: 11px; color: var(--muted); font-weight: 500; text-transform: none; letter-spacing: 0; }
   .input {
     width: 100%; padding: 13px 15px;
     background: var(--bg-deep); border: 1px solid var(--border);
     border-radius: 11px; font-family: inherit; font-size: 15px;
     color: var(--ink); outline: none;
-    transition: border-color 0.15s, background 0.15s;
   }
   .input:focus { border-color: var(--mint); background: var(--surface-2); }
   .input::placeholder { color: var(--muted-2); }
@@ -233,7 +196,6 @@
     display: flex; align-items: center;
     background: var(--bg-deep); border: 1px solid var(--border);
     border-radius: 11px; padding: 0 14px;
-    transition: border-color 0.15s;
   }
   .amount-wrap:focus-within { border-color: var(--mint); }
   .amount-wrap select.currency {
@@ -257,21 +219,15 @@
     font-size: 11px; font-family: ui-monospace, monospace;
   }
 
-  /* Tracking mode toggle */
-  .seg {
-    display: flex; gap: 4px; background: var(--bg-deep);
-    border-radius: 10px; padding: 4px;
-  }
+  .seg { display: flex; gap: 4px; background: var(--bg-deep); border-radius: 10px; padding: 4px; }
   .seg-opt {
     flex: 1; padding: 8px; background: transparent;
     border: none; border-radius: 7px;
     font-family: inherit; font-size: 13px; font-weight: 600;
     color: var(--muted); cursor: pointer;
-    transition: background 0.15s, color 0.15s;
   }
   .seg-opt.active { background: var(--surface-2); color: var(--ink); }
 
-  /* Names list inputs */
   .names-list { display: flex; flex-direction: column; gap: 6px; }
   .name-row { display: flex; gap: 6px; }
   .name-row .input { padding: 10px 12px; font-size: 14px; }
@@ -289,15 +245,7 @@
     text-transform: uppercase; letter-spacing: 0.1em;
     margin: 28px 0 12px;
   }
-  .section-label::before {
-    content: ""; width: 6px; height: 6px;
-    background: var(--coral); border-radius: 50%;
-  }
-  .section-label .right {
-    margin-left: auto; text-transform: none; letter-spacing: 0;
-    font-weight: 500; font-size: 12px;
-    color: var(--muted-2);
-  }
+  .section-label::before { content: ""; width: 6px; height: 6px; background: var(--coral); border-radius: 50%; }
 
   .empty {
     text-align: center; padding: 32px 24px;
@@ -308,36 +256,21 @@
   .empty-icon { font-size: 28px; margin-bottom: 8px; }
 
   .request-list { display: grid; gap: 12px; }
-  .request-card {
-    background: var(--surface); border-radius: 18px; padding: 18px;
-    border: 1px solid var(--border);
-    transition: border-color 0.15s;
-  }
+  .request-card { background: var(--surface); border-radius: 18px; padding: 18px; border: 1px solid var(--border); }
   .request-card.archived { opacity: 0.65; }
   .request-card:hover { border-color: rgba(142,234,208,0.3); }
   .rc-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 12px; }
   .rc-info { flex: 1; min-width: 0; }
-  .rc-title {
-    font-size: 16px; font-weight: 700; margin-bottom: 4px;
-    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  }
-  .rc-meta-row {
-    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
-    font-size: 13px;
-  }
+  .rc-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .rc-meta-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 13px; }
   .rc-amount { color: var(--mint); font-weight: 700; }
   .rc-date { color: var(--muted); font-size: 12px; }
-  .rc-archived-tag {
-    background: var(--bg-deep); color: var(--muted);
-    padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600;
-    text-transform: uppercase; letter-spacing: 0.05em;
-  }
+  .rc-archived-tag { background: var(--bg-deep); color: var(--muted); padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
 
   .icon-btn {
     background: transparent; border: none; color: var(--muted);
     padding: 6px; border-radius: 8px; cursor: pointer;
     display: flex; align-items: center;
-    transition: color 0.15s, background 0.15s;
   }
   .icon-btn:hover { color: var(--ink); background: var(--surface-2); }
   .icon-btn.danger:hover { color: var(--danger); background: rgba(255,107,122,0.1); }
@@ -358,36 +291,20 @@
     background: transparent; border: none; border-radius: 8px;
     font-family: inherit; font-size: 14px; color: var(--ink);
     text-align: left; cursor: pointer;
-    transition: background 0.1s;
   }
   .menu-item:hover { background: var(--bg-deep); }
   .menu-item.danger { color: var(--danger); }
   .menu-item svg { width: 14px; height: 14px; opacity: 0.8; }
 
-  /* Progress bar */
   .progress-wrap { margin-bottom: 12px; }
-  .progress-info {
-    display: flex; justify-content: space-between; align-items: center;
-    font-size: 12px; margin-bottom: 6px;
-  }
+  .progress-info { display: flex; justify-content: space-between; align-items: center; font-size: 12px; margin-bottom: 6px; }
   .progress-text { color: var(--muted); font-weight: 600; }
   .progress-amount { color: var(--mint); font-weight: 700; }
-  .progress-bar {
-    height: 6px; background: var(--bg-deep); border-radius: 3px; overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%; background: linear-gradient(90deg, var(--mint), var(--mint-deep));
-    border-radius: 3px; transition: width 0.4s ease;
-  }
-  .progress-fill.complete {
-    background: linear-gradient(90deg, var(--success), var(--mint));
-  }
+  .progress-bar { height: 6px; background: var(--bg-deep); border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--mint), var(--mint-deep)); border-radius: 3px; transition: width 0.4s ease; }
+  .progress-fill.complete { background: linear-gradient(90deg, var(--success), var(--mint)); }
 
-  /* Payers */
-  .payers-summary {
-    background: var(--bg-deep); border-radius: 12px;
-    padding: 12px 14px; margin-bottom: 12px;
-  }
+  .payers-summary { background: var(--bg-deep); border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; }
   .payers-list { display: flex; flex-wrap: wrap; gap: 6px; }
   .payer-chip {
     display: inline-flex; align-items: center; gap: 5px;
@@ -397,10 +314,7 @@
     font-size: 12px; font-weight: 600;
   }
   .payer-chip svg { width: 11px; height: 11px; }
-  .payer-chip .x {
-    cursor: pointer; opacity: 0.6; padding: 0 0 0 2px;
-    background: none; border: none; color: inherit;
-  }
+  .payer-chip .x { cursor: pointer; opacity: 0.6; padding: 0 0 0 2px; background: none; border: none; color: inherit; }
   .payer-chip .x:hover { opacity: 1; color: var(--danger); }
   .payer-chip-pending {
     display: inline-flex; align-items: center; gap: 5px;
@@ -410,9 +324,7 @@
     font-size: 12px; font-weight: 500;
   }
   .payers-empty { font-size: 12px; color: var(--muted-2); font-style: italic; }
-  .add-payer-row {
-    display: flex; gap: 6px; margin-top: 8px;
-  }
+  .add-payer-row { display: flex; gap: 6px; margin-top: 8px; }
   .add-payer-row input {
     flex: 1; padding: 8px 12px;
     background: var(--surface-2); border: 1px solid var(--border);
@@ -430,7 +342,7 @@
 
   .rc-actions { display: flex; flex-direction: column; gap: 8px; }
   .rc-action-row { display: flex; gap: 8px; }
-  .copy-btn, .preview-btn, .qr-btn, .remind-btn {
+  .copy-btn, .preview-btn, .remind-btn {
     display: flex; align-items: center; justify-content: center; gap: 6px;
     flex: 1;
     background: var(--surface-2); color: var(--ink);
@@ -438,94 +350,51 @@
     padding: 9px 10px;
     font-family: inherit; font-size: 12px; font-weight: 600;
     cursor: pointer; text-decoration: none;
-    transition: background 0.15s;
   }
-  .copy-btn:hover, .preview-btn:hover, .qr-btn:hover, .remind-btn:hover { background: var(--bg-deep); }
+  .copy-btn:hover, .preview-btn:hover, .remind-btn:hover { background: var(--bg-deep); }
   .copy-btn.copied { background: var(--mint); color: var(--bg); border-color: var(--mint); }
-  .copy-btn svg, .preview-btn svg, .qr-btn svg, .remind-btn svg { width: 13px; height: 13px; }
+  .copy-btn svg, .preview-btn svg, .remind-btn svg { width: 13px; height: 13px; }
   .preview-btn { color: var(--coral); border-color: rgba(255,138,107,0.3); }
   .preview-btn:hover { background: rgba(255,138,107,0.1); }
   .remind-btn { color: var(--whatsapp); border-color: rgba(37,211,102,0.3); }
   .remind-btn:hover { background: rgba(37,211,102,0.1); }
 
-  /* Pay view */
-  .pay-wrap {
-    display: flex; flex-direction: column;
-    min-height: calc(100vh - 84px);
-    justify-content: center; padding-top: 20px;
-  }
+  /* PAY VIEW (the one payers see) */
+  .pay-wrap { display: flex; flex-direction: column; min-height: calc(100vh - 84px); justify-content: center; padding-top: 12px; }
   .pay-card {
     background: var(--surface); border-radius: 26px;
     padding: 32px 26px 28px; text-align: center;
     border: 1px solid var(--border);
     position: relative; overflow: hidden;
   }
-  .pay-card::before {
-    content: ""; position: absolute; top: -60px; right: -60px;
-    width: 200px; height: 200px;
-    background: radial-gradient(circle, rgba(142,234,208,0.15), transparent 70%);
-    pointer-events: none;
-  }
-  .pay-card::after {
-    content: ""; position: absolute; bottom: -60px; left: -60px;
-    width: 200px; height: 200px;
-    background: radial-gradient(circle, rgba(255,138,107,0.12), transparent 70%);
-    pointer-events: none;
-  }
-  .pay-from {
-    font-size: 12px; color: var(--muted); margin-bottom: 14px;
-    position: relative;
-  }
+  .pay-card::before { content: ""; position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(142,234,208,0.15), transparent 70%); pointer-events: none; }
+  .pay-card::after { content: ""; position: absolute; bottom: -60px; left: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(255,138,107,0.12), transparent 70%); pointer-events: none; }
+  .pay-from { font-size: 12px; color: var(--muted); margin-bottom: 14px; position: relative; }
   .pay-from .name { color: var(--ink); font-weight: 700; }
-  .pay-kicker {
-    font-size: 11px; font-weight: 700; color: var(--muted);
-    text-transform: uppercase; letter-spacing: 0.12em;
-    margin-bottom: 14px; position: relative;
-  }
-  .pay-amount {
-    font-size: clamp(50px, 13vw, 76px); font-weight: 800;
-    line-height: 1; letter-spacing: -0.04em;
-    margin-bottom: 8px; position: relative;
-  }
-  .pay-amount .curr {
-    font-size: 0.4em; color: var(--mint); font-weight: 700;
-    vertical-align: super; margin-right: 6px; letter-spacing: 0;
-  }
+  .pay-kicker { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 14px; position: relative; }
+  .pay-amount { font-size: clamp(56px, 15vw, 84px); font-weight: 800; line-height: 1; letter-spacing: -0.04em; margin-bottom: 8px; position: relative; }
+  .pay-amount .curr { font-size: 0.4em; color: var(--mint); font-weight: 700; vertical-align: super; margin-right: 6px; letter-spacing: 0; }
   .pay-title { font-size: 17px; font-weight: 600; margin-bottom: 10px; position: relative; }
-  .pay-booking {
-    font-size: 13px; color: var(--coral); font-weight: 600;
-    margin-bottom: 14px; position: relative;
-  }
-  .pay-note {
-    font-size: 13px; line-height: 1.5; color: var(--muted);
-    max-width: 36ch; margin: 0 auto 24px; position: relative;
-  }
+  .pay-booking { font-size: 13px; color: var(--coral); font-weight: 600; margin-bottom: 14px; position: relative; }
+  .pay-note { font-size: 13px; line-height: 1.5; color: var(--muted); max-width: 36ch; margin: 0 auto 24px; position: relative; }
   .pay-btn {
-    display: inline-flex; align-items: center; gap: 10px;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    width: 100%; max-width: 340px; margin: 0 auto;
     background: var(--mint); color: var(--bg);
-    text-decoration: none; padding: 16px 28px;
-    border-radius: 13px; font-weight: 700; font-size: 15px;
-    box-shadow: 0 10px 24px rgba(142,234,208,0.25);
+    text-decoration: none; padding: 20px 28px;
+    border-radius: 14px; font-weight: 800; font-size: 17px;
+    box-shadow: 0 12px 28px rgba(142,234,208,0.3);
     transition: transform 0.15s, box-shadow 0.15s; position: relative;
+    border: none; font-family: inherit; cursor: pointer;
   }
-  .pay-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(142,234,208,0.35); }
-  .pay-btn svg { width: 17px; height: 17px; }
-  .pay-sub { margin-top: 16px; font-size: 11px; color: var(--muted-2); position: relative; }
+  .pay-btn:hover { transform: translateY(-2px); box-shadow: 0 16px 36px rgba(142,234,208,0.4); }
+  .pay-btn svg { width: 18px; height: 18px; }
+  .pay-sub { margin-top: 14px; font-size: 11px; color: var(--muted-2); position: relative; }
 
-  .selfreport {
-    margin-top: 22px; padding: 18px;
-    background: var(--bg-deep); border-radius: 14px;
-    position: relative;
-  }
-  .selfreport h3 {
-    font-size: 13px; font-weight: 700; color: var(--ink);
-    margin-bottom: 10px; text-align: center;
-  }
+  .selfreport { margin-top: 22px; padding: 18px; background: var(--bg-deep); border-radius: 14px; position: relative; }
+  .selfreport h3 { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 10px; text-align: center; }
   .selfreport .input { background: var(--surface); text-align: center; margin-bottom: 8px; }
-  .selfreport .name-options {
-    display: flex; flex-wrap: wrap; gap: 6px; justify-content: center;
-    margin-bottom: 10px;
-  }
+  .name-options { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 10px; }
   .name-option {
     background: var(--surface); border: 1px solid var(--border);
     color: var(--ink); padding: 6px 12px; border-radius: 999px;
@@ -533,77 +402,33 @@
     font-family: inherit;
   }
   .name-option:hover { background: var(--surface-2); }
-  .name-option.disabled {
-    opacity: 0.35; cursor: not-allowed; text-decoration: line-through;
-  }
+  .name-option.disabled { opacity: 0.35; cursor: not-allowed; text-decoration: line-through; }
   .btn-confirm {
     width: 100%; padding: 13px;
     background: var(--coral); color: #fff;
     border: none; border-radius: 11px;
     font-family: inherit; font-weight: 700; font-size: 14px;
-    cursor: pointer; transition: background 0.15s;
+    cursor: pointer;
   }
   .btn-confirm:hover { background: var(--coral-2); }
   .btn-confirm:disabled { opacity: 0.4; cursor: not-allowed; }
-  .selfreport-success {
-    text-align: center; padding: 14px;
-    color: var(--success); font-weight: 600; font-size: 14px;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-  }
+  .selfreport-success { text-align: center; padding: 14px; color: var(--success); font-weight: 600; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; }
   .selfreport-success svg { width: 17px; height: 17px; }
-  .already-paid-list {
-    margin-top: 12px; padding-top: 12px;
-    border-top: 1px solid var(--border);
-  }
-  .already-paid-list .label-mini {
-    font-size: 10px; font-weight: 700; color: var(--muted);
-    text-transform: uppercase; letter-spacing: 0.1em;
-    text-align: center; margin-bottom: 6px;
-  }
+  .already-paid-list { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+  .already-paid-list .label-mini { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; text-align: center; margin-bottom: 6px; }
   .already-paid-list .chips { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; }
 
-  .back-link {
-    display: inline-flex; align-items: center; gap: 6px;
-    color: var(--muted); text-decoration: none;
-    font-size: 13px; margin-top: 22px; align-self: center;
-  }
   .nf { text-align: center; padding: 36px 20px; }
   .nf h2 { font-size: 22px; font-weight: 700; margin-bottom: 10px; }
   .nf p { color: var(--muted); margin-bottom: 18px; }
 
-  .auth-wrap {
-    display: flex; flex-direction: column;
-    min-height: calc(100vh - 84px);
-    justify-content: center;
-  }
-  .auth-tabs {
-    display: flex; gap: 4px; background: var(--bg-deep);
-    border-radius: 11px; padding: 4px; margin-bottom: 18px;
-  }
-  .auth-tab {
-    flex: 1; padding: 9px; background: transparent;
-    border: none; border-radius: 8px;
-    font-family: inherit; font-size: 13px; font-weight: 600;
-    color: var(--muted); cursor: pointer;
-  }
+  .auth-wrap { display: flex; flex-direction: column; min-height: calc(100vh - 84px); justify-content: center; }
+  .auth-tabs { display: flex; gap: 4px; background: var(--bg-deep); border-radius: 11px; padding: 4px; margin-bottom: 18px; }
+  .auth-tab { flex: 1; padding: 9px; background: transparent; border: none; border-radius: 8px; font-family: inherit; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; }
   .auth-tab.active { background: var(--surface-2); color: var(--ink); }
-  .auth-error {
-    background: rgba(255,107,122,0.1); border: 1px solid rgba(255,107,122,0.3);
-    color: var(--danger); padding: 11px 14px; border-radius: 10px;
-    font-size: 13px; margin-bottom: 12px;
-  }
-  .auth-success {
-    background: rgba(142,234,208,0.1); border: 1px solid rgba(142,234,208,0.3);
-    color: var(--mint); padding: 11px 14px; border-radius: 10px;
-    font-size: 13px; margin-bottom: 12px;
-  }
-  .forgot-link {
-    display: block; text-align: center; margin-top: 14px;
-    color: var(--muted); font-size: 13px;
-    text-decoration: none; cursor: pointer;
-    background: none; border: none; font-family: inherit;
-    width: 100%; padding: 4px;
-  }
+  .auth-error { background: rgba(255,107,122,0.1); border: 1px solid rgba(255,107,122,0.3); color: var(--danger); padding: 11px 14px; border-radius: 10px; font-size: 13px; margin-bottom: 12px; }
+  .auth-success { background: rgba(142,234,208,0.1); border: 1px solid rgba(142,234,208,0.3); color: var(--mint); padding: 11px 14px; border-radius: 10px; font-size: 13px; margin-bottom: 12px; }
+  .forgot-link { display: block; text-align: center; margin-top: 14px; color: var(--muted); font-size: 13px; text-decoration: none; cursor: pointer; background: none; border: none; font-family: inherit; width: 100%; padding: 4px; }
   .forgot-link:hover { color: var(--ink); }
 
   .loading { text-align: center; padding: 60px 20px; color: var(--muted); }
@@ -617,39 +442,19 @@
   [data-theme="light"] .spinner { border-color: rgba(0,0,0,0.08); border-top-color: var(--mint); }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* Modal */
   .modal-backdrop {
     position: fixed; inset: 0;
     background: rgba(0,0,0,0.6);
     display: flex; align-items: center; justify-content: center;
     padding: 20px; z-index: 200;
-    animation: fadeIn 0.15s ease;
   }
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-  .modal {
-    background: var(--surface); border-radius: 22px;
-    padding: 24px; max-width: 420px; width: 100%;
-    border: 1px solid var(--border);
-    max-height: calc(100vh - 40px); overflow-y: auto;
-  }
-  .modal-head {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 16px;
-  }
+  .modal { background: var(--surface); border-radius: 22px; padding: 24px; max-width: 420px; width: 100%; border: 1px solid var(--border); max-height: calc(100vh - 40px); overflow-y: auto; }
+  .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
   .modal-head h2 { font-size: 17px; font-weight: 700; }
-  .qr-display {
-    background: #fff; padding: 16px; border-radius: 14px;
-    display: flex; justify-content: center;
-    margin: 12px 0;
-  }
-  .qr-display canvas, .qr-display img { display: block; max-width: 100%; height: auto; }
 
   footer { margin-top: 40px; text-align: center; font-size: 11px; color: var(--muted-2); }
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
   .fade-in { animation: fadeUp 0.4s ease backwards; }
 
   .just-created {
@@ -685,6 +490,7 @@
 const SUPABASE_URL = "https://ludxfnlnoypijsgozopm.supabase.co";
 const SUPABASE_KEY = "sb_publishable_wgXkC6usjjxcNBaobLPGFA_sf0fFed4";
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const PAYER_NAME_KEY = "padel_split_payer_name";
 
 let currentUser = null;
 let currentProfile = null;
@@ -709,7 +515,6 @@ const icons = {
   duplicate: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`,
   archive: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>`,
   unarchive: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 8 21 8 21 21 3 21 3 8"/><polyline points="8 12 12 8 16 12"/><line x1="12" y1="16" x2="12" y2="8"/></svg>`,
-  qr: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="14" y1="14" x2="14" y2="17"/><line x1="14" y1="20" x2="14" y2="21"/><line x1="17" y1="14" x2="21" y2="14"/><line x1="20" y1="17" x2="21" y2="17"/><line x1="17" y1="17" x2="17" y2="21"/><line x1="20" y1="20" x2="21" y2="21"/></svg>`,
   sun: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`,
   moon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`,
   more: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>`,
@@ -718,13 +523,9 @@ const icons = {
   x: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
 };
 
-// =========================================================
-// HELPERS
-// =========================================================
 function formatMoney(n, currency) {
-  const symbol = { CHF: 'CHF', EUR: '€', USD: '$' }[currency] || currency;
   const num = Number(n).toFixed(2);
-  return currency === 'CHF' ? `CHF ${num}` : `${symbol}${num}`;
+  return currency === 'CHF' ? `CHF ${num}` : (currency === 'EUR' ? `€${num}` : (currency === 'USD' ? `$${num}` : `${currency} ${num}`));
 }
 function appendAmount(link, amount, currency) {
   try {
@@ -745,15 +546,10 @@ function buildShareUrl(requestId) {
   return `${base}?r=${requestId}`;
 }
 function getDefaultMessageTemplate() {
-  return `🎾 *{title}*
-
-💰 Your share: *{amount}*{booking}{note}
-
-Tap to pay:
-{url}`;
+  return `🎾 *{title}*\n\n💰 Your share: *{amount}*{booking}{note}\n\nTap to pay:\n{url}`;
 }
-function buildWhatsAppMessage(req, shareUrl, customTemplate) {
-  const template = customTemplate || req.message_template || (currentProfile && currentProfile.default_message_template) || getDefaultMessageTemplate();
+function buildWhatsAppMessage(req, shareUrl) {
+  const template = req.message_template || (currentProfile && currentProfile.default_message_template) || getDefaultMessageTemplate();
   const bookingStr = req.booking_date ? `\n📅 ${formatBookingDate(req.booking_date)}` : '';
   const noteStr = req.note ? `\n📝 ${req.note}` : '';
   return template
@@ -767,9 +563,8 @@ function buildReminderMessage(req, shareUrl, unpaidNames) {
   const namesStr = unpaidNames && unpaidNames.length ? ` (${unpaidNames.join(', ')})` : '';
   return `👋 Friendly reminder${namesStr} — still waiting for your share of *${req.title}*: *${formatMoney(req.amount, req.currency)}*. Thanks!\n\n${shareUrl}`;
 }
-function buildWhatsAppUrl(req, shareUrl, customMsg) {
-  const msg = customMsg || buildWhatsAppMessage(req, shareUrl);
-  return `https://wa.me/?text=${encodeURIComponent(msg)}`;
+function buildWhatsAppUrl(req, shareUrl) {
+  return `https://wa.me/?text=${encodeURIComponent(buildWhatsAppMessage(req, shareUrl))}`;
 }
 function formatBookingDate(d) {
   if (!d) return '';
@@ -779,26 +574,8 @@ function formatBookingDate(d) {
     hour: '2-digit', minute: '2-digit'
   });
 }
-function formatRelativeTime(d) {
-  if (!d) return '';
-  const date = new Date(d);
-  const diff = Date.now() - date.getTime();
-  const mins = Math.floor(diff / 60000);
-  if (mins < 1) return 'just now';
-  if (mins < 60) return `${mins}m ago`;
-  const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs}h ago`;
-  const days = Math.floor(hrs / 24);
-  if (days < 7) return `${days}d ago`;
-  return date.toLocaleDateString();
-}
 function brandHtml() {
-  return `
-    <div class="brand">
-      <div class="brand-mark">${icons.racket}</div>
-      <div class="brand-text">padel split<span class="dot-ch">.ch</span></div>
-    </div>
-  `;
+  return `<div class="brand"><div class="brand-mark">${icons.racket}</div><div class="brand-text">padel split<span class="dot-ch">.ch</span></div></div>`;
 }
 function showToast(msg) {
   const t = document.getElementById('toast');
@@ -808,17 +585,14 @@ function showToast(msg) {
 }
 function applyTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
-  document.getElementById('themeColorMeta').setAttribute('content', theme === 'light' ? '#f5f6fb' : '#1a1b3a');
+  const meta = document.getElementById('themeColorMeta');
+  if (meta) meta.setAttribute('content', theme === 'light' ? '#f5f6fb' : '#1a1b3a');
 }
 function getDisplayName() {
   if (currentProfile && currentProfile.display_name) return currentProfile.display_name;
   if (currentUser) return currentUser.email.split('@')[0];
   return '';
 }
-
-// =========================================================
-// ROUTING
-// =========================================================
 function getRoute() {
   const params = new URLSearchParams(window.location.search);
   const hash = window.location.hash;
@@ -831,7 +605,6 @@ function getRoute() {
 async function render() {
   const app = document.getElementById("app");
   const route = getRoute();
-
   if (route.view === "pay") return renderPayView(app, route.id);
   if (route.view === "reset") return renderResetPassword(app);
   if (!currentUser) return renderAuth(app);
@@ -850,7 +623,6 @@ function renderAuth(app) {
     <div class="auth-wrap fade-in">
       <h1>Welcome to <span class="accent">padel split</span></h1>
       <p class="lede">Sign in to manage your payment requests and track who has paid.</p>
-
       <div class="card">
         <div class="auth-tabs">
           <button class="auth-tab ${authMode==='login'?'active':''}" data-mode="login">Log in</button>
@@ -861,9 +633,7 @@ function renderAuth(app) {
         <input class="input" type="email" id="authEmail" placeholder="you@example.com" autocomplete="email" />
         <label class="label">Password</label>
         <input class="input" type="password" id="authPassword" placeholder="At least 6 characters" autocomplete="${authMode==='signup'?'new-password':'current-password'}" />
-        <button class="btn-primary" id="authBtn" style="margin-top:18px">
-          ${authMode === 'login' ? 'Log in' : 'Create account'}
-        </button>
+        <button class="btn-primary" id="authBtn" style="margin-top:18px">${authMode === 'login' ? 'Log in' : 'Create account'}</button>
         ${authMode === 'login' ? `<button class="forgot-link" id="forgotBtn">Forgot password?</button>` : ''}
       </div>
     </div>
@@ -872,9 +642,7 @@ function renderAuth(app) {
     t.addEventListener("click", () => { authMode = t.dataset.mode; render(); });
   });
   document.getElementById("authBtn").addEventListener("click", handleAuth);
-  document.getElementById("authPassword").addEventListener("keydown", (e) => {
-    if (e.key === "Enter") handleAuth();
-  });
+  document.getElementById("authPassword").addEventListener("keydown", (e) => { if (e.key === "Enter") handleAuth(); });
   document.getElementById("themeBtn").addEventListener("click", toggleTheme);
   if (authMode === 'login') {
     document.getElementById("forgotBtn").addEventListener("click", openForgotPassword);
@@ -885,34 +653,23 @@ async function handleAuth() {
   const password = document.getElementById("authPassword").value;
   const msgEl = document.getElementById("authMsg");
   const btn = document.getElementById("authBtn");
-  if (!email || !password) {
-    msgEl.innerHTML = `<div class="auth-error">Please enter email and password.</div>`;
-    return;
-  }
-  if (password.length < 6) {
-    msgEl.innerHTML = `<div class="auth-error">Password must be at least 6 characters.</div>`;
-    return;
-  }
+  if (!email || !password) { msgEl.innerHTML = `<div class="auth-error">Please enter email and password.</div>`; return; }
+  if (password.length < 6) { msgEl.innerHTML = `<div class="auth-error">Password must be at least 6 characters.</div>`; return; }
   btn.disabled = true;
   btn.innerHTML = `<div class="spinner" style="width:18px;height:18px;border-color:rgba(0,0,0,0.2);border-top-color:#1a1b3a"></div>`;
   try {
     let result;
-    if (authMode === "signup") {
-      result = await sb.auth.signUp({ email, password });
-    } else {
-      result = await sb.auth.signInWithPassword({ email, password });
-    }
+    if (authMode === "signup") result = await sb.auth.signUp({ email, password });
+    else result = await sb.auth.signInWithPassword({ email, password });
     if (result.error) {
       msgEl.innerHTML = `<div class="auth-error">${escapeHtml(result.error.message)}</div>`;
-      btn.disabled = false;
-      btn.innerHTML = authMode === 'login' ? 'Log in' : 'Create account';
+      btn.disabled = false; btn.innerHTML = authMode === 'login' ? 'Log in' : 'Create account';
       return;
     }
     if (authMode === "signup" && !result.data.session) {
       msgEl.innerHTML = `<div class="auth-success">Account created. Check your email to confirm, then log in.</div>`;
       authMode = "login";
-      btn.disabled = false;
-      btn.innerHTML = 'Log in';
+      btn.disabled = false; btn.innerHTML = 'Log in';
       return;
     }
     currentUser = result.data.user;
@@ -920,16 +677,12 @@ async function handleAuth() {
     render();
   } catch (e) {
     msgEl.innerHTML = `<div class="auth-error">Something went wrong: ${escapeHtml(e.message)}</div>`;
-    btn.disabled = false;
-    btn.innerHTML = authMode === 'login' ? 'Log in' : 'Create account';
+    btn.disabled = false; btn.innerHTML = authMode === 'login' ? 'Log in' : 'Create account';
   }
 }
 function openForgotPassword() {
   showModal(`
-    <div class="modal-head">
-      <h2>Reset password</h2>
-      <button class="icon-btn" data-close>${icons.x}</button>
-    </div>
+    <div class="modal-head"><h2>Reset password</h2><button class="icon-btn" data-close>${icons.x}</button></div>
     <p class="help" style="margin-bottom:14px">Enter your email — we'll send you a reset link.</p>
     <div id="forgotMsg"></div>
     <input class="input" type="email" id="forgotEmail" placeholder="you@example.com" />
@@ -946,8 +699,7 @@ function openForgotPassword() {
     const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo });
     if (error) {
       msg.innerHTML = `<div class="auth-error">${escapeHtml(error.message)}</div>`;
-      btn.disabled = false;
-      btn.innerHTML = 'Send reset link';
+      btn.disabled = false; btn.innerHTML = 'Send reset link';
     } else {
       msg.innerHTML = `<div class="auth-success">Check your email for a reset link.</div>`;
       btn.style.display = 'none';
@@ -991,15 +743,16 @@ function renderResetPassword(app) {
 }
 async function handleLogout() {
   await sb.auth.signOut();
-  currentUser = null;
-  currentProfile = null;
+  currentUser = null; currentProfile = null;
   render();
 }
 async function loadProfile() {
   if (!currentUser) return;
-  const { data } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
-  currentProfile = data;
-  if (data && data.theme) applyTheme(data.theme);
+  try {
+    const { data } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
+    currentProfile = data;
+    if (data && data.theme) applyTheme(data.theme);
+  } catch (e) { console.error('Profile load failed:', e); }
 }
 async function toggleTheme() {
   const current = document.documentElement.getAttribute('data-theme') || 'dark';
@@ -1011,7 +764,6 @@ async function toggleTheme() {
   } else {
     localStorage.setItem('theme', next);
   }
-  // Re-render to update theme icon
   render();
 }
 
@@ -1046,9 +798,7 @@ async function renderDashboard(app) {
       ${brandHtml()}
       <div class="top-actions">
         <button class="top-icon-btn" id="themeBtn" title="Toggle theme">${themeIcon}</button>
-        <div class="user-chip" id="userChip">
-          ${icons.user}<span class="name">${escapeHtml(name)}</span>
-        </div>
+        <div class="user-chip" id="userChip">${icons.user}<span class="name">${escapeHtml(name)}</span></div>
       </div>
     </div>
     <div class="fade-in">
@@ -1057,10 +807,7 @@ async function renderDashboard(app) {
       <div id="summarySlot"></div>
       <div id="formSlot"></div>
       <button class="btn-primary" id="newBtn">${icons.plus}<span>New payment request</span></button>
-      <div class="section-label">
-        Your requests
-        <span class="right" id="filterLabel"></span>
-      </div>
+      <div class="section-label">Your requests</div>
       <div class="toolbar">
         <input class="search-input" id="searchInput" placeholder="Search…" value="${escapeAttr(currentSearch)}" />
         <select class="filter-select" id="filterSelect">
@@ -1082,18 +829,9 @@ async function renderDashboard(app) {
   document.getElementById("themeBtn").addEventListener("click", toggleTheme);
   document.getElementById("userChip").addEventListener("click", openAccountModal);
   document.getElementById("newBtn").addEventListener("click", () => openForm());
-  document.getElementById("searchInput").addEventListener("input", (e) => {
-    currentSearch = e.target.value;
-    loadAndRenderList();
-  });
-  document.getElementById("filterSelect").addEventListener("change", (e) => {
-    currentFilter = e.target.value;
-    loadAndRenderList();
-  });
-  document.getElementById("sortSelect").addEventListener("change", (e) => {
-    currentSort = e.target.value;
-    loadAndRenderList();
-  });
+  document.getElementById("searchInput").addEventListener("input", (e) => { currentSearch = e.target.value; loadAndRenderList(); });
+  document.getElementById("filterSelect").addEventListener("change", (e) => { currentFilter = e.target.value; loadAndRenderList(); });
+  document.getElementById("sortSelect").addEventListener("change", (e) => { currentSort = e.target.value; loadAndRenderList(); });
   await loadAndRenderList();
 }
 
@@ -1101,86 +839,58 @@ async function loadAndRenderList() {
   const slot = document.getElementById("listSlot");
   const summarySlot = document.getElementById("summarySlot");
   if (!slot) return;
-
-  let query = sb.from("requests").select("*").eq("user_id", currentUser.id);
-  if (currentFilter === 'active') query = query.eq('archived', false);
-  else if (currentFilter === 'archived') query = query.eq('archived', true);
-
-  const sortMap = {
-    'newest': { col: 'created_at', asc: false },
-    'oldest': { col: 'created_at', asc: true },
-    'amount-high': { col: 'amount', asc: false },
-    'amount-low': { col: 'amount', asc: true },
-  };
-  const sort = sortMap[currentSort] || sortMap.newest;
-  query = query.order(sort.col, { ascending: sort.asc });
-
-  const { data: requests, error } = await query;
-  if (error) {
-    slot.innerHTML = `<div class="auth-error">Couldn't load: ${escapeHtml(error.message)}</div>`;
-    return;
-  }
-
-  let filtered = requests || [];
-  if (currentSearch.trim()) {
-    const s = currentSearch.toLowerCase().trim();
-    filtered = filtered.filter(r =>
-      (r.title && r.title.toLowerCase().includes(s)) ||
-      (r.note && r.note.toLowerCase().includes(s))
-    );
-  }
-
-  // Fetch payments for visible requests
-  let paymentsByRequest = {};
-  if (filtered.length) {
-    const ids = filtered.map(r => r.id);
-    const { data: payments } = await sb.from("payments").select("*").in("request_id", ids).order("paid_at", { ascending: true });
-    (payments || []).forEach(p => {
-      (paymentsByRequest[p.request_id] = paymentsByRequest[p.request_id] || []).push(p);
-    });
-  }
-
-  // Summary stats — based on ALL active requests, not filtered
-  const allActive = (requests || []).filter(r => !r.archived);
-  let totalOwed = 0, totalCollected = 0, openCount = 0;
-  for (const r of allActive) {
-    const payers = paymentsByRequest[r.id] || [];
-    if (r.expected_count && r.expected_count > 0) {
-      totalOwed += r.amount * Math.max(0, r.expected_count - payers.length);
+  try {
+    let query = sb.from("requests").select("*").eq("user_id", currentUser.id);
+    if (currentFilter === 'active') query = query.eq('archived', false);
+    else if (currentFilter === 'archived') query = query.eq('archived', true);
+    const sortMap = {
+      'newest': { col: 'created_at', asc: false },
+      'oldest': { col: 'created_at', asc: true },
+      'amount-high': { col: 'amount', asc: false },
+      'amount-low': { col: 'amount', asc: true },
+    };
+    const sort = sortMap[currentSort] || sortMap.newest;
+    query = query.order(sort.col, { ascending: sort.asc });
+    const { data: requests, error } = await query;
+    if (error) { slot.innerHTML = `<div class="auth-error">Couldn't load: ${escapeHtml(error.message)}</div>`; return; }
+    let filtered = requests || [];
+    if (currentSearch.trim()) {
+      const s = currentSearch.toLowerCase().trim();
+      filtered = filtered.filter(r => (r.title && r.title.toLowerCase().includes(s)) || (r.note && r.note.toLowerCase().includes(s)));
     }
-    totalCollected += r.amount * payers.length;
-    if (!r.expected_count || payers.length < r.expected_count) openCount++;
+    let paymentsByRequest = {};
+    if (filtered.length) {
+      const ids = filtered.map(r => r.id);
+      const { data: payments } = await sb.from("payments").select("*").in("request_id", ids).order("paid_at", { ascending: true });
+      (payments || []).forEach(p => { (paymentsByRequest[p.request_id] = paymentsByRequest[p.request_id] || []).push(p); });
+    }
+    const allActive = (requests || []).filter(r => !r.archived);
+    let totalCollected = 0, totalPending = 0, openCount = 0;
+    for (const r of allActive) {
+      const payers = paymentsByRequest[r.id] || [];
+      if (r.expected_count && r.expected_count > 0) {
+        totalPending += r.amount * Math.max(0, r.expected_count - payers.length);
+      }
+      totalCollected += r.amount * payers.length;
+      if (!r.expected_count || payers.length < r.expected_count) openCount++;
+    }
+    if (summarySlot) {
+      summarySlot.innerHTML = `
+        <div class="summary">
+          <div class="stat"><div class="stat-value">${openCount}</div><div class="stat-label">Open</div></div>
+          <div class="stat"><div class="stat-value mint">${totalCollected.toFixed(0)}</div><div class="stat-label">Collected CHF</div></div>
+          <div class="stat"><div class="stat-value coral">${totalPending.toFixed(0)}</div><div class="stat-label">Pending CHF</div></div>
+        </div>`;
+    }
+    if (!filtered.length) {
+      slot.innerHTML = `<div class="empty"><div class="empty-icon">🎾</div>${currentSearch ? 'No matches found.' : (currentFilter === 'archived' ? 'No archived requests.' : 'No requests yet.<br/>Tap "New payment request" above.')}</div>`;
+      return;
+    }
+    slot.innerHTML = `<div class="request-list">${filtered.map(r => renderRequestCard(r, paymentsByRequest[r.id] || [])).join("")}</div>`;
+    attachListEventHandlers();
+  } catch (e) {
+    slot.innerHTML = `<div class="auth-error">Error loading: ${escapeHtml(e.message)}</div>`;
   }
-  if (summarySlot) {
-    summarySlot.innerHTML = `
-      <div class="summary">
-        <div class="stat">
-          <div class="stat-value">${openCount}</div>
-          <div class="stat-label">Open</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value mint">${formatMoney(totalCollected, 'CHF').replace('CHF ', '')}</div>
-          <div class="stat-label">Collected</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value coral">${formatMoney(totalOwed, 'CHF').replace('CHF ', '')}</div>
-          <div class="stat-label">Pending</div>
-        </div>
-      </div>
-    `;
-  }
-
-  if (!filtered.length) {
-    slot.innerHTML = `
-      <div class="empty">
-        <div class="empty-icon">🎾</div>
-        ${currentSearch ? 'No matches found.' : (currentFilter === 'archived' ? 'No archived requests.' : 'No requests yet.<br/>Tap "New payment request" above.')}
-      </div>
-    `;
-    return;
-  }
-  slot.innerHTML = `<div class="request-list">${filtered.map(r => renderRequestCard(r, paymentsByRequest[r.id] || [])).join("")}</div>`;
-  attachListEventHandlers();
 }
 
 function renderRequestCard(r, payers) {
@@ -1191,7 +901,6 @@ function renderRequestCard(r, payers) {
   const paid = payers.length;
   const expectedNames = r.expected_names || [];
 
-  // Progress
   let progressHtml = '';
   if (expected > 0) {
     const pct = Math.min(100, (paid / expected) * 100);
@@ -1205,22 +914,19 @@ function renderRequestCard(r, payers) {
           <span class="progress-amount">${formatMoney(collected, r.currency)} / ${formatMoney(total, r.currency)}</span>
         </div>
         <div class="progress-bar"><div class="progress-fill ${isComplete?'complete':''}" style="width:${pct}%"></div></div>
-      </div>
-    `;
+      </div>`;
   }
 
-  // Payers display: includes pending names if tracking by names
   let payersInner = '';
   if (r.tracking_mode === 'names' && expectedNames.length) {
-    const paidNames = new Set(payers.map(p => p.payer_name.toLowerCase().trim()));
+    const paidSet = new Set(payers.map(p => p.payer_name.toLowerCase().trim()));
     const chips = expectedNames.map(name => {
-      const isPaid = paidNames.has(name.toLowerCase().trim());
+      const isPaid = paidSet.has(name.toLowerCase().trim());
       const payment = payers.find(p => p.payer_name.toLowerCase().trim() === name.toLowerCase().trim());
       return isPaid
         ? `<span class="payer-chip">${icons.check}${escapeHtml(name)}<button class="x" data-act="remove-payer" data-payer-id="${payment.id}" title="Remove">×</button></span>`
         : `<span class="payer-chip-pending">${escapeHtml(name)}</span>`;
     });
-    // Plus any extras not in expected list
     for (const p of payers) {
       if (!expectedNames.some(n => n.toLowerCase().trim() === p.payer_name.toLowerCase().trim())) {
         chips.push(`<span class="payer-chip">${icons.check}${escapeHtml(p.payer_name)}<button class="x" data-act="remove-payer" data-payer-id="${p.id}" title="Remove">×</button></span>`);
@@ -1235,17 +941,14 @@ function renderRequestCard(r, payers) {
     payersInner = `<div class="payers-empty">No payments yet</div>`;
   }
 
-  // Add manual payer
   const addPayerHtml = !r.archived ? `
     <div class="add-payer-row">
       <input type="text" placeholder="Add payer manually (e.g., cash)" data-add-payer-input data-request-id="${r.id}" maxlength="40" />
       <button data-act="add-payer-manual" data-request-id="${r.id}" disabled>Add</button>
-    </div>
-  ` : '';
+    </div>` : '';
 
-  // Reminder button — only show if there are expected names not yet paid, or expected count not met
-  const paidNames = new Set(payers.map(p => p.payer_name.toLowerCase().trim()));
-  const unpaidNames = expectedNames.filter(n => !paidNames.has(n.toLowerCase().trim()));
+  const paidSet2 = new Set(payers.map(p => p.payer_name.toLowerCase().trim()));
+  const unpaidNames = expectedNames.filter(n => !paidSet2.has(n.toLowerCase().trim()));
   const showReminder = !r.archived && (unpaidNames.length > 0 || (expected > 0 && paid < expected));
 
   return `
@@ -1264,7 +967,6 @@ function renderRequestCard(r, payers) {
           <div class="menu" id="menu-${r.id}">
             <button class="menu-item" data-act="edit" data-id="${r.id}">${icons.edit} Edit</button>
             <button class="menu-item" data-act="duplicate" data-id="${r.id}">${icons.duplicate} Duplicate</button>
-            <button class="menu-item" data-act="qr" data-id="${r.id}">${icons.qr} Show QR code</button>
             ${r.archived
               ? `<button class="menu-item" data-act="unarchive" data-id="${r.id}">${icons.unarchive} Unarchive</button>`
               : `<button class="menu-item" data-act="archive" data-id="${r.id}">${icons.archive} Archive</button>`}
@@ -1273,31 +975,22 @@ function renderRequestCard(r, payers) {
         </div>
       </div>
       ${progressHtml}
-      <div class="payers-summary">
-        ${payersInner}
-        ${addPayerHtml}
-      </div>
+      <div class="payers-summary">${payersInner}${addPayerHtml}</div>
       ${!r.archived ? `
         <div class="rc-actions">
-          <a class="btn-whatsapp" href="${escapeAttr(whatsappUrl)}" target="_blank" rel="noopener noreferrer">
-            ${icons.whatsapp}<span>Send via WhatsApp</span>
-          </a>
+          <a class="btn-whatsapp" href="${escapeAttr(whatsappUrl)}" target="_blank" rel="noopener noreferrer">${icons.whatsapp}<span>Send via WhatsApp</span></a>
           <div class="rc-action-row">
             <button class="copy-btn" data-act="copy" data-url="${escapeAttr(shareUrl)}">${icons.copy}<span>Copy</span></button>
             <button class="copy-btn" data-act="share-native" data-url="${escapeAttr(shareUrl)}" data-title="${escapeAttr(r.title)}">${icons.share}<span>Share</span></button>
             <a class="preview-btn" href="${escapeAttr(shareUrl)}" target="_blank" rel="noopener">${icons.eye}<span>Preview</span></a>
           </div>
-          ${showReminder ? `
-            <button class="remind-btn" data-act="remind" data-id="${r.id}">${icons.bell}<span>Send reminder to unpaid</span></button>
-          ` : ''}
+          ${showReminder ? `<button class="remind-btn" data-act="remind" data-id="${r.id}">${icons.bell}<span>Send reminder to unpaid</span></button>` : ''}
         </div>
       ` : ''}
-    </div>
-  `;
+    </div>`;
 }
 
 function attachListEventHandlers() {
-  // Copy
   document.querySelectorAll("[data-act='copy']").forEach(btn => {
     btn.addEventListener("click", async () => {
       const url = btn.dataset.url;
@@ -1309,27 +1002,23 @@ function attachListEventHandlers() {
       } catch { window.prompt("Copy this link:", url); }
     });
   });
-  // Native share
   document.querySelectorAll("[data-act='share-native']").forEach(btn => {
     btn.addEventListener("click", async () => {
       const url = btn.dataset.url;
       const title = btn.dataset.title;
       if (navigator.share) {
-        try { await navigator.share({ title: 'Padel Split', text: title, url }); }
-        catch (e) { /* user cancelled */ }
+        try { await navigator.share({ title: 'Padel Split', text: title, url }); } catch (e) {}
       } else {
         await navigator.clipboard.writeText(url);
         showToast('Link copied — share manually');
       }
     });
   });
-  // Menu toggle
   document.querySelectorAll("[data-act='menu']").forEach(btn => {
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
       const id = btn.dataset.id;
       const menu = document.getElementById(`menu-${id}`);
-      // close others
       document.querySelectorAll('.menu.open').forEach(m => { if (m !== menu) m.classList.remove('open'); });
       menu.classList.toggle('open');
     });
@@ -1337,7 +1026,6 @@ function attachListEventHandlers() {
   document.addEventListener('click', () => {
     document.querySelectorAll('.menu.open').forEach(m => m.classList.remove('open'));
   }, { once: true });
-  // Menu actions
   document.querySelectorAll("[data-act='edit']").forEach(btn => {
     btn.addEventListener("click", async (e) => {
       e.stopPropagation();
@@ -1361,12 +1049,6 @@ function attachListEventHandlers() {
           await loadAndRenderList();
         }
       }
-    });
-  });
-  document.querySelectorAll("[data-act='qr']").forEach(btn => {
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      openQRModal(btn.dataset.id);
     });
   });
   document.querySelectorAll("[data-act='archive']").forEach(btn => {
@@ -1402,7 +1084,6 @@ function attachListEventHandlers() {
       await loadAndRenderList();
     });
   });
-  // Add payer manual
   document.querySelectorAll("[data-add-payer-input]").forEach(input => {
     input.addEventListener("input", () => {
       const btn = document.querySelector(`[data-act='add-payer-manual'][data-request-id='${input.dataset.requestId}']`);
@@ -1429,7 +1110,6 @@ function attachListEventHandlers() {
       await loadAndRenderList();
     });
   });
-  // Reminder
   document.querySelectorAll("[data-act='remind']").forEach(btn => {
     btn.addEventListener("click", async (e) => {
       e.stopPropagation();
@@ -1446,33 +1126,7 @@ function attachListEventHandlers() {
 }
 
 // =========================================================
-// QR MODAL
-// =========================================================
-async function openQRModal(requestId) {
-  const url = buildShareUrl(requestId);
-  showModal(`
-    <div class="modal-head">
-      <h2>Share via QR code</h2>
-      <button class="icon-btn" data-close>${icons.x}</button>
-    </div>
-    <p class="help">Have someone scan this with their phone camera.</p>
-    <div class="qr-display"><canvas id="qrCanvas"></canvas></div>
-    <div class="help" style="text-align:center; word-break:break-all">${escapeHtml(url)}</div>
-    <button class="btn-secondary" id="qrCopyBtn" style="margin-top:14px">${icons.copy}<span>Copy link</span></button>
-  `);
-  // Generate QR
-  const canvas = document.getElementById('qrCanvas');
-  if (window.QRCode) {
-    QRCode.toCanvas(canvas, url, { width: 260, margin: 1, color: { dark: '#1a1b3a', light: '#ffffff' } });
-  }
-  document.getElementById('qrCopyBtn').addEventListener('click', async () => {
-    await navigator.clipboard.writeText(url);
-    showToast('Link copied');
-  });
-}
-
-// =========================================================
-// FORM (create + edit)
+// FORM
 // =========================================================
 function openForm(editing) {
   const slot = document.getElementById("formSlot");
@@ -1491,7 +1145,6 @@ function openForm(editing) {
       </div>
       <label class="label">What's it for?</label>
       <input class="input" id="title" placeholder="e.g. Padel Tuesday 8pm — Court 3" value="${escapeAttr(r.title || '')}" />
-
       <label class="label">Amount per person</label>
       <div class="amount-wrap">
         <select class="currency" id="currency">
@@ -1501,25 +1154,19 @@ function openForm(editing) {
         </select>
         <input type="number" min="0" step="0.05" id="amount" placeholder="25.00" value="${r.amount || ''}" />
       </div>
-
       <label class="label">Booking date & time (optional)</label>
       <input class="input" type="datetime-local" id="bookingDate" value="${bookingLocal}" />
-
       <label class="label">Your Revolut payment link</label>
       <input class="input" id="revolut" placeholder="https://revolut.me/yourhandle" value="${escapeAttr(r.revolut_link || defaultRevolut)}" />
       <div class="help">Paste your <code>revolut.me</code> link or a Revolut payment request URL.</div>
-
       <label class="label">Track payments by</label>
       <div class="seg" id="trackingSeg">
         <button class="seg-opt ${trackingMode==='count'?'active':''}" data-mode="count" type="button">Count only</button>
         <button class="seg-opt ${trackingMode==='names'?'active':''}" data-mode="names" type="button">Names list</button>
       </div>
-
       <div id="trackingFields"></div>
-
       <label class="label">Note (optional)</label>
       <textarea class="input" id="note" placeholder="e.g. Please include your name in the reference">${escapeHtml(r.note || '')}</textarea>
-
       <button class="btn-primary" id="saveBtn" style="margin-top:18px" disabled>${isEdit ? 'Save changes' : 'Save & get share link'}</button>
     </div>
   `;
@@ -1530,14 +1177,12 @@ function openForm(editing) {
       fields.innerHTML = `
         <label class="label">Expected number of payers (optional)</label>
         <input class="input" type="number" min="1" max="50" id="expectedCount" placeholder="e.g. 3" value="${expectedCount}" />
-        <div class="help">Used to show a progress bar.</div>
-      `;
+        <div class="help">Used to show a progress bar.</div>`;
     } else {
       fields.innerHTML = `
         <label class="label">Names of who's playing</label>
         <div class="names-list" id="namesList"></div>
-        <button class="add-name-btn" id="addNameBtn" type="button">+ Add another name</button>
-      `;
+        <button class="add-name-btn" id="addNameBtn" type="button">+ Add another name</button>`;
       const list = document.getElementById('namesList');
       const initial = expectedNames.length ? expectedNames : ['', ''];
       initial.forEach(n => addNameRow(list, n));
@@ -1550,8 +1195,7 @@ function openForm(editing) {
     row.className = 'name-row';
     row.innerHTML = `
       <input class="input" type="text" placeholder="Name" value="${escapeAttr(value)}" maxlength="40" />
-      <button class="icon-btn danger" type="button" aria-label="Remove">${icons.trash}</button>
-    `;
+      <button class="icon-btn danger" type="button" aria-label="Remove">${icons.trash}</button>`;
     row.querySelector('button').addEventListener('click', () => row.remove());
     list.appendChild(row);
   }
@@ -1563,7 +1207,6 @@ function openForm(editing) {
     });
   });
   renderTrackingFields();
-
   const title = document.getElementById("title");
   const amount = document.getElementById("amount");
   const revolut = document.getElementById("revolut");
@@ -1574,24 +1217,17 @@ function openForm(editing) {
   }
   [title, amount, revolut].forEach(el => el.addEventListener("input", validate));
   validate();
-
   document.getElementById("cancelBtn").addEventListener("click", () => { slot.innerHTML = ""; });
-
   saveBtn.addEventListener("click", async () => {
     saveBtn.disabled = true;
     saveBtn.innerHTML = `<div class="spinner" style="width:18px;height:18px;border-color:rgba(0,0,0,0.2);border-top-color:#1a1b3a"></div>`;
-
-    let expected_count = null;
-    let expected_names = null;
+    let expected_count = null, expected_names = null;
     if (mode === 'count') {
       const v = parseInt(document.getElementById('expectedCount').value, 10);
       if (v > 0) expected_count = v;
     } else {
       const names = Array.from(document.querySelectorAll('#namesList input')).map(i => i.value.trim()).filter(Boolean);
-      if (names.length) {
-        expected_names = names;
-        expected_count = names.length;
-      }
+      if (names.length) { expected_names = names; expected_count = names.length; }
     }
     const bookingVal = document.getElementById('bookingDate').value;
     const payload = {
@@ -1602,17 +1238,11 @@ function openForm(editing) {
       note: document.getElementById('note').value.trim() || null,
       booking_date: bookingVal ? new Date(bookingVal).toISOString() : null,
       tracking_mode: mode,
-      expected_count,
-      expected_names,
+      expected_count, expected_names,
     };
-
     let result;
-    if (isEdit) {
-      result = await sb.from("requests").update(payload).eq("id", r.id).select().single();
-    } else {
-      payload.user_id = currentUser.id;
-      result = await sb.from("requests").insert(payload).select().single();
-    }
+    if (isEdit) result = await sb.from("requests").update(payload).eq("id", r.id).select().single();
+    else { payload.user_id = currentUser.id; result = await sb.from("requests").insert(payload).select().single(); }
     if (result.error) {
       alert("Couldn't save: " + result.error.message);
       saveBtn.disabled = false;
@@ -1638,10 +1268,7 @@ function openAccountModal() {
   const dr = (currentProfile && currentProfile.default_revolut_link) || '';
   const dt = (currentProfile && currentProfile.default_message_template) || getDefaultMessageTemplate();
   showModal(`
-    <div class="modal-head">
-      <h2>Account & settings</h2>
-      <button class="icon-btn" data-close>${icons.x}</button>
-    </div>
+    <div class="modal-head"><h2>Account & settings</h2><button class="icon-btn" data-close>${icons.x}</button></div>
     <div id="accountMsg"></div>
     <label class="label">Display name</label>
     <input class="input" id="acctDisplayName" placeholder="e.g. Pedro" value="${escapeAttr(dn)}" />
@@ -1650,12 +1277,12 @@ function openAccountModal() {
     <div class="help">Pre-filled when creating a new request.</div>
     <label class="label">Default WhatsApp message template</label>
     <textarea class="input" id="acctTemplate" rows="6" style="min-height:120px">${escapeHtml(dt)}</textarea>
-    <div class="help">Available placeholders: <code>{title}</code>, <code>{amount}</code>, <code>{booking}</code>, <code>{note}</code>, <code>{url}</code>.</div>
+    <div class="help">Placeholders: <code>{title}</code>, <code>{amount}</code>, <code>{booking}</code>, <code>{note}</code>, <code>{url}</code>.</div>
     <button class="btn-primary" id="acctSaveBtn" style="margin-top:16px">Save settings</button>
     <div style="margin-top:24px; padding-top:18px; border-top:1px solid var(--border)">
       <button class="btn-secondary" id="changePwBtn">Change password</button>
       <button class="btn-secondary" id="logoutBtn" style="margin-top:8px">Log out</button>
-      <button class="btn-secondary danger" id="deleteAcctBtn" style="margin-top:8px">Delete account</button>
+      <button class="btn-secondary danger" id="deleteAcctBtn" style="margin-top:8px">Delete all my data</button>
     </div>
   `);
   document.getElementById('acctSaveBtn').addEventListener('click', async () => {
@@ -1665,42 +1292,30 @@ function openAccountModal() {
       default_message_template: document.getElementById('acctTemplate').value.trim() || null,
     };
     const { error } = await sb.from('profiles').update(payload).eq('id', currentUser.id);
-    if (error) {
-      document.getElementById('accountMsg').innerHTML = `<div class="auth-error">${escapeHtml(error.message)}</div>`;
-      return;
-    }
+    if (error) { document.getElementById('accountMsg').innerHTML = `<div class="auth-error">${escapeHtml(error.message)}</div>`; return; }
     Object.assign(currentProfile, payload);
     closeModal();
     showToast('Settings saved');
     render();
   });
   document.getElementById('changePwBtn').addEventListener('click', openChangePassword);
-  document.getElementById('logoutBtn').addEventListener('click', () => {
-    closeModal();
-    handleLogout();
-  });
+  document.getElementById('logoutBtn').addEventListener('click', () => { closeModal(); handleLogout(); });
   document.getElementById('deleteAcctBtn').addEventListener('click', async () => {
-    if (!confirm('This will delete your account and ALL your data permanently. Continue?')) return;
+    if (!confirm('This will delete ALL your requests and payment records permanently. Continue?')) return;
     if (!confirm('Are you absolutely sure? This cannot be undone.')) return;
-    // Delete all requests (cascade deletes payments)
     await sb.from('requests').delete().eq('user_id', currentUser.id);
     await sb.from('profiles').delete().eq('id', currentUser.id);
-    // Sign out — the actual auth user record stays in Supabase but with no data
     await sb.auth.signOut();
-    currentUser = null;
-    currentProfile = null;
+    currentUser = null; currentProfile = null;
     closeModal();
-    showToast('Account data deleted');
+    showToast('All data deleted');
     render();
   });
 }
 
 function openChangePassword() {
   showModal(`
-    <div class="modal-head">
-      <h2>Change password</h2>
-      <button class="icon-btn" data-close>${icons.x}</button>
-    </div>
+    <div class="modal-head"><h2>Change password</h2><button class="icon-btn" data-close>${icons.x}</button></div>
     <div id="cpMsg"></div>
     <label class="label">New password</label>
     <input class="input" type="password" id="cpNew" placeholder="At least 6 characters" />
@@ -1718,59 +1333,73 @@ function openChangePassword() {
     btn.disabled = true;
     btn.innerHTML = `<div class="spinner" style="width:18px;height:18px;border-color:rgba(0,0,0,0.2);border-top-color:#1a1b3a"></div>`;
     const { error } = await sb.auth.updateUser({ password: pw });
-    if (error) {
-      msg.innerHTML = `<div class="auth-error">${escapeHtml(error.message)}</div>`;
-      btn.disabled = false; btn.innerHTML = 'Update password';
-    } else {
-      closeModal();
-      showToast('Password updated');
-    }
+    if (error) { msg.innerHTML = `<div class="auth-error">${escapeHtml(error.message)}</div>`; btn.disabled = false; btn.innerHTML = 'Update password'; }
+    else { closeModal(); showToast('Password updated'); }
   });
 }
 
 // =========================================================
-// PAY VIEW
+// PAY VIEW (public — no auth required, fast)
 // =========================================================
 async function renderPayView(app, requestId) {
-  app.innerHTML = `<div class="top-bar fade-in">${brandHtml()}</div><div class="loading"><div class="spinner"></div></div>`;
-  const { data: req, error } = await sb.from("requests").select("*").eq("id", requestId).single();
-  if (error || !req) {
+  // Show shell immediately
+  app.innerHTML = `
+    <div class="top-bar fade-in">${brandHtml()}</div>
+    <div class="loading"><div class="spinner"></div></div>
+  `;
+
+  let req, payments = [], orgName = '';
+  try {
+    const reqRes = await sb.from("requests").select("*").eq("id", requestId).single();
+    if (reqRes.error || !reqRes.data) {
+      app.innerHTML = `
+        <div class="top-bar fade-in">${brandHtml()}</div>
+        <div class="card nf fade-in">
+          <h2>Request not found</h2>
+          <p>This payment link is broken or has been deleted.</p>
+        </div>`;
+      return;
+    }
+    req = reqRes.data;
+    // Fetch payments and org name in parallel
+    const [paymentsRes, orgRes] = await Promise.all([
+      sb.from("payments").select("*").eq("request_id", requestId).order("paid_at", { ascending: true }),
+      sb.from('profiles').select('display_name').eq('id', req.user_id).single(),
+    ]);
+    payments = paymentsRes.data || [];
+    orgName = (orgRes.data && orgRes.data.display_name) || '';
+  } catch (e) {
     app.innerHTML = `
       <div class="top-bar fade-in">${brandHtml()}</div>
       <div class="card nf fade-in">
-        <h2>Request not found</h2>
-        <p>This payment link is broken or has been deleted.</p>
-      </div>
-    `;
+        <h2>Couldn't load</h2>
+        <p>Please check your connection and try again.</p>
+      </div>`;
     return;
   }
-  const { data: payments } = await sb.from("payments").select("*").eq("request_id", requestId).order("paid_at", { ascending: true });
 
-  // Get organizer's display name
-  const { data: org } = await sb.from('profiles').select('display_name').eq('id', req.user_id).single();
-  const orgName = (org && org.display_name) || '';
-
-  renderPayCard(app, req, payments || [], orgName);
+  renderPayCard(app, req, payments, orgName);
 }
 
 function renderPayCard(app, req, payments, orgName) {
   const payUrl = appendAmount(req.revolut_link, req.amount, req.currency);
   const paidNames = new Set(payments.map(p => p.payer_name.toLowerCase().trim()));
   const expectedNames = req.expected_names || [];
+  const savedName = localStorage.getItem(PAYER_NAME_KEY) || '';
 
-  // Quick-pick name buttons (for unpaid expected names)
   const namePickerHtml = expectedNames.length ? `
     <div class="name-options">
       ${expectedNames.map(n => {
         const isPaid = paidNames.has(n.toLowerCase().trim());
         return `<button class="name-option ${isPaid?'disabled':''}" ${isPaid?'disabled':''} data-name="${escapeAttr(n)}">${escapeHtml(n)}${isPaid?' ✓':''}</button>`;
       }).join('')}
-    </div>
-  ` : '';
+    </div>` : '';
 
   const payersChips = payments.map(p =>
     `<span class="payer-chip">${icons.check}${escapeHtml(p.payer_name)}</span>`
   ).join("");
+
+  const currencyDisplay = req.currency === 'CHF' ? 'CHF' : (req.currency === 'EUR' ? '€' : (req.currency === 'USD' ? '$' : req.currency));
 
   app.innerHTML = `
     <div class="top-bar fade-in">${brandHtml()}</div>
@@ -1778,22 +1407,22 @@ function renderPayCard(app, req, payments, orgName) {
       <div class="pay-card">
         ${orgName ? `<div class="pay-from">From <span class="name">${escapeHtml(orgName)}</span></div>` : ''}
         <div class="pay-kicker">You owe</div>
-        <div class="pay-amount"><span class="curr">${escapeHtml(req.currency)}</span>${Number(req.amount).toFixed(2)}</div>
+        <div class="pay-amount"><span class="curr">${escapeHtml(currencyDisplay)}</span>${Number(req.amount).toFixed(2)}</div>
         <div class="pay-title">${escapeHtml(req.title)}</div>
         ${req.booking_date ? `<div class="pay-booking">📅 ${escapeHtml(formatBookingDate(req.booking_date))}</div>` : ''}
         ${req.note ? `<div class="pay-note">${escapeHtml(req.note)}</div>` : ""}
 
-        <a class="pay-btn" href="${escapeAttr(payUrl)}" target="_blank" rel="noopener noreferrer">
+        <a class="pay-btn" id="payNowBtn" href="${escapeAttr(payUrl)}" target="_blank" rel="noopener noreferrer">
           Pay on Revolut ${icons.external}
         </a>
         <div class="pay-sub">Opens Revolut in a new tab</div>
 
-        <div class="selfreport">
+        <div class="selfreport" id="selfreportSection">
           <div id="selfreportContent">
             <h3>Already paid? Confirm here ✓</h3>
             ${namePickerHtml}
-            <input class="input" id="payerName" placeholder="Or type your name" maxlength="40" />
-            <button class="btn-confirm" id="confirmBtn" disabled>Confirm payment</button>
+            <input class="input" id="payerName" placeholder="Or type your name" maxlength="40" value="${escapeAttr(savedName)}" />
+            <button class="btn-confirm" id="confirmBtn" ${savedName.length >= 2 ? '' : 'disabled'}>Confirm payment</button>
           </div>
           ${payments.length > 0 ? `
             <div class="already-paid-list">
@@ -1808,6 +1437,15 @@ function renderPayCard(app, req, payments, orgName) {
 
   const nameInput = document.getElementById("payerName");
   const confirmBtn = document.getElementById("confirmBtn");
+  const payNowBtn = document.getElementById("payNowBtn");
+
+  // After tapping pay, scroll to confirm section so they remember to mark paid
+  payNowBtn.addEventListener("click", () => {
+    setTimeout(() => {
+      document.getElementById('selfreportSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 800);
+  });
+
   nameInput.addEventListener("input", () => {
     confirmBtn.disabled = nameInput.value.trim().length < 2;
   });
@@ -1831,9 +1469,10 @@ function renderPayCard(app, req, payments, orgName) {
       confirmBtn.textContent = "Confirm payment";
       return;
     }
+    // Remember name locally for next time
+    localStorage.setItem(PAYER_NAME_KEY, name);
     document.getElementById("selfreportContent").innerHTML = `
-      <div class="selfreport-success">${icons.check}<span>Thanks ${escapeHtml(name)}! Payment confirmed.</span></div>
-    `;
+      <div class="selfreport-success">${icons.check}<span>Thanks ${escapeHtml(name)}! Payment confirmed.</span></div>`;
     setTimeout(() => renderPayView(document.getElementById("app"), req.id), 1200);
   });
 }
@@ -1842,24 +1481,35 @@ function renderPayCard(app, req, payments, orgName) {
 // INIT
 // =========================================================
 async function init() {
-  // Apply stored theme before auth
   const storedTheme = localStorage.getItem('theme');
   if (storedTheme) applyTheme(storedTheme);
+
+  // Safety timeout — if anything hangs, show something
+  const fallbackTimer = setTimeout(() => {
+    const app = document.getElementById("app");
+    if (app && app.querySelector('.loading')) {
+      renderAuth(app);
+    }
+  }, 6000);
 
   sb.auth.onAuthStateChange(async (event, session) => {
     currentUser = session?.user || null;
     if (currentUser) await loadProfile();
     else currentProfile = null;
-    if (event === 'PASSWORD_RECOVERY') {
-      window.location.hash = '#reset-password';
-    }
+    if (event === 'PASSWORD_RECOVERY') window.location.hash = '#reset-password';
     render();
   });
 
-  const { data: { session } } = await sb.auth.getSession();
-  currentUser = session?.user || null;
-  if (currentUser) await loadProfile();
-  render();
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    currentUser = session?.user || null;
+    if (currentUser) await loadProfile();
+    clearTimeout(fallbackTimer);
+    render();
+  } catch (e) {
+    clearTimeout(fallbackTimer);
+    render();
+  }
 }
 init();
 </script>
