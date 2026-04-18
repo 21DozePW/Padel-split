@@ -6,41 +6,29 @@
 <meta name="theme-color" content="#1a1b3a" />
 <title>Padel Split — Court reimbursements made simple</title>
 
-<!-- Open Graph / WhatsApp preview -->
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Padel Split — Pay your share" />
 <meta property="og:description" content="Tap to pay your share of the padel court booking via Revolut. Fast, simple, CHF." />
-<meta property="og:image" content="https://padel-split.vercel.app/preview.png" />
 <meta property="og:url" content="https://padel-split.vercel.app" />
 <meta name="twitter:card" content="summary_large_image" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root {
-    --bg:        #1a1b3a;
-    --bg-deep:   #14152f;
-    --surface:   #262849;
-    --surface-2: #2f315a;
-    --mint:      #8eead0;
-    --mint-deep: #6fd4b8;
-    --coral:     #ff8a6b;
-    --coral-2:   #ffb088;
-    --whatsapp:  #25d366;
-    --whatsapp-2:#1ebe57;
-    --ink:       #ffffff;
-    --muted:     #9ea2c7;
-    --muted-2:   #6b6e94;
-    --danger:    #ff6b7a;
+    --bg:#1a1b3a; --bg-deep:#14152f; --surface:#262849; --surface-2:#2f315a;
+    --mint:#8eead0; --mint-deep:#6fd4b8; --coral:#ff8a6b; --coral-2:#ffb088;
+    --whatsapp:#25d366; --whatsapp-2:#1ebe57;
+    --ink:#ffffff; --muted:#9ea2c7; --muted-2:#6b6e94; --danger:#ff6b7a;
+    --success:#4ade80;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body {
-    background: var(--bg);
-    color: var(--ink);
+    background: var(--bg); color: var(--ink);
     font-family: 'Plus Jakarta Sans', -apple-system, system-ui, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    min-height: 100vh;
+    -webkit-font-smoothing: antialiased; min-height: 100vh;
   }
   body {
     background-image:
@@ -50,26 +38,40 @@
     padding: 24px 20px 60px;
   }
   .wrap { max-width: 520px; margin: 0 auto; }
-  .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 36px; padding-top: 8px; }
+  .top-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 28px; padding-top: 8px;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; }
   .brand-mark {
-    width: 44px; height: 44px; border-radius: 14px;
+    width: 40px; height: 40px; border-radius: 12px;
     background: linear-gradient(135deg, var(--mint), var(--mint-deep));
     display: grid; place-items: center;
-    box-shadow: 0 8px 24px rgba(142,234,208,0.2);
-    flex-shrink: 0;
+    box-shadow: 0 8px 24px rgba(142,234,208,0.2); flex-shrink: 0;
   }
-  .brand-mark svg { width: 26px; height: 26px; }
-  .brand-text { font-weight: 800; font-size: 22px; letter-spacing: -0.02em; }
+  .brand-mark svg { width: 22px; height: 22px; }
+  .brand-text { font-weight: 800; font-size: 20px; letter-spacing: -0.02em; }
   .brand-text .dot-ch { color: var(--mint); font-weight: 600; }
+  .user-chip {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 12px; background: var(--surface);
+    border-radius: 999px; font-size: 13px; color: var(--muted);
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .user-chip button {
+    background: none; border: none; color: var(--coral);
+    font-family: inherit; font-size: 12px; font-weight: 600;
+    cursor: pointer; padding: 2px 4px;
+  }
   h1 {
-    font-size: clamp(32px, 7vw, 44px); font-weight: 800;
-    letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 14px;
+    font-size: clamp(30px, 7vw, 42px); font-weight: 800;
+    letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 12px;
   }
   h1 .accent {
     background: linear-gradient(90deg, var(--mint), var(--coral));
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
-  .lede { font-size: 16px; line-height: 1.5; color: var(--muted); margin-bottom: 32px; max-width: 44ch; }
+  .lede { font-size: 15px; line-height: 1.5; color: var(--muted); margin-bottom: 28px; max-width: 44ch; }
   .card {
     background: var(--surface); border-radius: 24px; padding: 24px;
     border: 1px solid rgba(255,255,255,0.06);
@@ -81,7 +83,7 @@
     background: var(--mint); color: var(--bg);
     border: none; border-radius: 16px;
     font-family: inherit; font-weight: 700; font-size: 16px;
-    cursor: pointer; transition: transform 0.15s ease, box-shadow 0.15s ease;
+    cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
     box-shadow: 0 8px 20px rgba(142,234,208,0.2);
     text-decoration: none;
   }
@@ -94,7 +96,7 @@
   .btn-whatsapp {
     display: flex; align-items: center; justify-content: center; gap: 10px;
     width: 100%; padding: 16px 20px;
-    background: var(--whatsapp); color: #ffffff;
+    background: var(--whatsapp); color: #fff;
     border: none; border-radius: 14px;
     font-family: inherit; font-weight: 700; font-size: 15px;
     cursor: pointer; text-decoration: none;
@@ -107,7 +109,7 @@
     background: transparent; color: var(--muted); border: none;
     font-family: inherit; font-size: 14px; font-weight: 500;
     cursor: pointer; padding: 8px 12px; border-radius: 10px;
-    transition: color 0.15s ease, background 0.15s ease;
+    transition: color 0.15s, background 0.15s;
   }
   .btn-ghost:hover { color: var(--ink); background: rgba(255,255,255,0.04); }
   .form-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
@@ -123,16 +125,16 @@
     background: var(--bg-deep); border: 1px solid rgba(255,255,255,0.08);
     border-radius: 12px; font-family: inherit; font-size: 16px;
     color: var(--ink); outline: none;
-    transition: border-color 0.15s ease, background 0.15s ease;
+    transition: border-color 0.15s, background 0.15s;
   }
   .input:focus { border-color: var(--mint); background: var(--surface-2); }
   .input::placeholder { color: var(--muted-2); }
   textarea.input { min-height: 70px; resize: vertical; }
   .amount-wrap {
-    position: relative; display: flex; align-items: center;
+    display: flex; align-items: center;
     background: var(--bg-deep); border: 1px solid rgba(255,255,255,0.08);
     border-radius: 12px; padding: 0 16px;
-    transition: border-color 0.15s ease;
+    transition: border-color 0.15s;
   }
   .amount-wrap:focus-within { border-color: var(--mint); }
   .amount-wrap .currency {
@@ -155,14 +157,14 @@
     display: flex; align-items: center; gap: 10px;
     font-size: 12px; font-weight: 700; color: var(--muted);
     text-transform: uppercase; letter-spacing: 0.1em;
-    margin: 36px 0 14px;
+    margin: 32px 0 14px;
   }
   .section-label::before {
     content: ""; width: 6px; height: 6px;
     background: var(--coral); border-radius: 50%;
   }
   .empty {
-    text-align: center; padding: 40px 24px;
+    text-align: center; padding: 36px 24px;
     border: 1.5px dashed rgba(255,255,255,0.1);
     border-radius: 20px; color: var(--muted);
     font-size: 15px; line-height: 1.5;
@@ -172,10 +174,10 @@
   .request-card {
     background: var(--surface); border-radius: 20px; padding: 20px;
     border: 1px solid rgba(255,255,255,0.06);
-    transition: transform 0.15s ease, border-color 0.15s ease;
+    transition: border-color 0.15s;
   }
-  .request-card:hover { transform: translateY(-2px); border-color: rgba(142,234,208,0.3); }
-  .rc-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 16px; }
+  .request-card:hover { border-color: rgba(142,234,208,0.3); }
+  .rc-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
   .rc-info { flex: 1; min-width: 0; }
   .rc-title {
     font-size: 16px; font-weight: 700; margin-bottom: 4px;
@@ -191,31 +193,59 @@
   }
   .icon-btn:hover { color: var(--danger); background: rgba(255,107,122,0.1); }
   .icon-btn svg { width: 16px; height: 16px; }
+
+  /* Payment tracking on cards */
+  .payers-summary {
+    background: var(--bg-deep); border-radius: 12px;
+    padding: 12px 14px; margin-bottom: 14px;
+  }
+  .payers-count {
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 13px; font-weight: 600; color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .payers-count .total {
+    color: var(--mint); font-weight: 700;
+  }
+  .payers-list {
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+  .payer-chip {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: rgba(142,234,208,0.12); color: var(--mint);
+    border: 1px solid rgba(142,234,208,0.25);
+    padding: 4px 8px; border-radius: 999px;
+    font-size: 12px; font-weight: 600;
+  }
+  .payer-chip svg { width: 11px; height: 11px; }
+  .payer-chip .x {
+    cursor: pointer; opacity: 0.6; padding: 0 0 0 2px;
+    background: none; border: none; color: inherit;
+  }
+  .payer-chip .x:hover { opacity: 1; color: var(--danger); }
+  .payers-empty {
+    font-size: 12px; color: var(--muted-2); font-style: italic;
+  }
+
   .rc-actions { display: flex; flex-direction: column; gap: 8px; }
   .rc-action-row { display: flex; gap: 8px; }
-  .copy-btn {
+  .copy-btn, .preview-btn {
     display: flex; align-items: center; justify-content: center; gap: 6px;
     flex: 1;
     background: var(--surface-2); color: var(--ink);
     border: 1px solid rgba(255,255,255,0.08); border-radius: 10px;
     padding: 10px 12px;
     font-family: inherit; font-size: 13px; font-weight: 600;
-    cursor: pointer; transition: background 0.15s;
-  }
-  .copy-btn:hover { background: rgba(255,255,255,0.08); }
-  .copy-btn.copied { background: var(--mint); color: var(--bg); border-color: var(--mint); }
-  .copy-btn svg { width: 14px; height: 14px; }
-  .preview-btn {
-    display: flex; align-items: center; justify-content: center; gap: 6px;
-    background: transparent; color: var(--coral);
-    border: 1px solid rgba(255,138,107,0.3); border-radius: 10px;
-    padding: 10px 12px;
-    font-family: inherit; font-size: 13px; font-weight: 600;
-    text-decoration: none; flex: 1;
+    cursor: pointer; text-decoration: none;
     transition: background 0.15s;
   }
+  .copy-btn:hover, .preview-btn:hover { background: rgba(255,255,255,0.08); }
+  .copy-btn.copied { background: var(--mint); color: var(--bg); border-color: var(--mint); }
+  .copy-btn svg, .preview-btn svg { width: 14px; height: 14px; }
+  .preview-btn { color: var(--coral); border-color: rgba(255,138,107,0.3); }
   .preview-btn:hover { background: rgba(255,138,107,0.1); }
-  .preview-btn svg { width: 14px; height: 14px; }
+
+  /* Pay view */
   .pay-wrap {
     display: flex; flex-direction: column;
     min-height: calc(100vh - 84px);
@@ -253,7 +283,7 @@
     font-size: 0.4em; color: var(--mint); font-weight: 700;
     vertical-align: super; margin-right: 6px; letter-spacing: 0;
   }
-  .pay-title { font-size: 18px; font-weight: 600; color: var(--ink); margin-bottom: 12px; position: relative; }
+  .pay-title { font-size: 18px; font-weight: 600; margin-bottom: 12px; position: relative; }
   .pay-note {
     font-size: 14px; line-height: 1.5; color: var(--muted);
     max-width: 36ch; margin: 0 auto 28px; position: relative;
@@ -268,7 +298,50 @@
   }
   .pay-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(142,234,208,0.35); }
   .pay-btn svg { width: 18px; height: 18px; }
-  .pay-sub { margin-top: 20px; font-size: 12px; color: var(--muted-2); position: relative; }
+  .pay-sub { margin-top: 18px; font-size: 12px; color: var(--muted-2); position: relative; }
+
+  /* Self-report section on pay view */
+  .selfreport {
+    margin-top: 24px; padding: 20px;
+    background: var(--bg-deep); border-radius: 16px;
+    position: relative;
+  }
+  .selfreport h3 {
+    font-size: 14px; font-weight: 700; color: var(--ink);
+    margin-bottom: 12px; text-align: center;
+  }
+  .selfreport .input {
+    background: var(--surface);
+    text-align: center; margin-bottom: 10px;
+  }
+  .selfreport .btn-confirm {
+    width: 100%; padding: 14px;
+    background: var(--coral); color: var(--bg);
+    border: none; border-radius: 12px;
+    font-family: inherit; font-weight: 700; font-size: 14px;
+    cursor: pointer; transition: background 0.15s;
+  }
+  .selfreport .btn-confirm:hover { background: var(--coral-2); }
+  .selfreport .btn-confirm:disabled { opacity: 0.4; cursor: not-allowed; }
+  .selfreport-success {
+    text-align: center; padding: 16px;
+    color: var(--success); font-weight: 600; font-size: 14px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .selfreport-success svg { width: 18px; height: 18px; }
+  .already-paid-list {
+    margin-top: 14px; padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .already-paid-list .label-mini {
+    font-size: 11px; font-weight: 700; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    text-align: center; margin-bottom: 8px;
+  }
+  .already-paid-list .chips {
+    display: flex; flex-wrap: wrap; gap: 6px; justify-content: center;
+  }
+
   .back-link {
     display: inline-flex; align-items: center; gap: 6px;
     color: var(--muted); text-decoration: none;
@@ -278,84 +351,91 @@
   .nf { text-align: center; padding: 40px 20px; }
   .nf h2 { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
   .nf p { color: var(--muted); margin-bottom: 20px; }
+
+  /* Auth screen */
+  .auth-wrap {
+    display: flex; flex-direction: column;
+    min-height: calc(100vh - 84px);
+    justify-content: center;
+  }
+  .auth-tabs {
+    display: flex; gap: 4px; background: var(--bg-deep);
+    border-radius: 12px; padding: 4px; margin-bottom: 20px;
+  }
+  .auth-tab {
+    flex: 1; padding: 10px; background: transparent;
+    border: none; border-radius: 8px;
+    font-family: inherit; font-size: 14px; font-weight: 600;
+    color: var(--muted); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .auth-tab.active { background: var(--surface-2); color: var(--ink); }
+  .auth-error {
+    background: rgba(255,107,122,0.1); border: 1px solid rgba(255,107,122,0.3);
+    color: var(--danger); padding: 12px 14px; border-radius: 10px;
+    font-size: 13px; margin-bottom: 14px;
+  }
+  .auth-success {
+    background: rgba(142,234,208,0.1); border: 1px solid rgba(142,234,208,0.3);
+    color: var(--mint); padding: 12px 14px; border-radius: 10px;
+    font-size: 13px; margin-bottom: 14px;
+  }
+
+  .loading {
+    text-align: center; padding: 60px 20px;
+    color: var(--muted); font-size: 14px;
+  }
+  .spinner {
+    display: inline-block; width: 22px; height: 22px;
+    border: 2.5px solid rgba(255,255,255,0.1);
+    border-top-color: var(--mint);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
   footer { margin-top: 48px; text-align: center; font-size: 12px; color: var(--muted-2); }
+
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(8px); }
     to   { opacity: 1; transform: translateY(0); }
   }
-  .wrap > * { animation: fadeUp 0.4s ease backwards; }
-  .wrap > *:nth-child(1) { animation-delay: 0s; }
-  .wrap > *:nth-child(2) { animation-delay: 0.05s; }
-  .wrap > *:nth-child(3) { animation-delay: 0.1s; }
-  .wrap > *:nth-child(4) { animation-delay: 0.15s; }
+  .fade-in { animation: fadeUp 0.4s ease backwards; }
 
-  /* Success toast after create */
   .just-created {
     background: linear-gradient(135deg, rgba(142,234,208,0.15), rgba(255,138,107,0.1));
     border: 1px solid rgba(142,234,208,0.3);
     border-radius: 16px;
-    padding: 14px 16px;
-    margin-bottom: 16px;
-    font-size: 14px;
-    color: var(--mint);
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    padding: 12px 14px; margin-bottom: 14px;
+    font-size: 13px; color: var(--mint);
+    display: flex; align-items: center; gap: 10px;
   }
-  .just-created svg { width: 18px; height: 18px; flex-shrink: 0; }
+  .just-created svg { width: 16px; height: 16px; flex-shrink: 0; }
 </style>
 </head>
 <body>
-<div class="wrap" id="app"></div>
+<div class="wrap" id="app">
+  <div class="loading"><div class="spinner"></div></div>
+</div>
+
 <script>
-const LS_KEY = "padel_split_requests_v1";
-function encodeRequest(req) {
-  const json = JSON.stringify(req);
-  return btoa(unescape(encodeURIComponent(json)))
-    .replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
-}
-function decodeRequest(str) {
-  try {
-    const b64 = str.replace(/-/g, "+").replace(/_/g, "/");
-    const json = decodeURIComponent(escape(atob(b64)));
-    return JSON.parse(json);
-  } catch (e) { return null; }
-}
-function formatCHF(n) { return Number(n).toFixed(2); }
-function appendAmountCHF(link, amount) {
-  try {
-    const u = new URL(link);
-    if (!u.searchParams.has("amount")) u.searchParams.set("amount", String(amount));
-    if (!u.searchParams.has("currency")) u.searchParams.set("currency", "CHF");
-    return u.toString();
-  } catch { return link; }
-}
-function loadLocal() {
-  try { return JSON.parse(localStorage.getItem(LS_KEY) || "[]"); }
-  catch { return []; }
-}
-function saveLocal(list) { localStorage.setItem(LS_KEY, JSON.stringify(list)); }
+// =========================================================
+// SUPABASE CONFIG
+// =========================================================
+const SUPABASE_URL = "https://ludxfnlnoypijsgozopm.supabase.co";
+const SUPABASE_KEY = "sb_publishable_wgXkC6usjjxcNBaobLPGFA_sf0fFed4";
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// Build the WhatsApp message text
-function buildWhatsAppMessage(req, shareUrl) {
-  const lines = [
-    `🎾 *${req.title}*`,
-    ``,
-    `💰 Your share: *CHF ${formatCHF(req.amount)}*`,
-  ];
-  if (req.note) {
-    lines.push(``, `📝 ${req.note}`);
-  }
-  lines.push(``, `Tap to pay:`, shareUrl);
-  return lines.join('\n');
-}
+// =========================================================
+// STATE
+// =========================================================
+let currentUser = null;
+let justCreatedId = null;
+let authMode = "login"; // "login" | "signup"
 
-// Build the WhatsApp share URL
-function buildWhatsAppUrl(req, shareUrl) {
-  const text = buildWhatsAppMessage(req, shareUrl);
-  return `https://wa.me/?text=${encodeURIComponent(text)}`;
-}
-
+// =========================================================
+// ICONS
+// =========================================================
 const icons = {
   racket: `<svg viewBox="0 0 24 24" fill="none" stroke="#1a1b3a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="15" cy="9" r="6"/><path d="M10.5 13.5l-6 6"/><path d="M5 20l-1 1"/></svg>`,
   plus: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`,
@@ -366,27 +446,48 @@ const icons = {
   arrow: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>`,
   eye: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`,
   whatsapp: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>`,
+  user: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
 };
-function getRoute() {
-  const hash = window.location.hash || "";
-  const payMatch = hash.match(/^#\/pay\/(.+)$/);
-  if (payMatch) {
-    const data = decodeRequest(payMatch[1]);
-    return { view: data ? "pay" : "notfound", data };
-  }
-  return { view: "dashboard" };
-}
-window.addEventListener("hashchange", render);
 
-let justCreatedId = null;
-
-function render() {
-  const app = document.getElementById("app");
-  const route = getRoute();
-  if (route.view === "pay") return renderPay(app, route.data);
-  if (route.view === "notfound") return renderNotFound(app);
-  renderDashboard(app);
+// =========================================================
+// HELPERS
+// =========================================================
+function formatCHF(n) { return Number(n).toFixed(2); }
+function appendAmountCHF(link, amount) {
+  try {
+    const u = new URL(link);
+    if (!u.searchParams.has("amount")) u.searchParams.set("amount", String(amount));
+    if (!u.searchParams.has("currency")) u.searchParams.set("currency", "CHF");
+    return u.toString();
+  } catch { return link; }
 }
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
+function escapeAttr(s) { return escapeHtml(s); }
+
+function buildShareUrl(requestId) {
+  const base = window.location.href.split("#")[0].split("?")[0];
+  return `${base}?r=${requestId}`;
+}
+
+function buildWhatsAppMessage(req, shareUrl) {
+  const lines = [
+    `🎾 *${req.title}*`,
+    ``,
+    `💰 Your share: *CHF ${formatCHF(req.amount)}*`,
+  ];
+  if (req.note) lines.push(``, `📝 ${req.note}`);
+  lines.push(``, `Tap to pay:`, shareUrl);
+  return lines.join('\n');
+}
+
+function buildWhatsAppUrl(req, shareUrl) {
+  return `https://wa.me/?text=${encodeURIComponent(buildWhatsAppMessage(req, shareUrl))}`;
+}
+
 function brandHtml() {
   return `
     <div class="brand">
@@ -395,25 +496,192 @@ function brandHtml() {
     </div>
   `;
 }
-function renderDashboard(app) {
-  const requests = loadLocal();
-  app.innerHTML = `
-    ${brandHtml()}
-    <h1>Court bookings,<br/><span class="accent">sorted.</span></h1>
-    <p class="lede">Create a payment request, send it straight to WhatsApp, they pay via your Revolut. All in CHF.</p>
-    <div id="formSlot"></div>
-    <button class="btn-primary" id="newBtn">
-      ${icons.plus}<span>New payment request</span>
-    </button>
-    <div class="section-label">Your requests</div>
-    <div id="listSlot"></div>
-    <footer>Payments processed via Revolut</footer>
-  `;
-  document.getElementById("newBtn").addEventListener("click", () => { openForm(); });
-  renderList(requests);
+
+// =========================================================
+// ROUTING
+// =========================================================
+function getRoute() {
+  const params = new URLSearchParams(window.location.search);
+  const payId = params.get("r");
+  if (payId) return { view: "pay", id: payId };
+  return { view: "dashboard" };
 }
-function renderList(requests) {
+
+// =========================================================
+// MAIN RENDER
+// =========================================================
+async function render() {
+  const app = document.getElementById("app");
+  const route = getRoute();
+
+  // Pay view is public, no auth required
+  if (route.view === "pay") {
+    return renderPayView(app, route.id);
+  }
+
+  // Dashboard requires auth
+  if (!currentUser) {
+    return renderAuth(app);
+  }
+
+  return renderDashboard(app);
+}
+
+// =========================================================
+// AUTH VIEW
+// =========================================================
+function renderAuth(app) {
+  app.innerHTML = `
+    <div class="top-bar fade-in">${brandHtml()}</div>
+    <div class="auth-wrap fade-in">
+      <h1>Welcome to <span class="accent">padel split</span></h1>
+      <p class="lede">Sign in to manage your payment requests and track who has paid.</p>
+
+      <div class="card">
+        <div class="auth-tabs">
+          <button class="auth-tab ${authMode==='login'?'active':''}" data-mode="login">Log in</button>
+          <button class="auth-tab ${authMode==='signup'?'active':''}" data-mode="signup">Sign up</button>
+        </div>
+
+        <div id="authMsg"></div>
+
+        <label class="label">Email</label>
+        <input class="input" type="email" id="authEmail" placeholder="you@example.com" autocomplete="email" />
+
+        <label class="label">Password</label>
+        <input class="input" type="password" id="authPassword" placeholder="At least 6 characters" autocomplete="${authMode==='signup'?'new-password':'current-password'}" />
+
+        <button class="btn-primary" id="authBtn" style="margin-top:20px">
+          ${authMode === 'login' ? 'Log in' : 'Create account'}
+        </button>
+      </div>
+
+      <footer style="margin-top:32px">Your data is private · Powered by Supabase</footer>
+    </div>
+  `;
+
+  document.querySelectorAll(".auth-tab").forEach(t => {
+    t.addEventListener("click", () => {
+      authMode = t.dataset.mode;
+      render();
+    });
+  });
+
+  document.getElementById("authBtn").addEventListener("click", handleAuth);
+  document.getElementById("authPassword").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") handleAuth();
+  });
+}
+
+async function handleAuth() {
+  const email = document.getElementById("authEmail").value.trim();
+  const password = document.getElementById("authPassword").value;
+  const msgEl = document.getElementById("authMsg");
+  const btn = document.getElementById("authBtn");
+
+  if (!email || !password) {
+    msgEl.innerHTML = `<div class="auth-error">Please enter email and password.</div>`;
+    return;
+  }
+  if (password.length < 6) {
+    msgEl.innerHTML = `<div class="auth-error">Password must be at least 6 characters.</div>`;
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = `<div class="spinner" style="width:18px;height:18px;border-color:rgba(0,0,0,0.2);border-top-color:#1a1b3a"></div>`;
+
+  try {
+    let result;
+    if (authMode === "signup") {
+      result = await sb.auth.signUp({ email, password });
+    } else {
+      result = await sb.auth.signInWithPassword({ email, password });
+    }
+
+    if (result.error) {
+      msgEl.innerHTML = `<div class="auth-error">${escapeHtml(result.error.message)}</div>`;
+      btn.disabled = false;
+      btn.innerHTML = authMode === 'login' ? 'Log in' : 'Create account';
+      return;
+    }
+
+    // Sign up succeeded but user might need email confirmation
+    if (authMode === "signup" && !result.data.session) {
+      msgEl.innerHTML = `<div class="auth-success">Account created. Check your email to confirm, then log in.</div>`;
+      authMode = "login";
+      btn.disabled = false;
+      btn.innerHTML = 'Log in';
+      return;
+    }
+
+    currentUser = result.data.user;
+    render();
+  } catch (e) {
+    msgEl.innerHTML = `<div class="auth-error">Something went wrong: ${escapeHtml(e.message)}</div>`;
+    btn.disabled = false;
+    btn.innerHTML = authMode === 'login' ? 'Log in' : 'Create account';
+  }
+}
+
+async function handleLogout() {
+  await sb.auth.signOut();
+  currentUser = null;
+  render();
+}
+
+// =========================================================
+// DASHBOARD
+// =========================================================
+async function renderDashboard(app) {
+  app.innerHTML = `
+    <div class="top-bar fade-in">
+      ${brandHtml()}
+      <div class="user-chip">
+        ${icons.user}
+        <span>${escapeHtml(currentUser.email.split('@')[0])}</span>
+        <button id="logoutBtn">Log out</button>
+      </div>
+    </div>
+    <div class="fade-in">
+      <h1>Court bookings,<br/><span class="accent">sorted.</span></h1>
+      <p class="lede">Create a payment request, send it via WhatsApp, track who paid.</p>
+
+      <div id="formSlot"></div>
+
+      <button class="btn-primary" id="newBtn">
+        ${icons.plus}<span>New payment request</span>
+      </button>
+
+      <div class="section-label">Your requests</div>
+      <div id="listSlot"><div class="loading"><div class="spinner"></div></div></div>
+
+      <footer>Payments processed via Revolut</footer>
+    </div>
+  `;
+
+  document.getElementById("logoutBtn").addEventListener("click", handleLogout);
+  document.getElementById("newBtn").addEventListener("click", openForm);
+
+  await loadAndRenderList();
+}
+
+async function loadAndRenderList() {
   const slot = document.getElementById("listSlot");
+  if (!slot) return;
+
+  // Fetch requests
+  const { data: requests, error } = await sb
+    .from("requests")
+    .select("*")
+    .eq("user_id", currentUser.id)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    slot.innerHTML = `<div class="auth-error">Couldn't load requests: ${escapeHtml(error.message)}</div>`;
+    return;
+  }
+
   if (!requests.length) {
     slot.innerHTML = `
       <div class="empty">
@@ -423,50 +691,91 @@ function renderList(requests) {
     `;
     return;
   }
+
+  // Fetch payments for these requests in one go
+  const requestIds = requests.map(r => r.id);
+  const { data: payments } = await sb
+    .from("payments")
+    .select("*")
+    .in("request_id", requestIds)
+    .order("paid_at", { ascending: true });
+
+  // Group payments by request
+  const paymentsByRequest = {};
+  (payments || []).forEach(p => {
+    if (!paymentsByRequest[p.request_id]) paymentsByRequest[p.request_id] = [];
+    paymentsByRequest[p.request_id].push(p);
+  });
+
   slot.innerHTML = `
     <div class="request-list">
-      ${requests.map(r => {
-        const shareUrl = buildShareUrl(r);
-        const whatsappUrl = buildWhatsAppUrl(r, shareUrl);
-        const isJustCreated = r.id === justCreatedId;
-        return `
-          <div class="request-card" data-id="${r.id}">
-            ${isJustCreated ? `
-              <div class="just-created">
-                ${icons.check}
-                <span>Created! Tap "Send via WhatsApp" below.</span>
-              </div>
-            ` : ''}
-            <div class="rc-top">
-              <div class="rc-info">
-                <div class="rc-title">${escapeHtml(r.title)}</div>
-                <div class="rc-amount">CHF ${formatCHF(r.amount)} <span class="per">· per person</span></div>
-              </div>
-              <button class="icon-btn" data-act="delete" data-id="${r.id}" aria-label="Delete">${icons.trash}</button>
-            </div>
-            <div class="rc-actions">
-              <a class="btn-whatsapp" href="${escapeAttr(whatsappUrl)}" target="_blank" rel="noopener noreferrer">
-                ${icons.whatsapp}<span>Send via WhatsApp</span>
-              </a>
-              <div class="rc-action-row">
-                <button class="copy-btn" data-act="copy" data-url="${escapeAttr(shareUrl)}">
-                  ${icons.copy}<span>Copy link</span>
-                </button>
-                <a class="preview-btn" href="#/pay/${encodeRequest(r)}" target="_blank" rel="noopener">
-                  ${icons.eye}<span>Preview</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        `;
-      }).join("")}
+      ${requests.map(r => renderRequestCard(r, paymentsByRequest[r.id] || [])).join("")}
     </div>
   `;
-  // Clear the "just created" highlight after first render
-  if (justCreatedId) {
-    setTimeout(() => { justCreatedId = null; }, 100);
-  }
-  slot.querySelectorAll("[data-act='copy']").forEach(btn => {
+
+  attachListEventHandlers();
+}
+
+function renderRequestCard(r, payers) {
+  const shareUrl = buildShareUrl(r.id);
+  const whatsappUrl = buildWhatsAppUrl(r, shareUrl);
+  const isJustCreated = r.id === justCreatedId;
+
+  return `
+    <div class="request-card" data-id="${r.id}">
+      ${isJustCreated ? `
+        <div class="just-created">
+          ${icons.check}
+          <span>Created! Tap "Send via WhatsApp" below.</span>
+        </div>
+      ` : ''}
+      <div class="rc-top">
+        <div class="rc-info">
+          <div class="rc-title">${escapeHtml(r.title)}</div>
+          <div class="rc-amount">CHF ${formatCHF(r.amount)} <span class="per">· per person</span></div>
+        </div>
+        <button class="icon-btn" data-act="delete" data-id="${r.id}" aria-label="Delete">${icons.trash}</button>
+      </div>
+
+      <div class="payers-summary">
+        <div class="payers-count">
+          <span>Paid</span>
+          <span class="total">${payers.length} ${payers.length === 1 ? 'person' : 'people'}</span>
+        </div>
+        ${payers.length === 0 ? `
+          <div class="payers-empty">No payments yet</div>
+        ` : `
+          <div class="payers-list">
+            ${payers.map(p => `
+              <span class="payer-chip">
+                ${icons.check}
+                ${escapeHtml(p.payer_name)}
+                <button class="x" data-act="remove-payer" data-payer-id="${p.id}" data-request-id="${r.id}" title="Remove">×</button>
+              </span>
+            `).join("")}
+          </div>
+        `}
+      </div>
+
+      <div class="rc-actions">
+        <a class="btn-whatsapp" href="${escapeAttr(whatsappUrl)}" target="_blank" rel="noopener noreferrer">
+          ${icons.whatsapp}<span>Send via WhatsApp</span>
+        </a>
+        <div class="rc-action-row">
+          <button class="copy-btn" data-act="copy" data-url="${escapeAttr(shareUrl)}">
+            ${icons.copy}<span>Copy link</span>
+          </button>
+          <a class="preview-btn" href="${escapeAttr(shareUrl)}" target="_blank" rel="noopener">
+            ${icons.eye}<span>Preview</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function attachListEventHandlers() {
+  document.querySelectorAll("[data-act='copy']").forEach(btn => {
     btn.addEventListener("click", async () => {
       const url = btn.dataset.url;
       try {
@@ -480,23 +789,42 @@ function renderList(requests) {
       } catch { window.prompt("Copy this link:", url); }
     });
   });
-  slot.querySelectorAll("[data-act='delete']").forEach(btn => {
-    btn.addEventListener("click", () => {
+
+  document.querySelectorAll("[data-act='delete']").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      if (!confirm("Delete this request and all its payment records?")) return;
       const id = btn.dataset.id;
-      const list = loadLocal();
-      const r = list.find(x => x.id === id);
-      if (!r) return;
-      if (confirm(`Delete "${r.title}"?`)) {
-        saveLocal(list.filter(x => x.id !== id));
-        renderList(loadLocal());
-      }
+      const { error } = await sb.from("requests").delete().eq("id", id);
+      if (error) { alert("Couldn't delete: " + error.message); return; }
+      await loadAndRenderList();
     });
   });
+
+  document.querySelectorAll("[data-act='remove-payer']").forEach(btn => {
+    btn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (!confirm("Remove this payer from the list?")) return;
+      const payerId = btn.dataset.payerId;
+      const { error } = await sb.from("payments").delete().eq("id", payerId);
+      if (error) { alert("Couldn't remove: " + error.message); return; }
+      await loadAndRenderList();
+    });
+  });
+
+  // clear "just created" highlight after first render
+  if (justCreatedId) {
+    setTimeout(() => { justCreatedId = null; }, 100);
+  }
 }
+
+// =========================================================
+// FORM
+// =========================================================
 function openForm() {
   const slot = document.getElementById("formSlot");
   slot.innerHTML = `
-    <div class="card">
+    <div class="card fade-in">
       <div class="form-head">
         <h2>New request</h2>
         <button class="btn-ghost" id="cancelBtn">Cancel</button>
@@ -516,11 +844,13 @@ function openForm() {
       <button class="btn-primary" id="saveBtn" style="margin-top:20px" disabled>Save & get share link</button>
     </div>
   `;
+
   const title = document.getElementById("title");
   const amount = document.getElementById("amount");
   const revolut = document.getElementById("revolut");
   const note = document.getElementById("note");
   const saveBtn = document.getElementById("saveBtn");
+
   function validate() {
     const ok = title.value.trim() &&
                parseFloat(amount.value) > 0 &&
@@ -528,70 +858,164 @@ function openForm() {
     saveBtn.disabled = !ok;
   }
   [title, amount, revolut].forEach(el => el.addEventListener("input", validate));
+
   document.getElementById("cancelBtn").addEventListener("click", () => { slot.innerHTML = ""; });
-  saveBtn.addEventListener("click", () => {
-    const req = {
-      id: Math.random().toString(36).slice(2, 8) + Date.now().toString(36).slice(-4),
+
+  saveBtn.addEventListener("click", async () => {
+    saveBtn.disabled = true;
+    saveBtn.innerHTML = `<div class="spinner" style="width:18px;height:18px;border-color:rgba(0,0,0,0.2);border-top-color:#1a1b3a"></div>`;
+
+    const { data, error } = await sb.from("requests").insert({
+      user_id: currentUser.id,
       title: title.value.trim(),
       amount: parseFloat(amount.value),
       currency: "CHF",
-      revolutLink: revolut.value.trim(),
-      note: note.value.trim(),
-      createdAt: Date.now(),
-    };
-    const list = loadLocal();
-    list.unshift(req);
-    saveLocal(list);
-    justCreatedId = req.id;
+      revolut_link: revolut.value.trim(),
+      note: note.value.trim() || null,
+    }).select().single();
+
+    if (error) {
+      alert("Couldn't save: " + error.message);
+      saveBtn.disabled = false;
+      saveBtn.innerHTML = "Save & get share link";
+      return;
+    }
+
+    justCreatedId = data.id;
     slot.innerHTML = "";
-    renderList(loadLocal());
-    // Scroll to the new card
+    await loadAndRenderList();
+
     setTimeout(() => {
-      const card = document.querySelector(`[data-id="${req.id}"]`);
+      const card = document.querySelector(`[data-id="${data.id}"]`);
       if (card) card.scrollIntoView({ behavior: "smooth", block: "center" });
     }, 100);
   });
 }
-function buildShareUrl(req) {
-  const base = window.location.href.split("#")[0];
-  return `${base}#/pay/${encodeRequest(req)}`;
+
+// =========================================================
+// PAY VIEW (public)
+// =========================================================
+async function renderPayView(app, requestId) {
+  app.innerHTML = `<div class="top-bar fade-in">${brandHtml()}</div><div class="loading"><div class="spinner"></div></div>`;
+
+  const { data: req, error } = await sb
+    .from("requests")
+    .select("*")
+    .eq("id", requestId)
+    .single();
+
+  if (error || !req) {
+    app.innerHTML = `
+      <div class="top-bar fade-in">${brandHtml()}</div>
+      <div class="card nf fade-in">
+        <h2>Request not found</h2>
+        <p>This payment link is broken or has been deleted.</p>
+      </div>
+    `;
+    return;
+  }
+
+  const { data: payments } = await sb
+    .from("payments")
+    .select("*")
+    .eq("request_id", requestId)
+    .order("paid_at", { ascending: true });
+
+  renderPayCard(app, req, payments || []);
 }
-function renderPay(app, req) {
-  const payUrl = appendAmountCHF(req.revolutLink, req.amount);
+
+function renderPayCard(app, req, payments) {
+  const payUrl = appendAmountCHF(req.revolut_link, req.amount);
+  const payersChips = payments.map(p =>
+    `<span class="payer-chip">${icons.check}${escapeHtml(p.payer_name)}</span>`
+  ).join("");
+
   app.innerHTML = `
-    ${brandHtml()}
-    <div class="pay-wrap">
+    <div class="top-bar fade-in">${brandHtml()}</div>
+    <div class="pay-wrap fade-in">
       <div class="pay-card">
         <div class="pay-kicker">You owe</div>
         <div class="pay-amount"><span class="curr">CHF</span>${formatCHF(req.amount)}</div>
         <div class="pay-title">${escapeHtml(req.title)}</div>
         ${req.note ? `<div class="pay-note">${escapeHtml(req.note)}</div>` : ""}
+
         <a class="pay-btn" href="${escapeAttr(payUrl)}" target="_blank" rel="noopener noreferrer">
           Pay on Revolut ${icons.external}
         </a>
         <div class="pay-sub">Opens Revolut in a new tab · Secure payment</div>
+
+        <div class="selfreport">
+          <div id="selfreportContent">
+            <h3>Already paid? Confirm here ✓</h3>
+            <input class="input" id="payerName" placeholder="Your name" maxlength="40" />
+            <button class="btn-confirm" id="confirmBtn" disabled>Confirm payment</button>
+          </div>
+          ${payments.length > 0 ? `
+            <div class="already-paid-list">
+              <div class="label-mini">${payments.length} ${payments.length === 1 ? 'person has' : 'people have'} paid</div>
+              <div class="chips">${payersChips}</div>
+            </div>
+          ` : ''}
+        </div>
       </div>
-      <a class="back-link" href="#/">${icons.arrow} Organizer view</a>
     </div>
   `;
+
+  const nameInput = document.getElementById("payerName");
+  const confirmBtn = document.getElementById("confirmBtn");
+
+  nameInput.addEventListener("input", () => {
+    confirmBtn.disabled = nameInput.value.trim().length < 2;
+  });
+
+  confirmBtn.addEventListener("click", async () => {
+    const name = nameInput.value.trim();
+    if (name.length < 2) return;
+
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = "Saving...";
+
+    const { error } = await sb.from("payments").insert({
+      request_id: req.id,
+      payer_name: name,
+    });
+
+    if (error) {
+      alert("Couldn't save: " + error.message);
+      confirmBtn.disabled = false;
+      confirmBtn.textContent = "Confirm payment";
+      return;
+    }
+
+    document.getElementById("selfreportContent").innerHTML = `
+      <div class="selfreport-success">
+        ${icons.check}
+        <span>Thanks ${escapeHtml(name)}! Payment confirmed.</span>
+      </div>
+    `;
+
+    // Reload to show updated payer list
+    setTimeout(() => renderPayView(document.getElementById("app"), req.id), 1200);
+  });
 }
-function renderNotFound(app) {
-  app.innerHTML = `
-    ${brandHtml()}
-    <div class="card nf">
-      <h2>Link not valid</h2>
-      <p>This payment link couldn't be read. It may be broken or incomplete.</p>
-      <a class="btn-ghost" href="#/">← Go to organizer</a>
-    </div>
-  `;
+
+// =========================================================
+// INIT
+// =========================================================
+async function init() {
+  // Listen for auth state changes
+  sb.auth.onAuthStateChange((_event, session) => {
+    currentUser = session?.user || null;
+  });
+
+  // Check for existing session
+  const { data: { session } } = await sb.auth.getSession();
+  currentUser = session?.user || null;
+
+  render();
 }
-function escapeHtml(s) {
-  return String(s)
-    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-}
-function escapeAttr(s) { return escapeHtml(s); }
-render();
+
+init();
 </script>
 </body>
 </html>
