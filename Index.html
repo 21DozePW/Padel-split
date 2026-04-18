@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#1a1b3a" />
+<title>Padel Split — Court reimbursements made simple</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #1a1b3a;
+    --bg-deep:   #14152f;
+    --surface:   #262849;
+    --surface-2: #2f315a;
+    --mint:      #8eead0;
+    --mint-deep: #6fd4b8;
+    --coral:     #ff8a6b;
+    --coral-2:   #ffb088;
+    --ink:       #ffffff;
+    --muted:     #9ea2c7;
+    --muted-2:   #6b6e94;
+    --danger:    #ff6b7a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Plus Jakarta Sans', -apple-system, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+  body {
+    background-image:
+      radial-gradient(ellipse at 10% 0%, rgba(142,234,208,0.08), transparent 50%),
+      radial-gradient(ellipse at 90% 100%, rgba(255,138,107,0.08), transparent 50%);
+    background-attachment: fixed;
+    padding: 24px 20px 60px;
+  }
+  .wrap { max-width: 520px; margin: 0 auto; }
+  .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 36px; padding-top: 8px; }
+  .brand-mark {
+    width: 44px; height: 44px; border-radius: 14px;
+    background: linear-gradient(135deg, var(--mint), var(--mint-deep));
+    display: grid; place-items: center;
+    box-shadow: 0 8px 24px rgba(142,234,208,0.2);
+    flex-shrink: 0;
+  }
+  .brand-mark svg { width: 26px; height: 26px; }
+  .brand-text { font-weight: 800; font-size: 22px; letter-spacing: -0.02em; }
+  .brand-text .dot-ch { color: var(--mint); font-weight: 600; }
+  h1 {
+    font-size: clamp(32px, 7vw, 44px); font-weight: 800;
+    letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 14px;
+  }
+  h1 .accent {
+    background: linear-gradient(90deg, var(--mint), var(--coral));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .lede { font-size: 16px; line-height: 1.5; color: var(--muted); margin-bottom: 32px; max-width: 44ch; }
+  .card {
+    background: var(--surface); border-radius: 24px; padding: 24px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .card + .card { margin-top: 16px; }
+  .btn-primary {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; padding: 18px 20px;
+    background: var(--mint); color: var(--bg);
+    border: none; border-radius: 16px;
+    font-family: inherit; font-weight: 700; font-size: 16px;
+    cursor: pointer; transition: transform 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 0 8px 20px rgba(142,234,208,0.2);
+  }
+  .btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(142,234,208,0.3);
+  }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
+  .btn-primary svg { width: 18px; height: 18px; }
+  .btn-ghost {
+    background: transparent; color: var(--muted); border: none;
+    font-family: inherit; font-size: 14px; font-weight: 500;
+    cursor: pointer; padding: 8px 12px; border-radius: 10px;
+    transition: color 0.15s ease, background 0.15s ease;
+  }
+  .btn-ghost:hover { color: var(--ink); background: rgba(255,255,255,0.04); }
+  .form-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+  .form-head h2 { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
+  .label {
+    display: block; font-size: 12px; font-weight: 600; color: var(--muted);
+    margin-bottom: 8px; margin-top: 16px;
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .label:first-of-type { margin-top: 0; }
+  .input {
+    width: 100%; padding: 14px 16px;
+    background: var(--bg-deep); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px; font-family: inherit; font-size: 16px;
+    color: var(--ink); outline: none;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .input:focus { border-color: var(--mint); background: var(--surface-2); }
+  .input::placeholder { color: var(--muted-2); }
+  textarea.input { min-height: 70px; resize: vertical; }
+  .amount-wrap {
+    position: relative; display: flex; align-items: center;
+    background: var(--bg-deep); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px; padding: 0 16px;
+    transition: border-color 0.15s ease;
+  }
+  .amount-wrap:focus-within { border-color: var(--mint); }
+  .amount-wrap .currency {
+    font-weight: 700; color: var(--mint); font-size: 15px;
+    padding-right: 12px; border-right: 1px solid rgba(255,255,255,0.1);
+    margin-right: 14px;
+  }
+  .amount-wrap input {
+    flex: 1; padding: 14px 0; background: transparent; border: none;
+    font-family: inherit; font-size: 18px; font-weight: 600;
+    color: var(--ink); outline: none;
+  }
+  .help { font-size: 13px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+  .help code {
+    background: var(--bg-deep); color: var(--mint);
+    padding: 2px 6px; border-radius: 4px;
+    font-size: 12px; font-family: ui-monospace, monospace;
+  }
+  .section-label {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 12px; font-weight: 700; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    margin: 36px 0 14px;
+  }
+  .section-label::before {
+    content: ""; width: 6px; height: 6px;
+    background: var(--coral); border-radius: 50%;
+  }
+  .empty {
+    text-align: center; padding: 40px 24px;
+    border: 1.5px dashed rgba(255,255,255,0.1);
+    border-radius: 20px; color: var(--muted);
+    font-size: 15px; line-height: 1.5;
+  }
+  .empty-icon { font-size: 32px; margin-bottom: 10px; }
+  .request-list { display: grid; gap: 12px; }
+  .request-card {
+    background: var(--surface); border-radius: 20px; padding: 20px;
+    border: 1px solid rgba(255,255,255,0.06);
+    transition: transform 0.15s ease, border-color 0.15s ease;
+  }
+  .request-card:hover { transform: translateY(-2px); border-color: rgba(142,234,208,0.3); }
+  .rc-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+  .rc-info { flex: 1; min-width: 0; }
+  .rc-title {
+    font-size: 16px; font-weight: 700; margin-bottom: 4px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .rc-amount { color: var(--mint); font-weight: 700; font-size: 15px; }
+  .rc-amount .per { color: var(--muted); font-weight: 500; font-size: 13px; }
+  .icon-btn {
+    background: transparent; border: none; color: var(--muted);
+    padding: 6px; border-radius: 8px; cursor: pointer;
+    display: flex; align-items: center;
+    transition: color 0.15s, background 0.15s;
+  }
+  .icon-btn:hover { color: var(--danger); background: rgba(255,107,122,0.1); }
+  .icon-btn svg { width: 16px; height: 16px; }
+  .share-row {
+    display: flex; gap: 8px; background: var(--bg-deep);
+    border-radius: 12px; padding: 10px 10px 10px 14px;
+    align-items: center; margin-bottom: 10px;
+  }
+  .share-url {
+    flex: 1; font-family: ui-monospace, monospace; font-size: 11px;
+    color: var(--muted); overflow: hidden;
+    text-overflow: ellipsis; white-space: nowrap;
+  }
+  .copy-btn {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--mint); color: var(--bg);
+    border: none; border-radius: 8px; padding: 8px 12px;
+    font-family: inherit; font-size: 12px; font-weight: 700;
+    cursor: pointer; flex-shrink: 0; transition: background 0.15s;
+  }
+  .copy-btn:hover { background: var(--mint-deep); }
+  .copy-btn.copied { background: var(--coral); color: var(--bg); }
+  .copy-btn svg { width: 13px; height: 13px; }
+  .preview-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 600; color: var(--coral);
+    text-decoration: none; text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .preview-link:hover { color: var(--coral-2); }
+  .pay-wrap {
+    display: flex; flex-direction: column;
+    min-height: calc(100vh - 84px);
+    justify-content: center; padding-top: 20px;
+  }
+  .pay-card {
+    background: var(--surface); border-radius: 28px;
+    padding: 36px 28px 32px; text-align: center;
+    border: 1px solid rgba(255,255,255,0.06);
+    position: relative; overflow: hidden;
+  }
+  .pay-card::before {
+    content: ""; position: absolute; top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(142,234,208,0.15), transparent 70%);
+    pointer-events: none;
+  }
+  .pay-card::after {
+    content: ""; position: absolute; bottom: -60px; left: -60px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(255,138,107,0.12), transparent 70%);
+    pointer-events: none;
+  }
+  .pay-kicker {
+    font-size: 12px; font-weight: 600; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.12em;
+    margin-bottom: 18px; position: relative;
+  }
+  .pay-amount {
+    font-size: clamp(56px, 14vw, 80px); font-weight: 800;
+    line-height: 1; letter-spacing: -0.04em;
+    margin-bottom: 8px; position: relative;
+  }
+  .pay-amount .curr {
+    font-size: 0.4em; color: var(--mint); font-weight: 700;
+    vertical-align: super; margin-right: 6px; letter-spacing: 0;
+  }
+  .pay-title { font-size: 18px; font-weight: 600; color: var(--ink); margin-bottom: 12px; position: relative; }
+  .pay-note {
+    font-size: 14px; line-height: 1.5; color: var(--muted);
+    max-width: 36ch; margin: 0 auto 28px; position: relative;
+  }
+  .pay-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--mint); color: var(--bg);
+    text-decoration: none; padding: 18px 30px;
+    border-radius: 14px; font-weight: 700; font-size: 16px;
+    box-shadow: 0 10px 24px rgba(142,234,208,0.25);
+    transition: transform 0.15s, box-shadow 0.15s; position: relative;
+  }
+  .pay-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(142,234,208,0.35); }
+  .pay-btn svg { width: 18px; height: 18px; }
+  .pay-sub { margin-top: 20px; font-size: 12px; color: var(--muted-2); position: relative; }
+  .back-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--muted); text-decoration: none;
+    font-size: 13px; margin-top: 24px; align-self: center;
+  }
+  .back-link:hover { color: var(--ink); }
+  .nf { text-align: center; padding: 40px 20px; }
+  .nf h2 { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
+  .nf p { color: var(--muted); margin-bottom: 20px; }
+  footer { margin-top: 48px; text-align: center; font-size: 12px; color: var(--muted-2); }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .wrap > * { animation: fadeUp 0.4s ease backwards; }
+  .wrap > *:nth-child(1) { animation-delay: 0s; }
+  .wrap > *:nth-child(2) { animation-delay: 0.05s; }
+  .wrap > *:nth-child(3) { animation-delay: 0.1s; }
+  .wrap > *:nth-child(4) { animation-delay: 0.15s; }
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script>
+const LS_KEY = "padel_split_requests_v1";
+function encodeRequest(req) {
+  const json = JSON.stringify(req);
+  return btoa(unescape(encodeURIComponent(json)))
+    .replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+function decodeRequest(str) {
+  try {
+    const b64 = str.replace(/-/g, "+").replace(/_/g, "/");
+    const json = decodeURIComponent(escape(atob(b64)));
+    return JSON.parse(json);
+  } catch (e) { return null; }
+}
+function formatCHF(n) { return Number(n).toFixed(2); }
+function appendAmountCHF(link, amount) {
+  try {
+    const u = new URL(link);
+    if (!u.searchParams.has("amount")) u.searchParams.set("amount", String(amount));
+    if (!u.searchParams.has("currency")) u.searchParams.set("currency", "CHF");
+    return u.toString();
+  } catch { return link; }
+}
+function loadLocal() {
+  try { return JSON.parse(localStorage.getItem(LS_KEY) || "[]"); }
+  catch { return []; }
+}
+function saveLocal(list) { localStorage.setItem(LS_KEY, JSON.stringify(list)); }
+const icons = {
+  racket: `<svg viewBox="0 0 24 24" fill="none" stroke="#1a1b3a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="15" cy="9" r="6"/><path d="M10.5 13.5l-6 6"/><path d="M5 20l-1 1"/></svg>`,
+  plus: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`,
+  copy: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`,
+  check: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+  trash: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>`,
+  external: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`,
+  arrow: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>`,
+};
+function getRoute() {
+  const hash = window.location.hash || "";
+  const payMatch = hash.match(/^#\/pay\/(.+)$/);
+  if (payMatch) {
+    const data = decodeRequest(payMatch[1]);
+    return { view: data ? "pay" : "notfound", data };
+  }
+  return { view: "dashboard" };
+}
+window.addEventListener("hashchange", render);
+function render() {
+  const app = document.getElementById("app");
+  const route = getRoute();
+  if (route.view === "pay") return renderPay(app, route.data);
+  if (route.view === "notfound") return renderNotFound(app);
+  renderDashboard(app);
+}
+function brandHtml() {
+  return `
+    <div class="brand">
+      <div class="brand-mark">${icons.racket}</div>
+      <div class="brand-text">padel split<span class="dot-ch">.ch</span></div>
+    </div>
+  `;
+}
+function renderDashboard(app) {
+  const requests = loadLocal();
+  app.innerHTML = `
+    ${brandHtml()}
+    <h1>Court bookings,<br/><span class="accent">sorted.</span></h1>
+    <p class="lede">Create a payment request, send the link to whoever owes you, they pay via your Revolut. All in CHF.</p>
+    <div id="formSlot"></div>
+    <button class="btn-primary" id="newBtn">
+      ${icons.plus}<span>New payment request</span>
+    </button>
+    <div class="section-label">Your requests</div>
+    <div id="listSlot"></div>
+    <footer>Payments processed via Revolut</footer>
+  `;
+  document.getElementById("newBtn").addEventListener("click", () => { openForm(); });
+  renderList(requests);
+}
+function renderList(requests) {
+  const slot = document.getElementById("listSlot");
+  if (!requests.length) {
+    slot.innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">🎾</div>
+        No requests yet.<br/>Tap "New payment request" above.
+      </div>
+    `;
+    return;
+  }
+  slot.innerHTML = `
+    <div class="request-list">
+      ${requests.map(r => {
+        const shareUrl = buildShareUrl(r);
+        const shortUrl = shareUrl.length > 50 ? shareUrl.slice(0, 47) + "…" : shareUrl;
+        return `
+          <div class="request-card" data-id="${r.id}">
+            <div class="rc-top">
+              <div class="rc-info">
+                <div class="rc-title">${escapeHtml(r.title)}</div>
+                <div class="rc-amount">CHF ${formatCHF(r.amount)} <span class="per">· per person</span></div>
+              </div>
+              <button class="icon-btn" data-act="delete" data-id="${r.id}" aria-label="Delete">${icons.trash}</button>
+            </div>
+            <div class="share-row">
+              <div class="share-url">${escapeHtml(shortUrl)}</div>
+              <button class="copy-btn" data-act="copy" data-url="${escapeAttr(shareUrl)}">
+                ${icons.copy}<span>Copy</span>
+              </button>
+            </div>
+            <a class="preview-link" href="#/pay/${encodeRequest(r)}" target="_blank" rel="noopener">
+              Preview payment page →
+            </a>
+          </div>
+        `;
+      }).join("")}
+    </div>
+  `;
+  slot.querySelectorAll("[data-act='copy']").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const url = btn.dataset.url;
+      try {
+        await navigator.clipboard.writeText(url);
+        btn.classList.add("copied");
+        btn.querySelector("span").textContent = "Copied";
+        setTimeout(() => {
+          btn.classList.remove("copied");
+          btn.querySelector("span").textContent = "Copy";
+        }, 1500);
+      } catch { window.prompt("Copy this link:", url); }
+    });
+  });
+  slot.querySelectorAll("[data-act='delete']").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id = btn.dataset.id;
+      const list = loadLocal();
+      const r = list.find(x => x.id === id);
+      if (!r) return;
+      if (confirm(`Delete "${r.title}"?`)) {
+        saveLocal(list.filter(x => x.id !== id));
+        renderList(loadLocal());
+      }
+    });
+  });
+}
+function openForm() {
+  const slot = document.getElementById("formSlot");
+  slot.innerHTML = `
+    <div class="card">
+      <div class="form-head">
+        <h2>New request</h2>
+        <button class="btn-ghost" id="cancelBtn">Cancel</button>
+      </div>
+      <label class="label">What's it for?</label>
+      <input class="input" id="title" placeholder="e.g. Padel Tuesday 8pm — Court 3" />
+      <label class="label">Amount per person (CHF)</label>
+      <div class="amount-wrap">
+        <span class="currency">CHF</span>
+        <input type="number" min="0" step="0.05" id="amount" placeholder="25.00" />
+      </div>
+      <label class="label">Your Revolut payment link</label>
+      <input class="input" id="revolut" placeholder="https://revolut.me/yourhandle" />
+      <div class="help">Paste your <code>revolut.me</code> link or a Revolut payment request URL.</div>
+      <label class="label">Note (optional)</label>
+      <textarea class="input" id="note" placeholder="e.g. Please include your name in the reference"></textarea>
+      <button class="btn-primary" id="saveBtn" style="margin-top:20px" disabled>Save & get share link</button>
+    </div>
+  `;
+  const title = document.getElementById("title");
+  const amount = document.getElementById("amount");
+  const revolut = document.getElementById("revolut");
+  const note = document.getElementById("note");
+  const saveBtn = document.getElementById("saveBtn");
+  function validate() {
+    const ok = title.value.trim() &&
+               parseFloat(amount.value) > 0 &&
+               /^https?:\/\//.test(revolut.value.trim());
+    saveBtn.disabled = !ok;
+  }
+  [title, amount, revolut].forEach(el => el.addEventListener("input", validate));
+  document.getElementById("cancelBtn").addEventListener("click", () => { slot.innerHTML = ""; });
+  saveBtn.addEventListener("click", () => {
+    const req = {
+      id: Math.random().toString(36).slice(2, 8) + Date.now().toString(36).slice(-4),
+      title: title.value.trim(),
+      amount: parseFloat(amount.value),
+      currency: "CHF",
+      revolutLink: revolut.value.trim(),
+      note: note.value.trim(),
+      createdAt: Date.now(),
+    };
+    const list = loadLocal();
+    list.unshift(req);
+    saveLocal(list);
+    slot.innerHTML = "";
+    renderList(loadLocal());
+  });
+}
+function buildShareUrl(req) {
+  const base = window.location.href.split("#")[0];
+  return `${base}#/pay/${encodeRequest(req)}`;
+}
+function renderPay(app, req) {
+  const payUrl = appendAmountCHF(req.revolutLink, req.amount);
+  app.innerHTML = `
+    ${brandHtml()}
+    <div class="pay-wrap">
+      <div class="pay-card">
+        <div class="pay-kicker">You owe</div>
+        <div class="pay-amount"><span class="curr">CHF</span>${formatCHF(req.amount)}</div>
+        <div class="pay-title">${escapeHtml(req.title)}</div>
+        ${req.note ? `<div class="pay-note">${escapeHtml(req.note)}</div>` : ""}
+        <a class="pay-btn" href="${escapeAttr(payUrl)}" target="_blank" rel="noopener noreferrer">
+          Pay on Revolut ${icons.external}
+        </a>
+        <div class="pay-sub">Opens Revolut in a new tab · Secure payment</div>
+      </div>
+      <a class="back-link" href="#/">${icons.arrow} Organizer view</a>
+    </div>
+  `;
+}
+function renderNotFound(app) {
+  app.innerHTML = `
+    ${brandHtml()}
+    <div class="card nf">
+      <h2>Link not valid</h2>
+      <p>This payment link couldn't be read. It may be broken or incomplete.</p>
+      <a class="btn-ghost" href="#/">← Go to organizer</a>
+    </div>
+  `;
+}
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
+function escapeAttr(s) { return escapeHtml(s); }
+render();
+</script>
+</body>
+</html>
