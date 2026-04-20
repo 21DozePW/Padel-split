@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#1a1b3a" id="themeColorMeta" />
-<title>Padel Split — Court reimbursements made simple</title>
+<meta name="theme-color" content="#1a1b3a" />
+<title>Padel Split — Get paid back on Revolut</title>
 
 <link rel="manifest" href="/manifest.json" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -15,37 +15,22 @@
 <meta name="apple-mobile-web-app-title" content="Padel Split" />
 <meta name="mobile-web-app-capable" content="yes" />
 
-<meta property="og:type" content="website" />
-<meta property="og:title" content="Padel Split — Pay your share" />
-<meta property="og:description" content="Tap to pay your share of the padel court booking via Revolut. Fast, simple." />
-<meta property="og:image" content="https://padel-split.vercel.app/icon-512.png" />
-<meta property="og:url" content="https://padel-split.vercel.app" />
-<meta name="twitter:card" content="summary_large_image" />
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root {
     --bg:#1a1b3a; --bg-deep:#14152f; --surface:#262849; --surface-2:#2f315a;
-    --mint:#8eead0; --mint-deep:#6fd4b8; --coral:#ff8a6b; --coral-2:#ffb088;
-    --whatsapp:#25d366; --whatsapp-2:#1ebe57;
-    --ink:#ffffff; --muted:#9ea2c7; --muted-2:#6b6e94; --danger:#ff6b7a;
-    --success:#4ade80; --border:rgba(255,255,255,0.06);
-  }
-  [data-theme="light"] {
-    --bg:#f5f6fb; --bg-deep:#eaecf5; --surface:#ffffff; --surface-2:#f0f2fa;
-    --mint:#3bbf95; --mint-deep:#2fa37e; --coral:#e85d3c; --coral-2:#ff7a55;
-    --ink:#1a1b3a; --muted:#5e6285; --muted-2:#9ea2c7; --danger:#dc3848;
-    --border:rgba(0,0,0,0.08);
+    --mint:#8eead0; --mint-deep:#6fd4b8; --coral:#ff8a6b;
+    --whatsapp:#25d366;
+    --ink:#ffffff; --muted:#9ea2c7; --muted-2:#6b6e94;
+    --border:rgba(255,255,255,0.06);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body {
     background: var(--bg); color: var(--ink);
     font-family: 'Plus Jakarta Sans', -apple-system, system-ui, sans-serif;
     -webkit-font-smoothing: antialiased; min-height: 100vh;
-    transition: background-color 0.2s, color 0.2s;
   }
   body {
     background-image:
@@ -55,44 +40,17 @@
     padding: 24px 20px 60px;
     padding-top: max(24px, env(safe-area-inset-top));
   }
-  [data-theme="light"] body {
-    background-image:
-      radial-gradient(ellipse at 10% 0%, rgba(59,191,149,0.10), transparent 50%),
-      radial-gradient(ellipse at 90% 100%, rgba(232,93,60,0.08), transparent 50%);
-  }
-  .wrap { max-width: 540px; margin: 0 auto; }
+  .wrap { max-width: 480px; margin: 0 auto; }
 
-  .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-top: 8px; gap: 10px; }
-  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; padding-top: 8px; }
   .brand-mark {
     width: 38px; height: 38px; border-radius: 11px;
     background: linear-gradient(135deg, var(--mint), var(--mint-deep));
     display: grid; place-items: center;
-    box-shadow: 0 8px 24px rgba(142,234,208,0.2); flex-shrink: 0;
+    box-shadow: 0 8px 24px rgba(142,234,208,0.2);
   }
   .brand-mark svg { width: 22px; height: 22px; }
   .brand-text { font-weight: 800; font-size: 19px; letter-spacing: -0.02em; }
-  .brand-text .dot-ch { color: var(--mint); font-weight: 600; }
-
-  .top-actions { display: flex; align-items: center; gap: 6px; }
-  .top-icon-btn {
-    width: 36px; height: 36px;
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 10px; display: grid; place-items: center;
-    color: var(--muted); cursor: pointer;
-  }
-  .top-icon-btn:hover { color: var(--ink); background: var(--surface-2); }
-  .top-icon-btn svg { width: 16px; height: 16px; }
-
-  .user-chip {
-    display: flex; align-items: center; gap: 8px;
-    padding: 7px 12px; background: var(--surface);
-    border-radius: 999px; font-size: 13px; color: var(--muted);
-    border: 1px solid var(--border); cursor: pointer;
-  }
-  .user-chip:hover { background: var(--surface-2); }
-  .user-chip svg { width: 14px; height: 14px; }
-  .user-chip .name { color: var(--ink); font-weight: 600; }
 
   h1 {
     font-size: clamp(28px, 6.5vw, 38px); font-weight: 800;
@@ -102,87 +60,17 @@
     background: linear-gradient(90deg, var(--mint), var(--coral));
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
-  .lede { font-size: 14px; line-height: 1.5; color: var(--muted); margin-bottom: 24px; max-width: 44ch; }
-
-  .summary { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 24px; }
-  .stat { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px 12px; text-align: center; }
-  .stat-value { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; color: var(--ink); line-height: 1.1; }
-  .stat-value.mint { color: var(--mint); }
-  .stat-value.coral { color: var(--coral); }
-  .stat-label { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
-
-  .toolbar { display: flex; gap: 8px; margin-bottom: 14px; }
-  .search-input {
-    flex: 1; padding: 10px 14px;
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 10px; font-family: inherit; font-size: 14px;
-    color: var(--ink); outline: none;
-  }
-  .search-input::placeholder { color: var(--muted-2); }
-  .search-input:focus { border-color: var(--mint); }
-  .filter-select {
-    padding: 10px 12px; background: var(--surface);
-    border: 1px solid var(--border); border-radius: 10px;
-    font-family: inherit; font-size: 13px; color: var(--ink);
-    outline: none; cursor: pointer;
-  }
+  .lede { font-size: 14px; line-height: 1.5; color: var(--muted); margin-bottom: 24px; max-width: 42ch; }
 
   .card { background: var(--surface); border-radius: 22px; padding: 22px; border: 1px solid var(--border); }
-  .card + .card { margin-top: 14px; }
 
-  .btn-primary {
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    width: 100%; padding: 16px 20px;
-    background: var(--mint); color: var(--bg);
-    border: none; border-radius: 14px;
-    font-family: inherit; font-weight: 700; font-size: 15px;
-    cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
-    box-shadow: 0 8px 20px rgba(142,234,208,0.2);
-    text-decoration: none;
-  }
-  .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(142,234,208,0.3); }
-  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
-  .btn-primary svg { width: 17px; height: 17px; }
-
-  .btn-secondary {
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    width: 100%; padding: 14px 18px;
-    background: var(--surface-2); color: var(--ink);
-    border: 1px solid var(--border); border-radius: 12px;
-    font-family: inherit; font-weight: 600; font-size: 14px;
-    cursor: pointer; text-decoration: none;
-  }
-  .btn-secondary:hover { background: var(--bg-deep); }
-  .btn-secondary svg { width: 16px; height: 16px; }
-  .btn-secondary.danger { color: var(--danger); }
-  .btn-secondary.danger:hover { background: rgba(255,107,122,0.08); }
-
-  .btn-whatsapp {
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-    width: 100%; padding: 14px 20px;
-    background: var(--whatsapp); color: #fff;
-    border: none; border-radius: 12px;
-    font-family: inherit; font-weight: 700; font-size: 14px;
-    cursor: pointer; text-decoration: none;
-  }
-  .btn-whatsapp:hover { background: var(--whatsapp-2); transform: translateY(-2px); }
-  .btn-whatsapp svg { width: 16px; height: 16px; }
-
-  .btn-ghost {
-    background: transparent; color: var(--muted); border: none;
-    font-family: inherit; font-size: 14px; font-weight: 500;
-    cursor: pointer; padding: 8px 12px; border-radius: 10px;
-  }
-  .btn-ghost:hover { color: var(--ink); background: var(--surface-2); }
-
-  .form-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
-  .form-head h2 { font-size: 17px; font-weight: 700; letter-spacing: -0.01em; }
   .label {
     display: block; font-size: 11px; font-weight: 700; color: var(--muted);
-    margin-bottom: 8px; margin-top: 14px;
+    margin-bottom: 8px; margin-top: 16px;
     text-transform: uppercase; letter-spacing: 0.08em;
   }
   .label:first-of-type { margin-top: 0; }
+
   .input {
     width: 100%; padding: 13px 15px;
     background: var(--bg-deep); border: 1px solid var(--border);
@@ -192,13 +80,14 @@
   .input:focus { border-color: var(--mint); background: var(--surface-2); }
   .input::placeholder { color: var(--muted-2); }
   textarea.input { min-height: 64px; resize: vertical; }
+
   .amount-wrap {
     display: flex; align-items: center;
     background: var(--bg-deep); border: 1px solid var(--border);
     border-radius: 11px; padding: 0 14px;
   }
   .amount-wrap:focus-within { border-color: var(--mint); }
-  .amount-wrap select.currency {
+  .amount-wrap select {
     appearance: none; background: transparent; border: none;
     color: var(--mint); font-weight: 700; font-size: 14px;
     padding: 12px 18px 12px 0;
@@ -213,1305 +102,209 @@
   }
 
   .help { font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.5; }
-  .help code {
-    background: var(--bg-deep); color: var(--mint);
-    padding: 2px 6px; border-radius: 4px;
-    font-size: 11px; font-family: ui-monospace, monospace;
+
+  .preview {
+    margin-top: 22px;
+    background: var(--bg-deep); border: 1px solid var(--border);
+    border-radius: 14px; padding: 14px 16px;
+    font-size: 14px; line-height: 1.5; color: var(--ink);
+    white-space: pre-wrap; word-break: break-word;
+    min-height: 80px;
+  }
+  .preview .kicker {
+    display: block; font-size: 10px; font-weight: 700;
+    color: var(--muted); text-transform: uppercase;
+    letter-spacing: 0.1em; margin-bottom: 8px;
   }
 
-  .seg { display: flex; gap: 4px; background: var(--bg-deep); border-radius: 10px; padding: 4px; }
-  .seg-opt {
-    flex: 1; padding: 8px; background: transparent;
-    border: none; border-radius: 7px;
-    font-family: inherit; font-size: 13px; font-weight: 600;
-    color: var(--muted); cursor: pointer;
-  }
-  .seg-opt.active { background: var(--surface-2); color: var(--ink); }
+  .actions { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
 
-  .names-list { display: flex; flex-direction: column; gap: 6px; }
-  .name-row { display: flex; gap: 6px; }
-  .name-row .input { padding: 10px 12px; font-size: 14px; }
-  .name-row .icon-btn { background: var(--bg-deep); }
-  .add-name-btn {
-    background: transparent; color: var(--mint);
-    border: 1px dashed var(--mint); border-radius: 10px;
-    padding: 8px; font-family: inherit; font-size: 13px; font-weight: 600;
-    cursor: pointer; margin-top: 4px;
-  }
-
-  .section-label {
-    display: flex; align-items: center; gap: 10px;
-    font-size: 11px; font-weight: 700; color: var(--muted);
-    text-transform: uppercase; letter-spacing: 0.1em;
-    margin: 28px 0 12px;
-  }
-  .section-label::before { content: ""; width: 6px; height: 6px; background: var(--coral); border-radius: 50%; }
-
-  .empty {
-    text-align: center; padding: 32px 24px;
-    border: 1.5px dashed var(--border);
-    border-radius: 18px; color: var(--muted);
-    font-size: 14px; line-height: 1.5;
-  }
-  .empty-icon { font-size: 28px; margin-bottom: 8px; }
-
-  .request-list { display: grid; gap: 12px; }
-  .request-card { background: var(--surface); border-radius: 18px; padding: 18px; border: 1px solid var(--border); }
-  .request-card.archived { opacity: 0.65; }
-  .request-card:hover { border-color: rgba(142,234,208,0.3); }
-  .rc-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 12px; }
-  .rc-info { flex: 1; min-width: 0; }
-  .rc-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .rc-meta-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 13px; }
-  .rc-amount { color: var(--mint); font-weight: 700; }
-  .rc-date { color: var(--muted); font-size: 12px; }
-  .rc-archived-tag { background: var(--bg-deep); color: var(--muted); padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-
-  .icon-btn {
-    background: transparent; border: none; color: var(--muted);
-    padding: 6px; border-radius: 8px; cursor: pointer;
-    display: flex; align-items: center;
-  }
-  .icon-btn:hover { color: var(--ink); background: var(--surface-2); }
-  .icon-btn.danger:hover { color: var(--danger); background: rgba(255,107,122,0.1); }
-  .icon-btn svg { width: 16px; height: 16px; }
-
-  .menu-wrap { position: relative; }
-  .menu {
-    position: absolute; top: calc(100% + 4px); right: 0;
-    background: var(--surface-2); border: 1px solid var(--border);
-    border-radius: 12px; padding: 4px; min-width: 180px;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
-    z-index: 100; display: none;
-  }
-  .menu.open { display: block; }
-  .menu-item {
-    display: flex; align-items: center; gap: 10px;
-    width: 100%; padding: 10px 12px;
-    background: transparent; border: none; border-radius: 8px;
-    font-family: inherit; font-size: 14px; color: var(--ink);
-    text-align: left; cursor: pointer;
-  }
-  .menu-item:hover { background: var(--bg-deep); }
-  .menu-item.danger { color: var(--danger); }
-  .menu-item svg { width: 14px; height: 14px; opacity: 0.8; }
-
-  .progress-wrap { margin-bottom: 12px; }
-  .progress-info { display: flex; justify-content: space-between; align-items: center; font-size: 12px; margin-bottom: 6px; }
-  .progress-text { color: var(--muted); font-weight: 600; }
-  .progress-amount { color: var(--mint); font-weight: 700; }
-  .progress-bar { height: 6px; background: var(--bg-deep); border-radius: 3px; overflow: hidden; }
-  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--mint), var(--mint-deep)); border-radius: 3px; transition: width 0.4s ease; }
-  .progress-fill.complete { background: linear-gradient(90deg, var(--success), var(--mint)); }
-
-  .payers-summary { background: var(--bg-deep); border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; }
-  .payers-list { display: flex; flex-wrap: wrap; gap: 6px; }
-  .payer-chip {
-    display: inline-flex; align-items: center; gap: 5px;
-    background: rgba(142,234,208,0.12); color: var(--mint);
-    border: 1px solid rgba(142,234,208,0.25);
-    padding: 4px 8px; border-radius: 999px;
-    font-size: 12px; font-weight: 600;
-  }
-  .payer-chip svg { width: 11px; height: 11px; }
-  .payer-chip .x { cursor: pointer; opacity: 0.6; padding: 0 0 0 2px; background: none; border: none; color: inherit; }
-  .payer-chip .x:hover { opacity: 1; color: var(--danger); }
-  .payer-chip-pending {
-    display: inline-flex; align-items: center; gap: 5px;
-    background: var(--surface-2); color: var(--muted);
-    border: 1px solid var(--border);
-    padding: 4px 8px; border-radius: 999px;
-    font-size: 12px; font-weight: 500;
-  }
-  .payers-empty { font-size: 12px; color: var(--muted-2); font-style: italic; }
-  .add-payer-row { display: flex; gap: 6px; margin-top: 8px; }
-  .add-payer-row input {
-    flex: 1; padding: 8px 12px;
-    background: var(--surface-2); border: 1px solid var(--border);
-    border-radius: 8px; font-size: 13px; color: var(--ink);
-    outline: none; font-family: inherit;
-  }
-  .add-payer-row input:focus { border-color: var(--mint); }
-  .add-payer-row button {
-    padding: 8px 14px; background: var(--mint); color: var(--bg);
-    border: none; border-radius: 8px;
-    font-family: inherit; font-size: 13px; font-weight: 700;
-    cursor: pointer;
-  }
-  .add-payer-row button:disabled { opacity: 0.4; cursor: not-allowed; }
-
-  .rc-actions { display: flex; flex-direction: column; gap: 8px; }
-  .rc-action-row { display: flex; gap: 8px; }
-  .copy-btn, .preview-btn, .remind-btn {
-    display: flex; align-items: center; justify-content: center; gap: 6px;
-    flex: 1;
-    background: var(--surface-2); color: var(--ink);
-    border: 1px solid var(--border); border-radius: 10px;
-    padding: 9px 10px;
-    font-family: inherit; font-size: 12px; font-weight: 600;
-    cursor: pointer; text-decoration: none;
-  }
-  .copy-btn:hover, .preview-btn:hover, .remind-btn:hover { background: var(--bg-deep); }
-  .copy-btn.copied { background: var(--mint); color: var(--bg); border-color: var(--mint); }
-  .copy-btn svg, .preview-btn svg, .remind-btn svg { width: 13px; height: 13px; }
-  .preview-btn { color: var(--coral); border-color: rgba(255,138,107,0.3); }
-  .preview-btn:hover { background: rgba(255,138,107,0.1); }
-  .remind-btn { color: var(--whatsapp); border-color: rgba(37,211,102,0.3); }
-  .remind-btn:hover { background: rgba(37,211,102,0.1); }
-
-  /* PAY VIEW (the one payers see) */
-  .pay-wrap { display: flex; flex-direction: column; min-height: calc(100vh - 84px); justify-content: center; padding-top: 12px; }
-  .pay-card {
-    background: var(--surface); border-radius: 26px;
-    padding: 32px 26px 28px; text-align: center;
-    border: 1px solid var(--border);
-    position: relative; overflow: hidden;
-  }
-  .pay-card::before { content: ""; position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(142,234,208,0.15), transparent 70%); pointer-events: none; }
-  .pay-card::after { content: ""; position: absolute; bottom: -60px; left: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(255,138,107,0.12), transparent 70%); pointer-events: none; }
-  .pay-from { font-size: 12px; color: var(--muted); margin-bottom: 14px; position: relative; }
-  .pay-from .name { color: var(--ink); font-weight: 700; }
-  .pay-kicker { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 14px; position: relative; }
-  .pay-amount { font-size: clamp(56px, 15vw, 84px); font-weight: 800; line-height: 1; letter-spacing: -0.04em; margin-bottom: 8px; position: relative; }
-  .pay-amount .curr { font-size: 0.4em; color: var(--mint); font-weight: 700; vertical-align: super; margin-right: 6px; letter-spacing: 0; }
-  .pay-title { font-size: 17px; font-weight: 600; margin-bottom: 10px; position: relative; }
-  .pay-booking { font-size: 13px; color: var(--coral); font-weight: 600; margin-bottom: 14px; position: relative; }
-  .pay-note { font-size: 13px; line-height: 1.5; color: var(--muted); max-width: 36ch; margin: 0 auto 24px; position: relative; }
-  .pay-btn {
+  .btn-whatsapp {
     display: flex; align-items: center; justify-content: center; gap: 10px;
-    width: 100%; max-width: 340px; margin: 0 auto;
-    background: var(--mint); color: var(--bg);
-    text-decoration: none; padding: 20px 28px;
-    border-radius: 14px; font-weight: 800; font-size: 17px;
-    box-shadow: 0 12px 28px rgba(142,234,208,0.3);
-    transition: transform 0.15s, box-shadow 0.15s; position: relative;
-    border: none; font-family: inherit; cursor: pointer;
+    width: 100%; padding: 16px 20px;
+    background: var(--whatsapp); color: #fff;
+    border: none; border-radius: 14px;
+    font-family: inherit; font-weight: 700; font-size: 15px;
+    cursor: pointer; text-decoration: none;
+    box-shadow: 0 8px 20px rgba(37,211,102,0.25);
+    transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
   }
-  .pay-btn:hover { transform: translateY(-2px); box-shadow: 0 16px 36px rgba(142,234,208,0.4); }
-  .pay-btn svg { width: 18px; height: 18px; }
-  .pay-sub { margin-top: 14px; font-size: 11px; color: var(--muted-2); position: relative; }
+  .btn-whatsapp:hover:not(.disabled) { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(37,211,102,0.35); }
+  .btn-whatsapp.disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; box-shadow: none; }
+  .btn-whatsapp svg { width: 17px; height: 17px; }
 
-  .selfreport { margin-top: 22px; padding: 18px; background: var(--bg-deep); border-radius: 14px; position: relative; }
-  .selfreport h3 { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 10px; text-align: center; }
-  .selfreport .input { background: var(--surface); text-align: center; margin-bottom: 8px; }
-  .name-options { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 10px; }
-  .name-option {
-    background: var(--surface); border: 1px solid var(--border);
-    color: var(--ink); padding: 6px 12px; border-radius: 999px;
-    font-size: 12px; font-weight: 600; cursor: pointer;
-    font-family: inherit;
-  }
-  .name-option:hover { background: var(--surface-2); }
-  .name-option.disabled { opacity: 0.35; cursor: not-allowed; text-decoration: line-through; }
-  .btn-confirm {
-    width: 100%; padding: 13px;
-    background: var(--coral); color: #fff;
-    border: none; border-radius: 11px;
-    font-family: inherit; font-weight: 700; font-size: 14px;
+  .btn-secondary {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; padding: 13px 18px;
+    background: var(--surface-2); color: var(--ink);
+    border: 1px solid var(--border); border-radius: 12px;
+    font-family: inherit; font-weight: 600; font-size: 14px;
     cursor: pointer;
   }
-  .btn-confirm:hover { background: var(--coral-2); }
-  .btn-confirm:disabled { opacity: 0.4; cursor: not-allowed; }
-  .selfreport-success { text-align: center; padding: 14px; color: var(--success); font-weight: 600; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-  .selfreport-success svg { width: 17px; height: 17px; }
-  .already-paid-list { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
-  .already-paid-list .label-mini { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; text-align: center; margin-bottom: 6px; }
-  .already-paid-list .chips { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; }
+  .btn-secondary:hover:not(:disabled) { background: var(--bg-deep); }
+  .btn-secondary:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-secondary.copied { background: var(--mint); color: var(--bg); border-color: var(--mint); }
+  .btn-secondary svg { width: 15px; height: 15px; }
 
-  .nf { text-align: center; padding: 36px 20px; }
-  .nf h2 { font-size: 22px; font-weight: 700; margin-bottom: 10px; }
-  .nf p { color: var(--muted); margin-bottom: 18px; }
-
-  .auth-wrap { display: flex; flex-direction: column; min-height: calc(100vh - 84px); justify-content: center; }
-  .auth-tabs { display: flex; gap: 4px; background: var(--bg-deep); border-radius: 11px; padding: 4px; margin-bottom: 18px; }
-  .auth-tab { flex: 1; padding: 9px; background: transparent; border: none; border-radius: 8px; font-family: inherit; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; }
-  .auth-tab.active { background: var(--surface-2); color: var(--ink); }
-  .auth-error { background: rgba(255,107,122,0.1); border: 1px solid rgba(255,107,122,0.3); color: var(--danger); padding: 11px 14px; border-radius: 10px; font-size: 13px; margin-bottom: 12px; }
-  .auth-success { background: rgba(142,234,208,0.1); border: 1px solid rgba(142,234,208,0.3); color: var(--mint); padding: 11px 14px; border-radius: 10px; font-size: 13px; margin-bottom: 12px; }
-  .forgot-link { display: block; text-align: center; margin-top: 14px; color: var(--muted); font-size: 13px; text-decoration: none; cursor: pointer; background: none; border: none; font-family: inherit; width: 100%; padding: 4px; }
-  .forgot-link:hover { color: var(--ink); }
-
-  .loading { text-align: center; padding: 60px 20px; color: var(--muted); }
-  .spinner {
-    display: inline-block; width: 22px; height: 22px;
-    border: 2.5px solid rgba(255,255,255,0.1);
-    border-top-color: var(--mint);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
-  [data-theme="light"] .spinner { border-color: rgba(0,0,0,0.08); border-top-color: var(--mint); }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  .modal-backdrop {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.6);
-    display: flex; align-items: center; justify-content: center;
-    padding: 20px; z-index: 200;
-  }
-  .modal { background: var(--surface); border-radius: 22px; padding: 24px; max-width: 420px; width: 100%; border: 1px solid var(--border); max-height: calc(100vh - 40px); overflow-y: auto; }
-  .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-  .modal-head h2 { font-size: 17px; font-weight: 700; }
-
-  footer { margin-top: 40px; text-align: center; font-size: 11px; color: var(--muted-2); }
-
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-  .fade-in { animation: fadeUp 0.4s ease backwards; }
-
-  .just-created {
-    background: linear-gradient(135deg, rgba(142,234,208,0.15), rgba(255,138,107,0.1));
-    border: 1px solid rgba(142,234,208,0.3);
-    border-radius: 14px;
-    padding: 11px 13px; margin-bottom: 12px;
-    font-size: 13px; color: var(--mint);
-    display: flex; align-items: center; gap: 8px;
-  }
-  .just-created svg { width: 15px; height: 15px; flex-shrink: 0; }
-
-  .toast {
-    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-    background: var(--surface-2); color: var(--ink);
-    padding: 12px 18px; border-radius: 12px;
-    border: 1px solid var(--border);
-    font-size: 14px; font-weight: 600;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-    z-index: 300; opacity: 0; pointer-events: none;
-    transition: opacity 0.2s, transform 0.2s;
-  }
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(-4px); }
+  footer { margin-top: 32px; text-align: center; font-size: 11px; color: var(--muted-2); }
 </style>
 </head>
 <body>
-<div class="wrap" id="app">
-  <div class="loading"><div class="spinner"></div></div>
+<div class="wrap">
+  <div class="brand">
+    <div class="brand-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#1a1b3a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="15" cy="9" r="6"/><path d="M10.5 13.5l-6 6"/><path d="M5 20l-1 1"/>
+      </svg>
+    </div>
+    <div class="brand-text">padel split</div>
+  </div>
+
+  <h1>Get paid back<br/><span class="accent">on Revolut.</span></h1>
+  <p class="lede">Fill in the details, tap once — WhatsApp opens with your Revolut payment link ready to send.</p>
+
+  <div class="card">
+    <label class="label" for="revolut">Your Revolut handle or link</label>
+    <input class="input" id="revolut" placeholder="@pedro or revolut.me/pedro" autocomplete="off" />
+    <div class="help">Saved on your device so you don't retype it.</div>
+
+    <label class="label" for="amount">Amount per person</label>
+    <div class="amount-wrap">
+      <select id="currency">
+        <option value="CHF">CHF</option>
+        <option value="EUR">EUR</option>
+        <option value="USD">USD</option>
+        <option value="GBP">GBP</option>
+      </select>
+      <input type="number" inputmode="decimal" min="0" step="0.05" id="amount" placeholder="25.00" />
+    </div>
+
+    <label class="label" for="title">What's it for? (optional)</label>
+    <input class="input" id="title" placeholder="Padel Tuesday 8pm" autocomplete="off" />
+
+    <label class="label" for="note">Note (optional)</label>
+    <textarea class="input" id="note" placeholder="e.g. Court 3 — include your name in the reference"></textarea>
+
+    <div class="preview" id="preview"><span class="kicker">Message preview</span><span id="previewBody">Fill in your Revolut and amount to see a preview.</span></div>
+
+    <div class="actions">
+      <a class="btn-whatsapp disabled" id="whatsappBtn" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        <span>Send via WhatsApp</span>
+      </a>
+      <button class="btn-secondary" id="copyBtn" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        <span>Copy message</span>
+      </button>
+    </div>
+  </div>
+
+  <footer>Payments handled by Revolut · No account needed</footer>
 </div>
-<div class="toast" id="toast"></div>
 
 <script>
-const SUPABASE_URL = "https://ludxfnlnoypijsgozopm.supabase.co";
-const SUPABASE_KEY = "sb_publishable_wgXkC6usjjxcNBaobLPGFA_sf0fFed4";
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-const PAYER_NAME_KEY = "padel_split_payer_name";
+const REVOLUT_KEY = "padel_split_revolut";
 
-let currentUser = null;
-let currentProfile = null;
-let justCreatedId = null;
-let authMode = "login";
-let currentFilter = "active";
-let currentSearch = "";
-let currentSort = "newest";
+const $ = (id) => document.getElementById(id);
+const revolutEl = $("revolut");
+const amountEl = $("amount");
+const currencyEl = $("currency");
+const titleEl = $("title");
+const noteEl = $("note");
+const previewBody = $("previewBody");
+const whatsappBtn = $("whatsappBtn");
+const copyBtn = $("copyBtn");
 
-const icons = {
-  racket: `<svg viewBox="0 0 24 24" fill="none" stroke="#1a1b3a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="15" cy="9" r="6"/><path d="M10.5 13.5l-6 6"/><path d="M5 20l-1 1"/></svg>`,
-  plus: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`,
-  copy: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`,
-  check: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
-  trash: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>`,
-  external: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`,
-  arrow: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>`,
-  eye: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`,
-  whatsapp: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>`,
-  user: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
-  edit: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`,
-  duplicate: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`,
-  archive: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>`,
-  unarchive: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 8 21 8 21 21 3 21 3 8"/><polyline points="8 12 12 8 16 12"/><line x1="12" y1="16" x2="12" y2="8"/></svg>`,
-  sun: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`,
-  moon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`,
-  more: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>`,
-  share: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>`,
-  bell: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>`,
-  x: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
-};
+revolutEl.value = localStorage.getItem(REVOLUT_KEY) || "";
 
-function formatMoney(n, currency) {
-  const num = Number(n).toFixed(2);
-  return currency === 'CHF' ? `CHF ${num}` : (currency === 'EUR' ? `€${num}` : (currency === 'USD' ? `$${num}` : `${currency} ${num}`));
-}
-function appendAmount(link, amount, currency) {
-  try {
-    const u = new URL(link);
-    if (!u.searchParams.has("amount")) u.searchParams.set("amount", String(amount));
-    if (!u.searchParams.has("currency")) u.searchParams.set("currency", currency);
-    return u.toString();
-  } catch { return link; }
-}
-function escapeHtml(s) {
-  return String(s == null ? '' : s)
-    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-}
-function escapeAttr(s) { return escapeHtml(s); }
-function buildShareUrl(requestId) {
-  const base = window.location.href.split("#")[0].split("?")[0];
-  return `${base}?r=${requestId}`;
-}
-function getDefaultMessageTemplate() {
-  return `🎾 *{title}*\n\n💰 Your share: *{amount}*{booking}{note}\n\nTap to pay:\n{url}`;
-}
-function buildWhatsAppMessage(req, shareUrl) {
-  const template = req.message_template || (currentProfile && currentProfile.default_message_template) || getDefaultMessageTemplate();
-  const bookingStr = req.booking_date ? `\n📅 ${formatBookingDate(req.booking_date)}` : '';
-  const noteStr = req.note ? `\n📝 ${req.note}` : '';
-  return template
-    .replace(/\{title\}/g, req.title)
-    .replace(/\{amount\}/g, formatMoney(req.amount, req.currency))
-    .replace(/\{booking\}/g, bookingStr)
-    .replace(/\{note\}/g, noteStr)
-    .replace(/\{url\}/g, shareUrl);
-}
-function buildReminderMessage(req, shareUrl, unpaidNames) {
-  const namesStr = unpaidNames && unpaidNames.length ? ` (${unpaidNames.join(', ')})` : '';
-  return `👋 Friendly reminder${namesStr} — still waiting for your share of *${req.title}*: *${formatMoney(req.amount, req.currency)}*. Thanks!\n\n${shareUrl}`;
-}
-function buildWhatsAppUrl(req, shareUrl) {
-  return `https://wa.me/?text=${encodeURIComponent(buildWhatsAppMessage(req, shareUrl))}`;
-}
-function formatBookingDate(d) {
-  if (!d) return '';
-  const date = new Date(d);
-  return date.toLocaleString(undefined, {
-    weekday: 'short', day: 'numeric', month: 'short',
-    hour: '2-digit', minute: '2-digit'
-  });
-}
-function brandHtml() {
-  return `<div class="brand"><div class="brand-mark">${icons.racket}</div><div class="brand-text">padel split<span class="dot-ch">.ch</span></div></div>`;
-}
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2200);
-}
-function applyTheme(theme) {
-  document.documentElement.setAttribute('data-theme', theme);
-  const meta = document.getElementById('themeColorMeta');
-  if (meta) meta.setAttribute('content', theme === 'light' ? '#f5f6fb' : '#1a1b3a');
-}
-function getDisplayName() {
-  if (currentProfile && currentProfile.display_name) return currentProfile.display_name;
-  if (currentUser) return currentUser.email.split('@')[0];
-  return '';
-}
-function getRoute() {
-  const params = new URLSearchParams(window.location.search);
-  const hash = window.location.hash;
-  if (hash && hash.startsWith('#reset-password')) return { view: 'reset' };
-  const payId = params.get("r");
-  if (payId) return { view: "pay", id: payId };
-  return { view: "dashboard" };
+function formatMoney(amount, currency) {
+  const n = Number(amount).toFixed(2);
+  if (currency === "EUR") return `€${n}`;
+  if (currency === "USD") return `$${n}`;
+  if (currency === "GBP") return `£${n}`;
+  return `${currency} ${n}`;
 }
 
-async function render() {
-  const app = document.getElementById("app");
-  const route = getRoute();
-  if (route.view === "pay") return renderPayView(app, route.id);
-  if (route.view === "reset") return renderResetPassword(app);
-  if (!currentUser) return renderAuth(app);
-  return renderDashboard(app);
-}
-
-// =========================================================
-// AUTH
-// =========================================================
-function renderAuth(app) {
-  app.innerHTML = `
-    <div class="top-bar fade-in">
-      ${brandHtml()}
-      <button class="top-icon-btn" id="themeBtn" title="Toggle theme">${icons.moon}</button>
-    </div>
-    <div class="auth-wrap fade-in">
-      <h1>Welcome to <span class="accent">padel split</span></h1>
-      <p class="lede">Sign in to manage your payment requests and track who has paid.</p>
-      <div class="card">
-        <div class="auth-tabs">
-          <button class="auth-tab ${authMode==='login'?'active':''}" data-mode="login">Log in</button>
-          <button class="auth-tab ${authMode==='signup'?'active':''}" data-mode="signup">Sign up</button>
-        </div>
-        <div id="authMsg"></div>
-        <label class="label">Email</label>
-        <input class="input" type="email" id="authEmail" placeholder="you@example.com" autocomplete="email" />
-        <label class="label">Password</label>
-        <input class="input" type="password" id="authPassword" placeholder="At least 6 characters" autocomplete="${authMode==='signup'?'new-password':'current-password'}" />
-        <button class="btn-primary" id="authBtn" style="margin-top:18px">${authMode === 'login' ? 'Log in' : 'Create account'}</button>
-        ${authMode === 'login' ? `<button class="forgot-link" id="forgotBtn">Forgot password?</button>` : ''}
-      </div>
-    </div>
-  `;
-  document.querySelectorAll(".auth-tab").forEach(t => {
-    t.addEventListener("click", () => { authMode = t.dataset.mode; render(); });
-  });
-  document.getElementById("authBtn").addEventListener("click", handleAuth);
-  document.getElementById("authPassword").addEventListener("keydown", (e) => { if (e.key === "Enter") handleAuth(); });
-  document.getElementById("themeBtn").addEventListener("click", toggleTheme);
-  if (authMode === 'login') {
-    document.getElementById("forgotBtn").addEventListener("click", openForgotPassword);
-  }
-}
-async function handleAuth() {
-  const email = document.getElementById("authEmail").value.trim();
-  const password = document.getElementById("authPassword").value;
-  const msgEl = document.getElementById("authMsg");
-  const btn = document.getElementById("authBtn");
-  if (!email || !password) { msgEl.innerHTML = `<div class="auth-error">Please enter email and password.</div>`; return; }
-  if (password.length < 6) { msgEl.innerHTML = `<div class="auth-error">Password must be at least 6 characters.</div>`; return; }
-  btn.disabled = true;
-  btn.innerHTML = `<div class="spinner" style="width:18px;height:18px;border-color:rgba(0,0,0,0.2);border-top-color:#1a1b3a"></div>`;
-  try {
-    let result;
-    if (authMode === "signup") result = await sb.auth.signUp({ email, password });
-    else result = await sb.auth.signInWithPassword({ email, password });
-    if (result.error) {
-      msgEl.innerHTML = `<div class="auth-error">${escapeHtml(result.error.message)}</div>`;
-      btn.disabled = false; btn.innerHTML = authMode === 'login' ? 'Log in' : 'Create account';
-      return;
-    }
-    if (authMode === "signup" && !result.data.session) {
-      msgEl.innerHTML = `<div class="auth-success">Account created. Check your email to confirm, then log in.</div>`;
-      authMode = "login";
-      btn.disabled = false; btn.innerHTML = 'Log in';
-      return;
-    }
-    currentUser = result.data.user;
-    await loadProfile();
-    render();
-  } catch (e) {
-    msgEl.innerHTML = `<div class="auth-error">Something went wrong: ${escapeHtml(e.message)}</div>`;
-    btn.disabled = false; btn.innerHTML = authMode === 'login' ? 'Log in' : 'Create account';
-  }
-}
-function openForgotPassword() {
-  showModal(`
-    <div class="modal-head"><h2>Reset password</h2><button class="icon-btn" data-close>${icons.x}</button></div>
-    <p class="help" style="margin-bottom:14px">Enter your email — we'll send you a reset link.</p>
-    <div id="forgotMsg"></div>
-    <input class="input" type="email" id="forgotEmail" placeholder="you@example.com" />
-    <button class="btn-primary" id="forgotSendBtn" style="margin-top:14px">Send reset link</button>
-  `);
-  document.getElementById("forgotSendBtn").addEventListener("click", async () => {
-    const email = document.getElementById("forgotEmail").value.trim();
-    const msg = document.getElementById("forgotMsg");
-    if (!email) { msg.innerHTML = `<div class="auth-error">Enter your email.</div>`; return; }
-    const btn = document.getElementById("forgotSendBtn");
-    btn.disabled = true;
-    btn.innerHTML = `<div class="spinner" style="width:18px;height:18px;border-color:rgba(0,0,0,0.2);border-top-color:#1a1b3a"></div>`;
-    const redirectTo = window.location.origin + '/#reset-password';
-    const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo });
-    if (error) {
-      msg.innerHTML = `<div class="auth-error">${escapeHtml(error.message)}</div>`;
-      btn.disabled = false; btn.innerHTML = 'Send reset link';
-    } else {
-      msg.innerHTML = `<div class="auth-success">Check your email for a reset link.</div>`;
-      btn.style.display = 'none';
-    }
-  });
-}
-function renderResetPassword(app) {
-  app.innerHTML = `
-    <div class="top-bar fade-in">${brandHtml()}</div>
-    <div class="auth-wrap fade-in">
-      <h1>Set a new <span class="accent">password</span></h1>
-      <p class="lede">Choose a new password to access your account.</p>
-      <div class="card">
-        <div id="resetMsg"></div>
-        <label class="label">New password</label>
-        <input class="input" type="password" id="newPw" placeholder="At least 6 characters" />
-        <label class="label">Confirm new password</label>
-        <input class="input" type="password" id="newPw2" placeholder="Repeat password" />
-        <button class="btn-primary" id="resetBtn" style="margin-top:18px">Update password</button>
-      </div>
-    </div>
-  `;
-  document.getElementById("resetBtn").addEventListener("click", async () => {
-    const pw = document.getElementById("newPw").value;
-    const pw2 = document.getElementById("newPw2").value;
-    const msg = document.getElementById("resetMsg");
-    if (pw.length < 6) { msg.innerHTML = `<div class="auth-error">Password must be at least 6 characters.</div>`; return; }
-    if (pw !== pw2) { msg.innerHTML = `<div class="auth-error">Passwords don't match.</div>`; return; }
-    const btn = document.getElementById("resetBtn");
-    btn.disabled = true;
-    btn.innerHTML = `<div class="spinner" style="width:18px;height:18px;border-color:rgba(0,0,0,0.2);border-top-color:#1a1b3a"></div>`;
-    const { error } = await sb.auth.updateUser({ password: pw });
-    if (error) {
-      msg.innerHTML = `<div class="auth-error">${escapeHtml(error.message)}</div>`;
-      btn.disabled = false; btn.innerHTML = 'Update password';
-    } else {
-      msg.innerHTML = `<div class="auth-success">Password updated! Redirecting...</div>`;
-      setTimeout(() => { window.location.href = '/'; }, 1500);
-    }
-  });
-}
-async function handleLogout() {
-  await sb.auth.signOut();
-  currentUser = null; currentProfile = null;
-  render();
-}
-async function loadProfile() {
-  if (!currentUser) return;
-  try {
-    const { data } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
-    currentProfile = data;
-    if (data && data.theme) applyTheme(data.theme);
-  } catch (e) { console.error('Profile load failed:', e); }
-}
-async function toggleTheme() {
-  const current = document.documentElement.getAttribute('data-theme') || 'dark';
-  const next = current === 'dark' ? 'light' : 'dark';
-  applyTheme(next);
-  if (currentUser && currentProfile) {
-    currentProfile.theme = next;
-    await sb.from('profiles').update({ theme: next }).eq('id', currentUser.id);
+function buildRevolutUrl(input, amount, currency) {
+  const raw = (input || "").trim();
+  if (!raw) return "";
+  let url;
+  if (/^https?:\/\//i.test(raw)) {
+    try { url = new URL(raw); } catch { return ""; }
   } else {
-    localStorage.setItem('theme', next);
+    const handle = raw.replace(/^@/, "").replace(/\s+/g, "");
+    if (!handle) return "";
+    url = new URL(`https://revolut.me/${handle}`);
   }
-  render();
+  if (amount > 0) url.searchParams.set("amount", String(amount));
+  if (currency) url.searchParams.set("currency", currency);
+  return url.toString();
 }
 
-// =========================================================
-// MODAL
-// =========================================================
-function showModal(html) {
-  const existing = document.getElementById('modalBackdrop');
-  if (existing) existing.remove();
-  const backdrop = document.createElement('div');
-  backdrop.className = 'modal-backdrop';
-  backdrop.id = 'modalBackdrop';
-  backdrop.innerHTML = `<div class="modal" id="modal">${html}</div>`;
-  document.body.appendChild(backdrop);
-  backdrop.addEventListener('click', (e) => {
-    if (e.target === backdrop || e.target.closest('[data-close]')) closeModal();
-  });
-}
-function closeModal() {
-  const m = document.getElementById('modalBackdrop');
-  if (m) m.remove();
-}
+function buildMessage() {
+  const amount = parseFloat(amountEl.value);
+  const currency = currencyEl.value;
+  const payUrl = buildRevolutUrl(revolutEl.value, amount, currency);
+  if (!payUrl || !(amount > 0)) return null;
 
-// =========================================================
-// DASHBOARD
-// =========================================================
-async function renderDashboard(app) {
-  const themeIcon = (document.documentElement.getAttribute('data-theme') === 'light') ? icons.moon : icons.sun;
-  const name = getDisplayName();
-  app.innerHTML = `
-    <div class="top-bar fade-in">
-      ${brandHtml()}
-      <div class="top-actions">
-        <button class="top-icon-btn" id="themeBtn" title="Toggle theme">${themeIcon}</button>
-        <div class="user-chip" id="userChip">${icons.user}<span class="name">${escapeHtml(name)}</span></div>
-      </div>
-    </div>
-    <div class="fade-in">
-      <h1>Court bookings,<br/><span class="accent">sorted.</span></h1>
-      <p class="lede">Create a payment request, send it via WhatsApp, track who paid.</p>
-      <div id="summarySlot"></div>
-      <div id="formSlot"></div>
-      <button class="btn-primary" id="newBtn">${icons.plus}<span>New payment request</span></button>
-      <div class="section-label">Your requests</div>
-      <div class="toolbar">
-        <input class="search-input" id="searchInput" placeholder="Search…" value="${escapeAttr(currentSearch)}" />
-        <select class="filter-select" id="filterSelect">
-          <option value="active" ${currentFilter==='active'?'selected':''}>Active</option>
-          <option value="archived" ${currentFilter==='archived'?'selected':''}>Archived</option>
-          <option value="all" ${currentFilter==='all'?'selected':''}>All</option>
-        </select>
-        <select class="filter-select" id="sortSelect">
-          <option value="newest" ${currentSort==='newest'?'selected':''}>Newest</option>
-          <option value="oldest" ${currentSort==='oldest'?'selected':''}>Oldest</option>
-          <option value="amount-high" ${currentSort==='amount-high'?'selected':''}>$ High</option>
-          <option value="amount-low" ${currentSort==='amount-low'?'selected':''}>$ Low</option>
-        </select>
-      </div>
-      <div id="listSlot"><div class="loading"><div class="spinner"></div></div></div>
-      <footer>Payments processed via Revolut</footer>
-    </div>
-  `;
-  document.getElementById("themeBtn").addEventListener("click", toggleTheme);
-  document.getElementById("userChip").addEventListener("click", openAccountModal);
-  document.getElementById("newBtn").addEventListener("click", () => openForm());
-  document.getElementById("searchInput").addEventListener("input", (e) => { currentSearch = e.target.value; loadAndRenderList(); });
-  document.getElementById("filterSelect").addEventListener("change", (e) => { currentFilter = e.target.value; loadAndRenderList(); });
-  document.getElementById("sortSelect").addEventListener("change", (e) => { currentSort = e.target.value; loadAndRenderList(); });
-  await loadAndRenderList();
+  const title = titleEl.value.trim();
+  const note = noteEl.value.trim();
+
+  const lines = [];
+  if (title) lines.push(`🎾 *${title}*`);
+  lines.push(`💰 Your share: *${formatMoney(amount, currency)}*`);
+  if (note) lines.push(`📝 ${note}`);
+  lines.push("");
+  lines.push("Tap to pay on Revolut:");
+  lines.push(payUrl);
+  return lines.join("\n");
 }
 
-async function loadAndRenderList() {
-  const slot = document.getElementById("listSlot");
-  const summarySlot = document.getElementById("summarySlot");
-  if (!slot) return;
-  try {
-    let query = sb.from("requests").select("*").eq("user_id", currentUser.id);
-    if (currentFilter === 'active') query = query.eq('archived', false);
-    else if (currentFilter === 'archived') query = query.eq('archived', true);
-    const sortMap = {
-      'newest': { col: 'created_at', asc: false },
-      'oldest': { col: 'created_at', asc: true },
-      'amount-high': { col: 'amount', asc: false },
-      'amount-low': { col: 'amount', asc: true },
-    };
-    const sort = sortMap[currentSort] || sortMap.newest;
-    query = query.order(sort.col, { ascending: sort.asc });
-    const { data: requests, error } = await query;
-    if (error) { slot.innerHTML = `<div class="auth-error">Couldn't load: ${escapeHtml(error.message)}</div>`; return; }
-    let filtered = requests || [];
-    if (currentSearch.trim()) {
-      const s = currentSearch.toLowerCase().trim();
-      filtered = filtered.filter(r => (r.title && r.title.toLowerCase().includes(s)) || (r.note && r.note.toLowerCase().includes(s)));
-    }
-    let paymentsByRequest = {};
-    if (filtered.length) {
-      const ids = filtered.map(r => r.id);
-      const { data: payments } = await sb.from("payments").select("*").in("request_id", ids).order("paid_at", { ascending: true });
-      (payments || []).forEach(p => { (paymentsByRequest[p.request_id] = paymentsByRequest[p.request_id] || []).push(p); });
-    }
-    const allActive = (requests || []).filter(r => !r.archived);
-    let totalCollected = 0, totalPending = 0, openCount = 0;
-    for (const r of allActive) {
-      const payers = paymentsByRequest[r.id] || [];
-      if (r.expected_count && r.expected_count > 0) {
-        totalPending += r.amount * Math.max(0, r.expected_count - payers.length);
-      }
-      totalCollected += r.amount * payers.length;
-      if (!r.expected_count || payers.length < r.expected_count) openCount++;
-    }
-    if (summarySlot) {
-      summarySlot.innerHTML = `
-        <div class="summary">
-          <div class="stat"><div class="stat-value">${openCount}</div><div class="stat-label">Open</div></div>
-          <div class="stat"><div class="stat-value mint">${totalCollected.toFixed(0)}</div><div class="stat-label">Collected CHF</div></div>
-          <div class="stat"><div class="stat-value coral">${totalPending.toFixed(0)}</div><div class="stat-label">Pending CHF</div></div>
-        </div>`;
-    }
-    if (!filtered.length) {
-      slot.innerHTML = `<div class="empty"><div class="empty-icon">🎾</div>${currentSearch ? 'No matches found.' : (currentFilter === 'archived' ? 'No archived requests.' : 'No requests yet.<br/>Tap "New payment request" above.')}</div>`;
-      return;
-    }
-    slot.innerHTML = `<div class="request-list">${filtered.map(r => renderRequestCard(r, paymentsByRequest[r.id] || [])).join("")}</div>`;
-    attachListEventHandlers();
-  } catch (e) {
-    slot.innerHTML = `<div class="auth-error">Error loading: ${escapeHtml(e.message)}</div>`;
-  }
-}
-
-function renderRequestCard(r, payers) {
-  const shareUrl = buildShareUrl(r.id);
-  const whatsappUrl = buildWhatsAppUrl(r, shareUrl);
-  const isJustCreated = r.id === justCreatedId;
-  const expected = r.expected_count || 0;
-  const paid = payers.length;
-  const expectedNames = r.expected_names || [];
-
-  let progressHtml = '';
-  if (expected > 0) {
-    const pct = Math.min(100, (paid / expected) * 100);
-    const collected = r.amount * paid;
-    const total = r.amount * expected;
-    const isComplete = paid >= expected;
-    progressHtml = `
-      <div class="progress-wrap">
-        <div class="progress-info">
-          <span class="progress-text">${paid} of ${expected} paid</span>
-          <span class="progress-amount">${formatMoney(collected, r.currency)} / ${formatMoney(total, r.currency)}</span>
-        </div>
-        <div class="progress-bar"><div class="progress-fill ${isComplete?'complete':''}" style="width:${pct}%"></div></div>
-      </div>`;
-  }
-
-  let payersInner = '';
-  if (r.tracking_mode === 'names' && expectedNames.length) {
-    const paidSet = new Set(payers.map(p => p.payer_name.toLowerCase().trim()));
-    const chips = expectedNames.map(name => {
-      const isPaid = paidSet.has(name.toLowerCase().trim());
-      const payment = payers.find(p => p.payer_name.toLowerCase().trim() === name.toLowerCase().trim());
-      return isPaid
-        ? `<span class="payer-chip">${icons.check}${escapeHtml(name)}<button class="x" data-act="remove-payer" data-payer-id="${payment.id}" title="Remove">×</button></span>`
-        : `<span class="payer-chip-pending">${escapeHtml(name)}</span>`;
-    });
-    for (const p of payers) {
-      if (!expectedNames.some(n => n.toLowerCase().trim() === p.payer_name.toLowerCase().trim())) {
-        chips.push(`<span class="payer-chip">${icons.check}${escapeHtml(p.payer_name)}<button class="x" data-act="remove-payer" data-payer-id="${p.id}" title="Remove">×</button></span>`);
-      }
-    }
-    payersInner = `<div class="payers-list">${chips.join('')}</div>`;
-  } else if (payers.length) {
-    payersInner = `<div class="payers-list">${payers.map(p =>
-      `<span class="payer-chip">${icons.check}${escapeHtml(p.payer_name)}<button class="x" data-act="remove-payer" data-payer-id="${p.id}" title="Remove">×</button></span>`
-    ).join('')}</div>`;
-  } else {
-    payersInner = `<div class="payers-empty">No payments yet</div>`;
-  }
-
-  const addPayerHtml = !r.archived ? `
-    <div class="add-payer-row">
-      <input type="text" placeholder="Add payer manually (e.g., cash)" data-add-payer-input data-request-id="${r.id}" maxlength="40" />
-      <button data-act="add-payer-manual" data-request-id="${r.id}" disabled>Add</button>
-    </div>` : '';
-
-  const paidSet2 = new Set(payers.map(p => p.payer_name.toLowerCase().trim()));
-  const unpaidNames = expectedNames.filter(n => !paidSet2.has(n.toLowerCase().trim()));
-  const showReminder = !r.archived && (unpaidNames.length > 0 || (expected > 0 && paid < expected));
-
-  return `
-    <div class="request-card ${r.archived?'archived':''}" data-id="${r.id}">
-      ${isJustCreated ? `<div class="just-created">${icons.check}<span>Created! Tap "Send via WhatsApp" below.</span></div>` : ''}
-      <div class="rc-top">
-        <div class="rc-info">
-          <div class="rc-title">${escapeHtml(r.title)}${r.archived ? ` <span class="rc-archived-tag">archived</span>` : ''}</div>
-          <div class="rc-meta-row">
-            <span class="rc-amount">${formatMoney(r.amount, r.currency)}</span>
-            ${r.booking_date ? `<span class="rc-date">📅 ${escapeHtml(formatBookingDate(r.booking_date))}</span>` : ''}
-          </div>
-        </div>
-        <div class="menu-wrap">
-          <button class="icon-btn" data-act="menu" data-id="${r.id}" aria-label="More">${icons.more}</button>
-          <div class="menu" id="menu-${r.id}">
-            <button class="menu-item" data-act="edit" data-id="${r.id}">${icons.edit} Edit</button>
-            <button class="menu-item" data-act="duplicate" data-id="${r.id}">${icons.duplicate} Duplicate</button>
-            ${r.archived
-              ? `<button class="menu-item" data-act="unarchive" data-id="${r.id}">${icons.unarchive} Unarchive</button>`
-              : `<button class="menu-item" data-act="archive" data-id="${r.id}">${icons.archive} Archive</button>`}
-            <button class="menu-item danger" data-act="delete" data-id="${r.id}">${icons.trash} Delete</button>
-          </div>
-        </div>
-      </div>
-      ${progressHtml}
-      <div class="payers-summary">${payersInner}${addPayerHtml}</div>
-      ${!r.archived ? `
-        <div class="rc-actions">
-          <a class="btn-whatsapp" href="${escapeAttr(whatsappUrl)}" target="_blank" rel="noopener noreferrer">${icons.whatsapp}<span>Send via WhatsApp</span></a>
-          <div class="rc-action-row">
-            <button class="copy-btn" data-act="copy" data-url="${escapeAttr(shareUrl)}">${icons.copy}<span>Copy</span></button>
-            <button class="copy-btn" data-act="share-native" data-url="${escapeAttr(shareUrl)}" data-title="${escapeAttr(r.title)}">${icons.share}<span>Share</span></button>
-            <a class="preview-btn" href="${escapeAttr(shareUrl)}" target="_blank" rel="noopener">${icons.eye}<span>Preview</span></a>
-          </div>
-          ${showReminder ? `<button class="remind-btn" data-act="remind" data-id="${r.id}">${icons.bell}<span>Send reminder to unpaid</span></button>` : ''}
-        </div>
-      ` : ''}
-    </div>`;
-}
-
-function attachListEventHandlers() {
-  document.querySelectorAll("[data-act='copy']").forEach(btn => {
-    btn.addEventListener("click", async () => {
-      const url = btn.dataset.url;
-      try {
-        await navigator.clipboard.writeText(url);
-        btn.classList.add("copied");
-        btn.querySelector("span").textContent = "Copied!";
-        setTimeout(() => { btn.classList.remove("copied"); btn.querySelector("span").textContent = "Copy"; }, 1500);
-      } catch { window.prompt("Copy this link:", url); }
-    });
-  });
-  document.querySelectorAll("[data-act='share-native']").forEach(btn => {
-    btn.addEventListener("click", async () => {
-      const url = btn.dataset.url;
-      const title = btn.dataset.title;
-      if (navigator.share) {
-        try { await navigator.share({ title: 'Padel Split', text: title, url }); } catch (e) {}
-      } else {
-        await navigator.clipboard.writeText(url);
-        showToast('Link copied — share manually');
-      }
-    });
-  });
-  document.querySelectorAll("[data-act='menu']").forEach(btn => {
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const id = btn.dataset.id;
-      const menu = document.getElementById(`menu-${id}`);
-      document.querySelectorAll('.menu.open').forEach(m => { if (m !== menu) m.classList.remove('open'); });
-      menu.classList.toggle('open');
-    });
-  });
-  document.addEventListener('click', () => {
-    document.querySelectorAll('.menu.open').forEach(m => m.classList.remove('open'));
-  }, { once: true });
-  document.querySelectorAll("[data-act='edit']").forEach(btn => {
-    btn.addEventListener("click", async (e) => {
-      e.stopPropagation();
-      const { data } = await sb.from("requests").select("*").eq("id", btn.dataset.id).single();
-      if (data) openForm(data);
-    });
-  });
-  document.querySelectorAll("[data-act='duplicate']").forEach(btn => {
-    btn.addEventListener("click", async (e) => {
-      e.stopPropagation();
-      const { data } = await sb.from("requests").select("*").eq("id", btn.dataset.id).single();
-      if (data) {
-        const dup = { ...data };
-        delete dup.id; delete dup.created_at;
-        dup.title = dup.title + ' (copy)';
-        dup.archived = false; dup.archived_at = null;
-        const { data: created } = await sb.from("requests").insert(dup).select().single();
-        if (created) {
-          justCreatedId = created.id;
-          showToast('Duplicated');
-          await loadAndRenderList();
-        }
-      }
-    });
-  });
-  document.querySelectorAll("[data-act='archive']").forEach(btn => {
-    btn.addEventListener("click", async (e) => {
-      e.stopPropagation();
-      await sb.from("requests").update({ archived: true, archived_at: new Date().toISOString() }).eq("id", btn.dataset.id);
-      showToast('Archived');
-      await loadAndRenderList();
-    });
-  });
-  document.querySelectorAll("[data-act='unarchive']").forEach(btn => {
-    btn.addEventListener("click", async (e) => {
-      e.stopPropagation();
-      await sb.from("requests").update({ archived: false, archived_at: null }).eq("id", btn.dataset.id);
-      showToast('Unarchived');
-      await loadAndRenderList();
-    });
-  });
-  document.querySelectorAll("[data-act='delete']").forEach(btn => {
-    btn.addEventListener("click", async (e) => {
-      e.stopPropagation();
-      if (!confirm("Permanently delete this request and all its payment records?")) return;
-      await sb.from("requests").delete().eq("id", btn.dataset.id);
-      showToast('Deleted');
-      await loadAndRenderList();
-    });
-  });
-  document.querySelectorAll("[data-act='remove-payer']").forEach(btn => {
-    btn.addEventListener("click", async (e) => {
-      e.preventDefault(); e.stopPropagation();
-      if (!confirm("Remove this payer?")) return;
-      await sb.from("payments").delete().eq("id", btn.dataset.payerId);
-      await loadAndRenderList();
-    });
-  });
-  document.querySelectorAll("[data-add-payer-input]").forEach(input => {
-    input.addEventListener("input", () => {
-      const btn = document.querySelector(`[data-act='add-payer-manual'][data-request-id='${input.dataset.requestId}']`);
-      if (btn) btn.disabled = input.value.trim().length < 2;
-    });
-    input.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        const btn = document.querySelector(`[data-act='add-payer-manual'][data-request-id='${input.dataset.requestId}']`);
-        if (btn && !btn.disabled) btn.click();
-      }
-    });
-  });
-  document.querySelectorAll("[data-act='add-payer-manual']").forEach(btn => {
-    btn.addEventListener("click", async (e) => {
-      e.stopPropagation();
-      const requestId = btn.dataset.requestId;
-      const input = document.querySelector(`[data-add-payer-input][data-request-id='${requestId}']`);
-      const name = input.value.trim();
-      if (name.length < 2) return;
-      btn.disabled = true;
-      await sb.from("payments").insert({ request_id: requestId, payer_name: name });
-      input.value = "";
-      showToast(`${name} marked as paid`);
-      await loadAndRenderList();
-    });
-  });
-  document.querySelectorAll("[data-act='remind']").forEach(btn => {
-    btn.addEventListener("click", async (e) => {
-      e.stopPropagation();
-      const { data: req } = await sb.from("requests").select("*").eq("id", btn.dataset.id).single();
-      const { data: payments } = await sb.from("payments").select("*").eq("request_id", btn.dataset.id);
-      const paidNames = new Set((payments || []).map(p => p.payer_name.toLowerCase().trim()));
-      const unpaid = (req.expected_names || []).filter(n => !paidNames.has(n.toLowerCase().trim()));
-      const shareUrl = buildShareUrl(req.id);
-      const msg = buildReminderMessage(req, shareUrl, unpaid);
-      window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
-    });
-  });
-  if (justCreatedId) setTimeout(() => { justCreatedId = null; }, 100);
-}
-
-// =========================================================
-// FORM
-// =========================================================
-function openForm(editing) {
-  const slot = document.getElementById("formSlot");
-  const isEdit = !!editing;
-  const r = editing || {};
-  const trackingMode = r.tracking_mode || 'count';
-  const expectedNames = r.expected_names || [];
-  const expectedCount = r.expected_count || '';
-  const bookingLocal = r.booking_date ? new Date(new Date(r.booking_date).getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16) : '';
-  const defaultRevolut = (currentProfile && currentProfile.default_revolut_link) || '';
-  slot.innerHTML = `
-    <div class="card fade-in">
-      <div class="form-head">
-        <h2>${isEdit ? 'Edit request' : 'New request'}</h2>
-        <button class="btn-ghost" id="cancelBtn">Cancel</button>
-      </div>
-      <label class="label">What's it for?</label>
-      <input class="input" id="title" placeholder="e.g. Padel Tuesday 8pm — Court 3" value="${escapeAttr(r.title || '')}" />
-      <label class="label">Amount per person</label>
-      <div class="amount-wrap">
-        <select class="currency" id="currency">
-          <option value="CHF" ${(r.currency||'CHF')==='CHF'?'selected':''}>CHF</option>
-          <option value="EUR" ${r.currency==='EUR'?'selected':''}>EUR</option>
-          <option value="USD" ${r.currency==='USD'?'selected':''}>USD</option>
-        </select>
-        <input type="number" min="0" step="0.05" id="amount" placeholder="25.00" value="${r.amount || ''}" />
-      </div>
-      <label class="label">Booking date & time (optional)</label>
-      <input class="input" type="datetime-local" id="bookingDate" value="${bookingLocal}" />
-      <label class="label">Your Revolut payment link</label>
-      <input class="input" id="revolut" placeholder="https://revolut.me/yourhandle" value="${escapeAttr(r.revolut_link || defaultRevolut)}" />
-      <div class="help">Paste your <code>revolut.me</code> link or a Revolut payment request URL.</div>
-      <label class="label">Track payments by</label>
-      <div class="seg" id="trackingSeg">
-        <button class="seg-opt ${trackingMode==='count'?'active':''}" data-mode="count" type="button">Count only</button>
-        <button class="seg-opt ${trackingMode==='names'?'active':''}" data-mode="names" type="button">Names list</button>
-      </div>
-      <div id="trackingFields"></div>
-      <label class="label">Note (optional)</label>
-      <textarea class="input" id="note" placeholder="e.g. Please include your name in the reference">${escapeHtml(r.note || '')}</textarea>
-      <button class="btn-primary" id="saveBtn" style="margin-top:18px" disabled>${isEdit ? 'Save changes' : 'Save & get share link'}</button>
-    </div>
-  `;
-  let mode = trackingMode;
-  function renderTrackingFields() {
-    const fields = document.getElementById('trackingFields');
-    if (mode === 'count') {
-      fields.innerHTML = `
-        <label class="label">Expected number of payers (optional)</label>
-        <input class="input" type="number" min="1" max="50" id="expectedCount" placeholder="e.g. 3" value="${expectedCount}" />
-        <div class="help">Used to show a progress bar.</div>`;
-    } else {
-      fields.innerHTML = `
-        <label class="label">Names of who's playing</label>
-        <div class="names-list" id="namesList"></div>
-        <button class="add-name-btn" id="addNameBtn" type="button">+ Add another name</button>`;
-      const list = document.getElementById('namesList');
-      const initial = expectedNames.length ? expectedNames : ['', ''];
-      initial.forEach(n => addNameRow(list, n));
-      document.getElementById('addNameBtn').addEventListener('click', () => addNameRow(list, ''));
-    }
-    validate();
-  }
-  function addNameRow(list, value) {
-    const row = document.createElement('div');
-    row.className = 'name-row';
-    row.innerHTML = `
-      <input class="input" type="text" placeholder="Name" value="${escapeAttr(value)}" maxlength="40" />
-      <button class="icon-btn danger" type="button" aria-label="Remove">${icons.trash}</button>`;
-    row.querySelector('button').addEventListener('click', () => row.remove());
-    list.appendChild(row);
-  }
-  document.querySelectorAll('#trackingSeg .seg-opt').forEach(b => {
-    b.addEventListener('click', () => {
-      mode = b.dataset.mode;
-      document.querySelectorAll('#trackingSeg .seg-opt').forEach(x => x.classList.toggle('active', x === b));
-      renderTrackingFields();
-    });
-  });
-  renderTrackingFields();
-  const title = document.getElementById("title");
-  const amount = document.getElementById("amount");
-  const revolut = document.getElementById("revolut");
-  const saveBtn = document.getElementById("saveBtn");
-  function validate() {
-    const ok = title.value.trim() && parseFloat(amount.value) > 0 && /^https?:\/\//.test(revolut.value.trim());
-    saveBtn.disabled = !ok;
-  }
-  [title, amount, revolut].forEach(el => el.addEventListener("input", validate));
-  validate();
-  document.getElementById("cancelBtn").addEventListener("click", () => { slot.innerHTML = ""; });
-  saveBtn.addEventListener("click", async () => {
-    saveBtn.disabled = true;
-    saveBtn.innerHTML = `<div class="spinner" style="width:18px;height:18px;border-color:rgba(0,0,0,0.2);border-top-color:#1a1b3a"></div>`;
-    let expected_count = null, expected_names = null;
-    if (mode === 'count') {
-      const v = parseInt(document.getElementById('expectedCount').value, 10);
-      if (v > 0) expected_count = v;
-    } else {
-      const names = Array.from(document.querySelectorAll('#namesList input')).map(i => i.value.trim()).filter(Boolean);
-      if (names.length) { expected_names = names; expected_count = names.length; }
-    }
-    const bookingVal = document.getElementById('bookingDate').value;
-    const payload = {
-      title: title.value.trim(),
-      amount: parseFloat(amount.value),
-      currency: document.getElementById('currency').value,
-      revolut_link: revolut.value.trim(),
-      note: document.getElementById('note').value.trim() || null,
-      booking_date: bookingVal ? new Date(bookingVal).toISOString() : null,
-      tracking_mode: mode,
-      expected_count, expected_names,
-    };
-    let result;
-    if (isEdit) result = await sb.from("requests").update(payload).eq("id", r.id).select().single();
-    else { payload.user_id = currentUser.id; result = await sb.from("requests").insert(payload).select().single(); }
-    if (result.error) {
-      alert("Couldn't save: " + result.error.message);
-      saveBtn.disabled = false;
-      saveBtn.innerHTML = isEdit ? 'Save changes' : 'Save & get share link';
-      return;
-    }
-    if (!isEdit) justCreatedId = result.data.id;
-    slot.innerHTML = "";
-    showToast(isEdit ? 'Updated' : 'Created');
-    await loadAndRenderList();
-    setTimeout(() => {
-      const card = document.querySelector(`[data-id="${result.data.id}"]`);
-      if (card) card.scrollIntoView({ behavior: "smooth", block: "center" });
-    }, 100);
-  });
-}
-
-// =========================================================
-// ACCOUNT MODAL
-// =========================================================
-function openAccountModal() {
-  const dn = (currentProfile && currentProfile.display_name) || '';
-  const dr = (currentProfile && currentProfile.default_revolut_link) || '';
-  const dt = (currentProfile && currentProfile.default_message_template) || getDefaultMessageTemplate();
-  showModal(`
-    <div class="modal-head"><h2>Account & settings</h2><button class="icon-btn" data-close>${icons.x}</button></div>
-    <div id="accountMsg"></div>
-    <label class="label">Display name</label>
-    <input class="input" id="acctDisplayName" placeholder="e.g. Pedro" value="${escapeAttr(dn)}" />
-    <label class="label">Default Revolut link</label>
-    <input class="input" id="acctRevolut" placeholder="https://revolut.me/yourhandle" value="${escapeAttr(dr)}" />
-    <div class="help">Pre-filled when creating a new request.</div>
-    <label class="label">Default WhatsApp message template</label>
-    <textarea class="input" id="acctTemplate" rows="6" style="min-height:120px">${escapeHtml(dt)}</textarea>
-    <div class="help">Placeholders: <code>{title}</code>, <code>{amount}</code>, <code>{booking}</code>, <code>{note}</code>, <code>{url}</code>.</div>
-    <button class="btn-primary" id="acctSaveBtn" style="margin-top:16px">Save settings</button>
-    <div style="margin-top:24px; padding-top:18px; border-top:1px solid var(--border)">
-      <button class="btn-secondary" id="changePwBtn">Change password</button>
-      <button class="btn-secondary" id="logoutBtn" style="margin-top:8px">Log out</button>
-      <button class="btn-secondary danger" id="deleteAcctBtn" style="margin-top:8px">Delete all my data</button>
-    </div>
-  `);
-  document.getElementById('acctSaveBtn').addEventListener('click', async () => {
-    const payload = {
-      display_name: document.getElementById('acctDisplayName').value.trim() || null,
-      default_revolut_link: document.getElementById('acctRevolut').value.trim() || null,
-      default_message_template: document.getElementById('acctTemplate').value.trim() || null,
-    };
-    const { error } = await sb.from('profiles').update(payload).eq('id', currentUser.id);
-    if (error) { document.getElementById('accountMsg').innerHTML = `<div class="auth-error">${escapeHtml(error.message)}</div>`; return; }
-    Object.assign(currentProfile, payload);
-    closeModal();
-    showToast('Settings saved');
-    render();
-  });
-  document.getElementById('changePwBtn').addEventListener('click', openChangePassword);
-  document.getElementById('logoutBtn').addEventListener('click', () => { closeModal(); handleLogout(); });
-  document.getElementById('deleteAcctBtn').addEventListener('click', async () => {
-    if (!confirm('This will delete ALL your requests and payment records permanently. Continue?')) return;
-    if (!confirm('Are you absolutely sure? This cannot be undone.')) return;
-    await sb.from('requests').delete().eq('user_id', currentUser.id);
-    await sb.from('profiles').delete().eq('id', currentUser.id);
-    await sb.auth.signOut();
-    currentUser = null; currentProfile = null;
-    closeModal();
-    showToast('All data deleted');
-    render();
-  });
-}
-
-function openChangePassword() {
-  showModal(`
-    <div class="modal-head"><h2>Change password</h2><button class="icon-btn" data-close>${icons.x}</button></div>
-    <div id="cpMsg"></div>
-    <label class="label">New password</label>
-    <input class="input" type="password" id="cpNew" placeholder="At least 6 characters" />
-    <label class="label">Confirm new password</label>
-    <input class="input" type="password" id="cpNew2" placeholder="Repeat password" />
-    <button class="btn-primary" id="cpSaveBtn" style="margin-top:14px">Update password</button>
-  `);
-  document.getElementById('cpSaveBtn').addEventListener('click', async () => {
-    const pw = document.getElementById('cpNew').value;
-    const pw2 = document.getElementById('cpNew2').value;
-    const msg = document.getElementById('cpMsg');
-    if (pw.length < 6) { msg.innerHTML = `<div class="auth-error">Password must be at least 6 characters.</div>`; return; }
-    if (pw !== pw2) { msg.innerHTML = `<div class="auth-error">Passwords don't match.</div>`; return; }
-    const btn = document.getElementById('cpSaveBtn');
-    btn.disabled = true;
-    btn.innerHTML = `<div class="spinner" style="width:18px;height:18px;border-color:rgba(0,0,0,0.2);border-top-color:#1a1b3a"></div>`;
-    const { error } = await sb.auth.updateUser({ password: pw });
-    if (error) { msg.innerHTML = `<div class="auth-error">${escapeHtml(error.message)}</div>`; btn.disabled = false; btn.innerHTML = 'Update password'; }
-    else { closeModal(); showToast('Password updated'); }
-  });
-}
-
-// =========================================================
-// PAY VIEW (public — no auth required, fast)
-// =========================================================
-async function renderPayView(app, requestId) {
-  // Show shell immediately
-  app.innerHTML = `
-    <div class="top-bar fade-in">${brandHtml()}</div>
-    <div class="loading"><div class="spinner"></div></div>
-  `;
-
-  let req, payments = [], orgName = '';
-  try {
-    const reqRes = await sb.from("requests").select("*").eq("id", requestId).single();
-    if (reqRes.error || !reqRes.data) {
-      app.innerHTML = `
-        <div class="top-bar fade-in">${brandHtml()}</div>
-        <div class="card nf fade-in">
-          <h2>Request not found</h2>
-          <p>This payment link is broken or has been deleted.</p>
-        </div>`;
-      return;
-    }
-    req = reqRes.data;
-    // Fetch payments and org name in parallel
-    const [paymentsRes, orgRes] = await Promise.all([
-      sb.from("payments").select("*").eq("request_id", requestId).order("paid_at", { ascending: true }),
-      sb.from('profiles').select('display_name').eq('id', req.user_id).single(),
-    ]);
-    payments = paymentsRes.data || [];
-    orgName = (orgRes.data && orgRes.data.display_name) || '';
-  } catch (e) {
-    app.innerHTML = `
-      <div class="top-bar fade-in">${brandHtml()}</div>
-      <div class="card nf fade-in">
-        <h2>Couldn't load</h2>
-        <p>Please check your connection and try again.</p>
-      </div>`;
+function update() {
+  const msg = buildMessage();
+  if (!msg) {
+    previewBody.textContent = "Fill in your Revolut and amount to see a preview.";
+    whatsappBtn.classList.add("disabled");
+    whatsappBtn.removeAttribute("href");
+    copyBtn.disabled = true;
     return;
   }
-
-  renderPayCard(app, req, payments, orgName);
+  previewBody.textContent = msg;
+  whatsappBtn.classList.remove("disabled");
+  whatsappBtn.href = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+  copyBtn.disabled = false;
 }
 
-function renderPayCard(app, req, payments, orgName) {
-  const payUrl = appendAmount(req.revolut_link, req.amount, req.currency);
-  const paidNames = new Set(payments.map(p => p.payer_name.toLowerCase().trim()));
-  const expectedNames = req.expected_names || [];
-  const savedName = localStorage.getItem(PAYER_NAME_KEY) || '';
-
-  const namePickerHtml = expectedNames.length ? `
-    <div class="name-options">
-      ${expectedNames.map(n => {
-        const isPaid = paidNames.has(n.toLowerCase().trim());
-        return `<button class="name-option ${isPaid?'disabled':''}" ${isPaid?'disabled':''} data-name="${escapeAttr(n)}">${escapeHtml(n)}${isPaid?' ✓':''}</button>`;
-      }).join('')}
-    </div>` : '';
-
-  const payersChips = payments.map(p =>
-    `<span class="payer-chip">${icons.check}${escapeHtml(p.payer_name)}</span>`
-  ).join("");
-
-  const currencyDisplay = req.currency === 'CHF' ? 'CHF' : (req.currency === 'EUR' ? '€' : (req.currency === 'USD' ? '$' : req.currency));
-
-  app.innerHTML = `
-    <div class="top-bar fade-in">${brandHtml()}</div>
-    <div class="pay-wrap fade-in">
-      <div class="pay-card">
-        ${orgName ? `<div class="pay-from">From <span class="name">${escapeHtml(orgName)}</span></div>` : ''}
-        <div class="pay-kicker">You owe</div>
-        <div class="pay-amount"><span class="curr">${escapeHtml(currencyDisplay)}</span>${Number(req.amount).toFixed(2)}</div>
-        <div class="pay-title">${escapeHtml(req.title)}</div>
-        ${req.booking_date ? `<div class="pay-booking">📅 ${escapeHtml(formatBookingDate(req.booking_date))}</div>` : ''}
-        ${req.note ? `<div class="pay-note">${escapeHtml(req.note)}</div>` : ""}
-
-        <a class="pay-btn" id="payNowBtn" href="${escapeAttr(payUrl)}" target="_blank" rel="noopener noreferrer">
-          Pay on Revolut ${icons.external}
-        </a>
-        <div class="pay-sub">Opens Revolut in a new tab</div>
-
-        <div class="selfreport" id="selfreportSection">
-          <div id="selfreportContent">
-            <h3>Already paid? Confirm here ✓</h3>
-            ${namePickerHtml}
-            <input class="input" id="payerName" placeholder="Or type your name" maxlength="40" value="${escapeAttr(savedName)}" />
-            <button class="btn-confirm" id="confirmBtn" ${savedName.length >= 2 ? '' : 'disabled'}>Confirm payment</button>
-          </div>
-          ${payments.length > 0 ? `
-            <div class="already-paid-list">
-              <div class="label-mini">${payments.length} ${payments.length === 1 ? 'person has' : 'people have'} paid</div>
-              <div class="chips">${payersChips}</div>
-            </div>
-          ` : ''}
-        </div>
-      </div>
-    </div>
-  `;
-
-  const nameInput = document.getElementById("payerName");
-  const confirmBtn = document.getElementById("confirmBtn");
-  const payNowBtn = document.getElementById("payNowBtn");
-
-  // After tapping pay, scroll to confirm section so they remember to mark paid
-  payNowBtn.addEventListener("click", () => {
-    setTimeout(() => {
-      document.getElementById('selfreportSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 800);
-  });
-
-  nameInput.addEventListener("input", () => {
-    confirmBtn.disabled = nameInput.value.trim().length < 2;
-  });
-  document.querySelectorAll('.name-option').forEach(btn => {
-    if (btn.disabled) return;
-    btn.addEventListener('click', () => {
-      nameInput.value = btn.dataset.name;
-      confirmBtn.disabled = false;
-      confirmBtn.click();
-    });
-  });
-  confirmBtn.addEventListener("click", async () => {
-    const name = nameInput.value.trim();
-    if (name.length < 2) return;
-    confirmBtn.disabled = true;
-    confirmBtn.textContent = "Saving...";
-    const { error } = await sb.from("payments").insert({ request_id: req.id, payer_name: name });
-    if (error) {
-      alert("Couldn't save: " + error.message);
-      confirmBtn.disabled = false;
-      confirmBtn.textContent = "Confirm payment";
-      return;
-    }
-    // Remember name locally for next time
-    localStorage.setItem(PAYER_NAME_KEY, name);
-    document.getElementById("selfreportContent").innerHTML = `
-      <div class="selfreport-success">${icons.check}<span>Thanks ${escapeHtml(name)}! Payment confirmed.</span></div>`;
-    setTimeout(() => renderPayView(document.getElementById("app"), req.id), 1200);
-  });
+function saveRevolut() {
+  const v = revolutEl.value.trim();
+  if (v) localStorage.setItem(REVOLUT_KEY, v);
+  else localStorage.removeItem(REVOLUT_KEY);
 }
 
-// =========================================================
-// INIT
-// =========================================================
-async function init() {
-  const storedTheme = localStorage.getItem('theme');
-  if (storedTheme) applyTheme(storedTheme);
+[revolutEl, amountEl, currencyEl, titleEl, noteEl].forEach((el) => {
+  el.addEventListener("input", update);
+  el.addEventListener("change", update);
+});
+revolutEl.addEventListener("blur", saveRevolut);
+whatsappBtn.addEventListener("click", saveRevolut);
 
-  // Safety timeout — if anything hangs, show something
-  const fallbackTimer = setTimeout(() => {
-    const app = document.getElementById("app");
-    if (app && app.querySelector('.loading')) {
-      renderAuth(app);
-    }
-  }, 6000);
-
-  sb.auth.onAuthStateChange(async (event, session) => {
-    currentUser = session?.user || null;
-    if (currentUser) await loadProfile();
-    else currentProfile = null;
-    if (event === 'PASSWORD_RECOVERY') window.location.hash = '#reset-password';
-    render();
-  });
-
+copyBtn.addEventListener("click", async () => {
+  const msg = buildMessage();
+  if (!msg) return;
   try {
-    const { data: { session } } = await sb.auth.getSession();
-    currentUser = session?.user || null;
-    if (currentUser) await loadProfile();
-    clearTimeout(fallbackTimer);
-    render();
-  } catch (e) {
-    clearTimeout(fallbackTimer);
-    render();
+    await navigator.clipboard.writeText(msg);
+    copyBtn.classList.add("copied");
+    copyBtn.querySelector("span").textContent = "Copied!";
+    setTimeout(() => {
+      copyBtn.classList.remove("copied");
+      copyBtn.querySelector("span").textContent = "Copy message";
+    }, 1500);
+  } catch {
+    window.prompt("Copy this message:", msg);
   }
-}
-init();
+});
+
+update();
 </script>
 </body>
 </html>
