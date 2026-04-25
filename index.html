@@ -15,6 +15,18 @@
 <meta name="apple-mobile-web-app-title" content="Padel Split" />
 <meta name="mobile-web-app-capable" content="yes" />
 
+<meta name="description" content="Tap to pay your share on Revolut." />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Padel Split — Pay your share on Revolut" />
+<meta property="og:description" content="Tap to pay your share on Revolut." />
+<meta property="og:image" content="/icon-512.png" />
+<meta property="og:image:width" content="512" />
+<meta property="og:image:height" content="512" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Padel Split — Pay your share on Revolut" />
+<meta name="twitter:description" content="Tap to pay your share on Revolut." />
+<meta name="twitter:image" content="/icon-512.png" />
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -171,6 +183,37 @@
 
   footer { margin-top: 32px; text-align: center; font-size: 11px; color: var(--muted-2); }
 
+  .pay-amount {
+    font-size: clamp(40px, 12vw, 64px); font-weight: 800;
+    letter-spacing: -0.03em; line-height: 1;
+    background: linear-gradient(90deg, var(--mint), var(--coral));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    text-align: center; margin: 8px 0 14px;
+  }
+  .pay-meta {
+    text-align: center; color: var(--muted); font-size: 14px;
+    line-height: 1.5; margin-bottom: 6px;
+  }
+  .pay-meta strong { color: var(--ink); font-weight: 700; }
+  .pay-note {
+    margin-top: 14px; padding: 12px 14px;
+    background: var(--bg-deep); border: 1px solid var(--border);
+    border-radius: 11px; font-size: 13px; color: var(--ink);
+    line-height: 1.5; white-space: pre-wrap; word-break: break-word;
+  }
+  .btn-revolut {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    width: 100%; padding: 16px 20px;
+    background: linear-gradient(135deg, var(--mint), var(--mint-deep));
+    color: #1a1b3a;
+    border: none; border-radius: 14px;
+    font-family: inherit; font-weight: 700; font-size: 15px;
+    cursor: pointer; text-decoration: none;
+    box-shadow: 0 8px 20px rgba(142,234,208,0.25);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .btn-revolut:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(142,234,208,0.35); }
+
   @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
   .fade-in { animation: fadeUp 0.4s ease backwards; }
 </style>
@@ -189,7 +232,23 @@
     <button class="top-icon-btn" id="themeBtn" title="Toggle theme" aria-label="Toggle theme"></button>
   </div>
 
-  <div class="fade-in">
+  <div class="fade-in" id="payView" style="display:none">
+    <h1>Pay your share<br/><span class="accent">on Revolut.</span></h1>
+    <p class="lede" id="payLede">Tap the button — Revolut opens with the amount pre-filled.</p>
+    <div class="card">
+      <div class="pay-amount" id="payAmount"></div>
+      <div class="pay-meta" id="payMeta"></div>
+      <div class="pay-note" id="payNote" style="display:none"></div>
+      <div class="actions">
+        <a class="btn-revolut" id="payRevolutBtn" target="_blank" rel="noopener noreferrer">
+          <span id="payRevolutBtnText">Pay on Revolut</span>
+        </a>
+      </div>
+    </div>
+    <footer>Payments handled by Revolut · No account needed</footer>
+  </div>
+
+  <div class="fade-in" id="composeView">
   <h1>Get paid back<br/><span class="accent">on Revolut.</span></h1>
   <p class="lede">Fill in the details, tap once — WhatsApp opens with your Revolut payment link ready to send.</p>
 
@@ -251,16 +310,6 @@ function applyTheme(theme) {
 applyTheme(localStorage.getItem(THEME_KEY) || "dark");
 
 const $ = (id) => document.getElementById(id);
-const revolutEl = $("revolut");
-const amountEl = $("amount");
-const currencyEl = $("currency");
-const titleEl = $("title");
-const noteEl = $("note");
-const previewBody = $("previewBody");
-const whatsappBtn = $("whatsappBtn");
-const copyBtn = $("copyBtn");
-
-revolutEl.value = localStorage.getItem(REVOLUT_KEY) || "";
 
 function formatMoney(amount, currency) {
   const n = Number(amount).toFixed(2);
@@ -270,6 +319,7 @@ function formatMoney(amount, currency) {
   return `${currency} ${n}`;
 }
 
+// Revolut deeplinks expect amount in MINOR units (e.g. cents), so 15.00 CHF -> 1500.
 function buildRevolutUrl(input, amount, currency) {
   const raw = (input || "").trim();
   if (!raw) return "";
@@ -281,57 +331,149 @@ function buildRevolutUrl(input, amount, currency) {
     if (!handle) return "";
     url = new URL(`https://revolut.me/${handle}`);
   }
-  if (amount > 0) url.searchParams.set("amount", String(amount));
+  if (amount > 0) url.searchParams.set("amount", String(Math.round(amount * 100)));
   if (currency) url.searchParams.set("currency", currency);
   return url.toString();
 }
 
-function buildMessage() {
-  const amount = parseFloat(amountEl.value);
-  const currency = currencyEl.value;
-  const payUrl = buildRevolutUrl(revolutEl.value, amount, currency);
-  if (!payUrl || !(amount > 0)) return null;
-
-  const title = titleEl.value.trim();
-  const note = noteEl.value.trim();
-
-  const lines = [];
-  if (title) lines.push(`🎾 *${title}*`);
-  lines.push(`💰 Your share: *${formatMoney(amount, currency)}*`);
-  if (note) lines.push(`📝 ${note}`);
-  lines.push("");
-  lines.push("Tap to pay on Revolut:");
-  lines.push(payUrl);
-  return lines.join("\n");
+// Build a link back to OUR site with payment params. WhatsApp scrapes this URL
+// for its preview, so it gets our Open Graph image instead of Revolut's.
+function buildShareUrl(handle, amount, currency, title, note) {
+  const u = new URL(window.location.origin + window.location.pathname);
+  u.searchParams.set("pay", "1");
+  if (handle) u.searchParams.set("h", handle);
+  if (amount > 0) u.searchParams.set("a", Number(amount).toFixed(2));
+  if (currency) u.searchParams.set("c", currency);
+  if (title) u.searchParams.set("t", title);
+  if (note) u.searchParams.set("n", note);
+  return u.toString();
 }
 
-function update() {
-  const msg = buildMessage();
-  if (!msg) {
-    previewBody.textContent = "Fill in your Revolut and amount to see a preview.";
-    whatsappBtn.classList.add("disabled");
-    whatsappBtn.removeAttribute("href");
-    copyBtn.disabled = true;
+function renderPayView(params) {
+  $("composeView").style.display = "none";
+  $("payView").style.display = "";
+
+  const handle = params.get("h") || "";
+  const amount = parseFloat(params.get("a") || "0");
+  const currency = params.get("c") || "CHF";
+  const title = (params.get("t") || "").trim();
+  const note = (params.get("n") || "").trim();
+
+  const revolutUrl = buildRevolutUrl(handle, amount, currency);
+
+  if (!revolutUrl || !(amount > 0)) {
+    $("payAmount").textContent = "—";
+    $("payMeta").innerHTML = "This payment link is missing details.";
+    const btn = $("payRevolutBtn");
+    btn.removeAttribute("href");
+    btn.style.opacity = "0.4";
+    btn.style.pointerEvents = "none";
     return;
   }
-  previewBody.textContent = msg;
-  whatsappBtn.classList.remove("disabled");
-  whatsappBtn.href = `https://wa.me/?text=${encodeURIComponent(msg)}`;
-  copyBtn.disabled = false;
+
+  $("payAmount").textContent = formatMoney(amount, currency);
+
+  const metaParts = [];
+  if (title) metaParts.push(`for <strong>${escapeHtml(title)}</strong>`);
+  const cleanHandle = handle.replace(/^@/, "").replace(/^https?:\/\/(www\.)?revolut\.me\//i, "").split("?")[0];
+  if (cleanHandle) metaParts.push(`paid to <strong>@${escapeHtml(cleanHandle)}</strong>`);
+  $("payMeta").innerHTML = metaParts.join("<br/>") || "Tap below to pay on Revolut.";
+
+  if (note) {
+    $("payNote").textContent = note;
+    $("payNote").style.display = "";
+  }
+
+  $("payRevolutBtn").href = revolutUrl;
+  $("payRevolutBtnText").textContent = `Pay ${formatMoney(amount, currency)} on Revolut`;
+  document.title = `Pay ${formatMoney(amount, currency)} — Padel Split`;
 }
 
-function saveRevolut() {
-  const v = revolutEl.value.trim();
-  if (v) localStorage.setItem(REVOLUT_KEY, v);
-  else localStorage.removeItem(REVOLUT_KEY);
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, (c) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  })[c]);
 }
 
-[revolutEl, amountEl, currencyEl, titleEl, noteEl].forEach((el) => {
-  el.addEventListener("input", update);
-  el.addEventListener("change", update);
-});
-revolutEl.addEventListener("blur", saveRevolut);
-whatsappBtn.addEventListener("click", saveRevolut);
+function initComposeView() {
+  const revolutEl = $("revolut");
+  const amountEl = $("amount");
+  const currencyEl = $("currency");
+  const titleEl = $("title");
+  const noteEl = $("note");
+  const previewBody = $("previewBody");
+  const whatsappBtn = $("whatsappBtn");
+  const copyBtn = $("copyBtn");
+
+  revolutEl.value = localStorage.getItem(REVOLUT_KEY) || "";
+
+  function buildMessage() {
+    const amount = parseFloat(amountEl.value);
+    const currency = currencyEl.value;
+    const handle = revolutEl.value.trim();
+    if (!handle || !(amount > 0)) return null;
+
+    const title = titleEl.value.trim();
+    const note = noteEl.value.trim();
+
+    const shareUrl = buildShareUrl(handle, amount, currency, title, note);
+
+    const lines = [];
+    if (title) lines.push(`🎾 *${title}*`);
+    lines.push(`💰 Your share: *${formatMoney(amount, currency)}*`);
+    if (note) lines.push(`📝 ${note}`);
+    lines.push("");
+    lines.push("Tap to pay on Revolut:");
+    lines.push(shareUrl);
+    return lines.join("\n");
+  }
+
+  function update() {
+    const msg = buildMessage();
+    if (!msg) {
+      previewBody.textContent = "Fill in your Revolut and amount to see a preview.";
+      whatsappBtn.classList.add("disabled");
+      whatsappBtn.removeAttribute("href");
+      copyBtn.disabled = true;
+      return;
+    }
+    previewBody.textContent = msg;
+    whatsappBtn.classList.remove("disabled");
+    whatsappBtn.href = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+    copyBtn.disabled = false;
+  }
+
+  function saveRevolut() {
+    const v = revolutEl.value.trim();
+    if (v) localStorage.setItem(REVOLUT_KEY, v);
+    else localStorage.removeItem(REVOLUT_KEY);
+  }
+
+  [revolutEl, amountEl, currencyEl, titleEl, noteEl].forEach((el) => {
+    el.addEventListener("input", update);
+    el.addEventListener("change", update);
+  });
+  revolutEl.addEventListener("blur", saveRevolut);
+  whatsappBtn.addEventListener("click", saveRevolut);
+
+  copyBtn.addEventListener("click", async () => {
+    const msg = buildMessage();
+    if (!msg) return;
+    try {
+      await navigator.clipboard.writeText(msg);
+      copyBtn.classList.add("copied");
+      copyBtn.querySelector("span").textContent = "Copied!";
+      setTimeout(() => {
+        copyBtn.classList.remove("copied");
+        copyBtn.querySelector("span").textContent = "Copy message";
+      }, 1500);
+    } catch {
+      window.prompt("Copy this message:", msg);
+    }
+  });
+
+  update();
+}
 
 document.getElementById("themeBtn").addEventListener("click", () => {
   const current = document.documentElement.getAttribute("data-theme") || "dark";
@@ -340,23 +482,12 @@ document.getElementById("themeBtn").addEventListener("click", () => {
   applyTheme(next);
 });
 
-copyBtn.addEventListener("click", async () => {
-  const msg = buildMessage();
-  if (!msg) return;
-  try {
-    await navigator.clipboard.writeText(msg);
-    copyBtn.classList.add("copied");
-    copyBtn.querySelector("span").textContent = "Copied!";
-    setTimeout(() => {
-      copyBtn.classList.remove("copied");
-      copyBtn.querySelector("span").textContent = "Copy message";
-    }, 1500);
-  } catch {
-    window.prompt("Copy this message:", msg);
-  }
-});
-
-update();
+const params = new URLSearchParams(window.location.search);
+if (params.get("pay") === "1") {
+  renderPayView(params);
+} else {
+  initComposeView();
+}
 </script>
 </body>
 </html>
